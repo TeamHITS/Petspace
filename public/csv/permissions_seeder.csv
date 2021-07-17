@@ -1,0 +1,164 @@
+name,module_id,display_name,description,is_protected
+
+adminpanel,1,"Admin Panel","Admin Panel",1
+dashboard,2,Dashboard,Dashboard,1
+users.index,3,"List Users","List Roles",1
+users.create,3,"Create Users","Create Users",1
+users.show,3,"View User","View User",1
+users.edit,3,"Edit User","Edit User",1
+users.destroy,3,"Delete User","Delete User",1
+roles.index,4,"List Roles","List Roles",1
+roles.create,4,"Create Role","Create Role",1
+roles.show,4,"View Role","View Role",1
+roles.edit,4,"Edit Role","Edit Role",1
+roles.destroy,4,"Delete Role","Delete Role",1
+permissions.index,5,"List Permissions","List Permissions",1
+permissions.create,5,"Create Permission","Create Permission",1
+permissions.show,5,"View Permission","View Permission",1
+permissions.edit,5,"Edit Permission","Edit Permission",1
+permissions.destroy,5,"Delete Permission","Delete Permission",1
+modules.index,6,"List Modules","List Modules",1
+modules.create,6,"Create Module","Create Module",1
+modules.show,6,"View Module","View Module",1
+modules.edit,6,"Edit Module","Edit Module",1
+modules.destroy,6,"Delete Module","Delete Module",1
+languages.index,7,"List Languages","List Languages",1
+languages.create,7,"Create Languages","Create Languages",1
+languages.show,7,"View Languages","View Languages",1
+languages.edit,7,"Edit Languages","Edit Languages",1
+languages.destroy,7,"Delete Languages","Delete Languages",1
+pages.index,8,"List Pages","List Pages",1
+pages.create,8,"Create Pages","Create Pages",1
+pages.show,8,"View Pages","View Pages",1
+pages.edit,8,"Edit Pages","Edit Pages",1
+pages.destroy,8,"Delete Pages","Delete Pages",1
+contactus.index,9,"List Contact Us","List Contact Us Record",1
+contactus.create,9,"Create Contact Us","Create Contact Us Record",1
+contactus.show,9,"View Contact Us","View Contact Us Record",1
+contactus.edit,9,"Edit Contact Us","Edit Contact Us Record",1
+contactus.destroy,9,"Delete Contact Us","Delete Contact Us Record",1
+notifications.index,10,"List Notification","List Notification",1
+notifications.create,10,"Create Notification","Create Notification",1
+notifications.show,10,"View Notification","View Notification",1
+notifications.edit,10,"Edit Notification","Edit Notification",1
+notifications.destroy,10,"Delete Notification","Delete Notification",1
+menus.index,11,"List Menu","List Menu",1
+menus.create,11,"Create Menu","Create Menu",1
+menus.show,11,"View Menu","View Menu",1
+menus.edit,11,"Edit Menu","Edit Menu",1
+menus.destroy,11,"Delete Menu","Delete Menu",1
+settings.index,12,Settings,"Index Settings",1
+settings.create,12,Settings,"Create Settings",1
+settings.show,12,Settings,"Show Settings",1
+settings.edit,12,Settings,"Edit Settings",1
+settings.destroy,12,Settings,"Destroy Settings",1
+email-templates.index,13,"Email Templates","Index Email Templates",0
+email-templates.create,13,"Email Templates","Create Email Templates",0
+email-templates.show,13,"Email Templates","Show Email Templates",0
+email-templates.edit,13,"Email Templates","Edit Email Templates",0
+email-templates.destroy,13,"Email Templates","Destroy Email Templates",0
+user-pets.index,14,"User Pets","Index User Pets",0
+user-pets.create,14,"User Pets","Create User Pets",0
+user-pets.show,14,"User Pets","Show User Pets",0
+user-pets.edit,14,"User Pets","Edit User Pets",0
+user-pets.destroy,14,"User Pets","Destroy User Pets",0
+user-addresses.index,15,"User Addresses","Index User Addresses",0
+user-addresses.create,15,"User Addresses","Create User Addresses",0
+user-addresses.show,15,"User Addresses","Show User Addresses",0
+user-addresses.edit,15,"User Addresses","Edit User Addresses",0
+user-addresses.destroy,15,"User Addresses","Destroy User Addresses",0
+petspaces.index,16,Petspaces,"Index Petspaces",0
+petspaces.create,16,Petspaces,"Create Petspaces",0
+petspaces.show,16,Petspaces,"Show Petspaces",0
+petspaces.edit,16,Petspaces,"Edit Petspaces",0
+petspaces.destroy,16,Petspaces,"Destroy Petspaces",0
+packages.index,17,Packages,"Index Packages",0
+packages.create,17,Packages,"Create Packages",0
+packages.show,17,Packages,"Show Packages",0
+packages.edit,17,Packages,"Edit Packages",0
+packages.destroy,17,Packages,"Destroy Packages",0
+package-sizes.index,18,"Package Sizes","Index Package Sizes",0
+package-sizes.create,18,"Package Sizes","Create Package Sizes",0
+package-sizes.show,18,"Package Sizes","Show Package Sizes",0
+package-sizes.edit,18,"Package Sizes","Edit Package Sizes",0
+package-sizes.destroy,18,"Package Sizes","Destroy Package Sizes",0
+package-types.index,19,"Package Types","Index Package Types",0
+package-types.create,19,"Package Types","Create Package Types",0
+package-types.show,19,"Package Types","Show Package Types",0
+package-types.edit,19,"Package Types","Edit Package Types",0
+package-types.destroy,19,"Package Types","Destroy Package Types",0
+package-addons.index,20,"Package Addons","Index Package Addons",0
+package-addons.create,20,"Package Addons","Create Package Addons",0
+package-addons.show,20,"Package Addons","Show Package Addons",0
+package-addons.edit,20,"Package Addons","Edit Package Addons",0
+package-addons.destroy,20,"Package Addons","Destroy Package Addons",0
+orders.index,21,Orders,"Index Orders",0
+orders.create,21,Orders,"Create Orders",0
+orders.show,21,Orders,"Show Orders",0
+orders.edit,21,Orders,"Edit Orders",0
+orders.destroy,21,Orders,"Destroy Orders",0
+categories.index,22,Categories,"Index Categories",0
+categories.create,22,Categories,"Create Categories",0
+categories.show,22,Categories,"Show Categories",0
+categories.edit,22,Categories,"Edit Categories",0
+categories.destroy,22,Categories,"Destroy Categories",0
+category-services.index,23,"Category Services","Index Category Services",0
+category-services.create,23,"Category Services","Create Category Services",0
+category-services.show,23,"Category Services","Show Category Services",0
+category-services.edit,23,"Category Services","Edit Category Services",0
+category-services.destroy,23,"Category Services","Destroy Category Services",0
+submenu-lists.index,24,"Submenu Lists","Index Submenu Lists",0
+submenu-lists.create,24,"Submenu Lists","Create Submenu Lists",0
+submenu-lists.show,24,"Submenu Lists","Show Submenu Lists",0
+submenu-lists.edit,24,"Submenu Lists","Edit Submenu Lists",0
+submenu-lists.destroy,24,"Submenu Lists","Destroy Submenu Lists",0
+submenu-services.index,27,"Submenu Services","Index Submenu Services",0
+submenu-services.create,27,"Submenu Services","Create Submenu Services",0
+submenu-services.show,27,"Submenu Services","Show Submenu Services",0
+submenu-services.edit,27,"Submenu Services","Edit Submenu Services",0
+submenu-services.destroy,27,"Submenu Services","Destroy Submenu Services",0
+petspace-technicians.index,28,"Petspace Technicians","Index Petspace Technicians",0
+petspace-technicians.create,28,"Petspace Technicians","Create Petspace Technicians",0
+petspace-technicians.show,28,"Petspace Technicians","Show Petspace Technicians",0
+petspace-technicians.edit,28,"Petspace Technicians","Edit Petspace Technicians",0
+petspace-technicians.destroy,28,"Petspace Technicians","Destroy Petspace Technicians",0
+order-services.index,29,"Order Services","Index Order Services",0
+order-services.create,29,"Order Services","Create Order Services",0
+order-services.show,29,"Order Services","Show Order Services",0
+order-services.edit,29,"Order Services","Edit Order Services",0
+order-services.destroy,29,"Order Services","Destroy Order Services",0
+order-service-addons.index,30,"Order Service Addons","Index Order Service Addons",0
+order-service-addons.create,30,"Order Service Addons","Create Order Service Addons",0
+order-service-addons.show,30,"Order Service Addons","Show Order Service Addons",0
+order-service-addons.edit,30,"Order Service Addons","Edit Order Service Addons",0
+order-service-addons.destroy,30,"Order Service Addons","Destroy Order Service Addons",0
+order-progresses.index,31,"Order Progresses","Index Order Progresses",0
+order-progresses.create,31,"Order Progresses","Create Order Progresses",0
+order-progresses.show,31,"Order Progresses","Show Order Progresses",0
+order-progresses.edit,31,"Order Progresses","Edit Order Progresses",0
+order-progresses.destroy,31,"Order Progresses","Destroy Order Progresses",0
+promo-codes.index,32,"Promo Codes","Index Promo Codes",0
+promo-codes.create,32,"Promo Codes","Create Promo Codes",0
+promo-codes.show,32,"Promo Codes","Show Promo Codes",0
+promo-codes.edit,32,"Promo Codes","Edit Promo Codes",0
+promo-codes.destroy,32,"Promo Codes","Destroy Promo Codes",0
+banner-managements.index,33,"Banner Managements","Index Banner Managements",0
+banner-managements.create,33,"Banner Managements","Create Banner Managements",0
+banner-managements.show,33,"Banner Managements","Show Banner Managements",0
+banner-managements.edit,33,"Banner Managements","Edit Banner Managements",0
+banner-managements.destroy,33,"Banner Managements","Destroy Banner Managements",0
+user-cards.index,34,"User Cards","Index User Cards",0
+user-cards.create,34,"User Cards","Create User Cards",0
+user-cards.show,34,"User Cards","Show User Cards",0
+user-cards.edit,34,"User Cards","Edit User Cards",0
+user-cards.destroy,34,"User Cards","Destroy User Cards",0
+transactions.index,35,Transactions,"Index Transactions",0
+transactions.create,35,Transactions,"Create Transactions",0
+transactions.show,35,Transactions,"Show Transactions",0
+transactions.edit,35,Transactions,"Edit Transactions",0
+transactions.destroy,35,Transactions,"Destroy Transactions",0
+promotions.index,36,Promotions,"Index Promotions",0
+promotions.create,36,Promotions,"Create Promotions",0
+promotions.show,36,Promotions,"Show Promotions",0
+promotions.edit,36,Promotions,"Edit Promotions",0
+promotions.destroy,36,Promotions,"Destroy Promotions",0
