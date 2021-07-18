@@ -168,6 +168,11 @@ class UserAddressAPIController extends AppBaseController
     {
         $userAddresses = $this->userAddressRepository->saveRecord($request);
 
+        /*adding pet to user profile*/
+            $user = \Auth::user();
+            $user->is_address_added = 1;
+            $user->save();
+
         return $this->sendResponse($userAddresses->toArray(), 'User Address saved successfully');
     }
 

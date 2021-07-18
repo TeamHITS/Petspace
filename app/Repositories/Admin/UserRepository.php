@@ -23,7 +23,10 @@ class UserRepository extends BaseRepository
         'name',
         'email',
         'password',
-        'remember_token'
+        'remember_token',
+        'is_profile_completed',
+        'is_address_added',
+        'is_pet_added'
     ];
 
     /**
@@ -135,7 +138,7 @@ class UserRepository extends BaseRepository
                 $this->detachRole($user->id, $roleToBeDeleted);
             }
         }
-
+        $data['is_profile_completed'] = 1;
         $user = $this->update($data, $user->id);
         return $user;
     }

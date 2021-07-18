@@ -415,6 +415,12 @@ class UserPetAPIController extends AppBaseController
             return $this->sendResponse($userPet->toArray(), 'UserPet updated successfully');
         }else{
             $userPets = $this->userPetRepository->saveRecord($request);
+
+            /*adding pet to user profile*/
+            $user = \Auth::user();
+            $user->is_pet_added = 1;
+            $user->save();
+
             return $this->sendResponse($userPets->toArray(), 'User Pet saved successfully');
         }
     }
