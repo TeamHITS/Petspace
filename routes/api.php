@@ -71,6 +71,11 @@ Route::post('v1/send-notification', 'NotificationAPIController@sendNotification'
 
 Route::middleware('auth:api')->group(function () {
     ## Token Required to below APIs
+
+    Route::get('/valid', function () {
+        return 1;
+    });
+
     Route::post('v1/logout', 'AuthAPIController@logout');
 
     Route::post('v1/change-password', 'AuthAPIController@changePassword');
