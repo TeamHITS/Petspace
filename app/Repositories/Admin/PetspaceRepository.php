@@ -80,6 +80,12 @@ class PetspaceRepository extends BaseRepository
             $input['is_delivery_fee'] = 0;
         }
 
+        if (isset($input['is_temporary_closed'])) {
+            $input['is_temporary_closed'] = 1;
+        }else{
+            $input['is_temporary_closed'] = 0;
+        }
+
         $petspace = $this->update($input, $petspace->id);
         return $petspace;
     }

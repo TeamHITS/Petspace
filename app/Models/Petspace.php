@@ -47,6 +47,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          description="is_approved",
  *          type="boolean"
  *      ),
+ *     @SWG\Property(
+ *          property="is_temporary_closed",
+ *          description="is_temporary_closed",
+ *          type="boolean"
+ *      ),
  *      @SWG\Property(
  *          property="is_pick_drop_available",
  *          description="is_pick_drop_available",
@@ -157,6 +162,7 @@ class Petspace extends Model
         'city',
         'google_rating',
         'is_approved',
+        'is_temporary_closed',
         'rating'
     ];
 
@@ -186,6 +192,7 @@ class Petspace extends Model
         'area'                   => 'string',
         'city'                   => 'string',
         'is_approved'            => 'boolean',
+        'is_temporary_closed'    => 'boolean',
 
     ];
 
@@ -238,6 +245,7 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes'
+        'is_temporary_closed'    => 'sometimes'
     ];
 
     /**
@@ -264,6 +272,7 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes'
+        'is_temporary_closed'    => 'sometimes'
     ];
 
     /**
@@ -290,6 +299,7 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes'
+        'is_temporary_closed'    => 'sometimes'
     ];
 
     /**
@@ -316,6 +326,7 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes'
+        'is_temporary_closed'    => 'sometimes'
     ];
 
     public function category()

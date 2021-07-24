@@ -52,6 +52,12 @@
     {!! Form::label('image', 'Image:') !!}
     {!! Form::file('image') !!}
 </div>
+
+<div class="form-group col-sm-6">
+     {!! Form::label('is_temporary_closed', 'Close Temporary:') !!}
+    <input name="is_temporary_closed" data-toggle="toggle" type="checkbox"
+           id="is_temporary_closed"/>
+</div>
 <div class="clearfix"></div>
 
 <!-- Submit Field -->
