@@ -207,7 +207,7 @@ class PetspaceTechnicianController extends AppBaseController
         $user           = $this->petspaceTechnicianRepository->findWhere(["user_id" => $userId])->first();
         $currentDate = date('Y-m-d');
         $futureDate = date('Y-m-d',(strtotime($currentDate) + (3600*24)));
-
+	 //echo $currentDate .'-------------'. $futureDate; die;
         $activeOrders   = $this->orderRepository->whereRaw("technician_id = ".$user->id." AND status = ". 20 . " AND DATE(date_time) BETWEEN  '" . $currentDate  ."' AND '". $futureDate."'" )->get();
         $scheduleOrders   = $this->orderRepository->whereRaw("technician_id = ".$user->id." AND status = ". 10 . " AND DATE(date_time) BETWEEN  '" . $currentDate ."' AND '". $futureDate."'")->get();
 

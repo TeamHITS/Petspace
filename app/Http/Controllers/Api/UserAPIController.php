@@ -282,7 +282,6 @@ class UserAPIController extends AppBaseController
             }
             return $this->sendResponse($this->userRepository->find($userId)->details->toArray(), 'User updated successfully');
         }
-
         $user->is_profile_completed = 1;
         $user->save();
         return $this->sendErrorWithData(['Something Went Wrong!']);
