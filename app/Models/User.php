@@ -97,6 +97,9 @@ class User extends Authenticatable implements JWTSubject
         'status',
         'status_text',
         'details',
+        'is_profile_completed', 
+        'is_address_added', 
+        'is_pet_added',
         'created_at',
     ];
 

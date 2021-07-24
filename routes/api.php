@@ -68,13 +68,14 @@ Route::post('v1/refresh', 'AuthAPIController@refresh');
 
 Route::post('v1/send-notification', 'NotificationAPIController@sendNotification');
 
+Route::get('v1/valid', function () {
+        return response()->json([ 'valid' => auth()->check() ]);
+});
 
 Route::middleware('auth:api')->group(function () {
     ## Token Required to below APIs
 
-    Route::get('/valid', function () {
-        return 1;
-    });
+   
 
     Route::post('v1/logout', 'AuthAPIController@logout');
 
