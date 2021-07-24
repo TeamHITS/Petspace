@@ -54,9 +54,9 @@
 </div>
 
 <div class="form-group col-sm-6">
-     {!! Form::label('is_temporary_closed', 'Close Temporary:') !!}
+     {!! Form::label('is_temporary_closed', 'Temporarily Closed:') !!}
     <input name="is_temporary_closed" data-toggle="toggle" type="checkbox"
-           id="is_temporary_closed"/>
+           id="is_temporary_closed" {{($petspace['is_temporary_closed']) ? 'checked="checked"':''}}/>
 </div>
 <div class="clearfix"></div>
 

@@ -244,7 +244,7 @@ class Petspace extends Model
         'phone'                  => 'sometimes',
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
-        'is_approved'            => 'sometimes'
+        'is_approved'            => 'sometimes',
         'is_temporary_closed'    => 'sometimes'
     ];
 
@@ -271,7 +271,7 @@ class Petspace extends Model
         'city'                   => 'sometimes',
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
-        'is_approved'            => 'sometimes'
+        'is_approved'            => 'sometimes',
         'is_temporary_closed'    => 'sometimes'
     ];
 
@@ -298,7 +298,7 @@ class Petspace extends Model
         'city'                   => 'required',
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
-        'is_approved'            => 'sometimes'
+        'is_approved'            => 'sometimes',
         'is_temporary_closed'    => 'sometimes'
     ];
 
@@ -325,7 +325,7 @@ class Petspace extends Model
         'city'                   => 'sometimes',
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
-        'is_approved'            => 'sometimes'
+        'is_approved'            => 'sometimes',
         'is_temporary_closed'    => 'sometimes'
     ];
 

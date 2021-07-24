@@ -151,7 +151,6 @@ class PetspaceController extends AppBaseController
     public function edit($id)
     {
         $petspace = $this->petspaceRepository->findWithoutFail($id);
-
         if (empty($petspace)) {
             Flash::error($this->BreadCrumbName . ' not found');
             return redirect(route('admin.petspaces.index'));

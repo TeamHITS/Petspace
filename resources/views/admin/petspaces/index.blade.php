@@ -8,7 +8,7 @@
 @endsection
 
 @section('content')
-    <div class="content" style="min-height: 0px !important;">
+   <!--  <div class="content" style="min-height: 0px !important;">
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="content">
         <div class="clearfix"></div>
