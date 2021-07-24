@@ -72,6 +72,21 @@ Route::get('v1/valid', function () {
         return response()->json([ 'valid' => auth()->check() ]);
 });
 
+Route::get('v1/restricted', [
+   'before' => 'jwt-auth',
+   function () {
+       $token = JWTAuth::getToken();
+       $user = JWTAuth::toUser($token);
+
+       return Response::json([
+           'data' => [
+               'email' => $user->email,
+               'registered_at' => $user->created_at->toDateTimeString()
+           ]
+       ]);
+   }
+]);
+
 Route::middleware('auth:api')->group(function () {
     ## Token Required to below APIs
 
