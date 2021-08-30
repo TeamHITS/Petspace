@@ -23,7 +23,7 @@
 								<p>These can be instructions to publish changes</p>
 							</div>
 							<div class="button-box">
-								<a id="publish-btn" style="cursor: pointer" class="gen-btn"><i class="fas fa-upload"></i>Publish changes</a>
+								<a id="publish-btn" style="cursor: pointer" class="gen-btn"><img src="{{ url('/public/assets/images/icon-upload.png') }}" class="img-fluid">Publish changes</a>
 							</div>
 						</div>
 

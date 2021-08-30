@@ -123,7 +123,9 @@
                                         </div>--}}
                                     @endforeach
                                     <div class="time-box">
-                                        <p><i class="far fa-clock"></i>Total Service Duration: {{$total_duration}}mins
+                                        <p><img
+                                                    src="{{ url('/public/assets/images/icon-clock.png') }}"
+                                                    class="img-fluid">Total Service Duration: {{$total_duration}}mins
                                         </p>
                                     </div>
                                     <div class="amount-box">
@@ -165,7 +167,9 @@
                                     <div class="selected-technician">
                                         <div class="technician-item {{ (isset($order['technician']))?"":"not"}}">
                                             <div class="img">
-                                                <i class="fas fa-user"></i>
+                                                <img
+                                                        src="{{ url('/public/assets/images/icon-user.png') }}"
+                                                        class="img-fluid">
                                             </div>
                                             @if($order['technician'])
                                                 <p>{{$order['technician']['user']['name']}}</p>
@@ -182,7 +186,9 @@
                                     @if($order['progress_status'] == NULL)
                                         <div class="service-progress-info">
                                             <div class="img">
-                                                <i class="far fa-calendar"></i>
+                                                <img
+                                                        src="{{ url('/public/assets/images/icon-calender-green.png') }}"
+                                                        class="img-fluid">
                                             </div>
                                             <div class="desc">
                                                 <p class="title">Service is scheduled for</p>
@@ -201,7 +207,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                            @if(isset($order['progress'][1]))
+                                        @if(isset($order['progress'][1]))
                                             <div class="service-progress-info">
                                                 <div class="img">
                                                     <i class="fas fa-check"></i>
@@ -212,7 +218,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                            @if(isset($order['progress'][2]))
+                                        @if(isset($order['progress'][2]))
                                             <div class="service-progress-info">
                                                 <div class="img">
                                                     <i class="fas fa-check"></i>
@@ -223,7 +229,7 @@
                                                 </div>
                                             </div>
                                         @endif
-                                            @if(isset($order['progress'][3]))
+                                        @if(isset($order['progress'][3]))
                                             <div class="service-progress-info">
                                                 <div class="img">
                                                     <i class="fas fa-check"></i>

@@ -85,7 +85,7 @@
                                         </div>
                                     @endforeach
                                     <div class="time-box">
-                                        <p><i class="far fa-clock"></i>Total Service Duration: {{$total_duration}}mins
+                                        <p><img src="{{ url('/public/assets/images/icon-clock.png') }}" class="img-fluid">Total Service Duration: {{$total_duration}}mins
                                         </p>
                                     </div>
                                     <div class="amount-box">
@@ -122,14 +122,13 @@
                                         <p class="title">Technician Assigned</p>
                                         @if($order['status'] != \App\Models\Order::COMPLETE )
                                         <a href="#!" class="assign-tech" id="assign-tech"
-                                           data-id="{{$order['id']}}"><i
-                                                    class="fas fa-pencil-alt"></i></a>
+                                           data-id="{{$order['id']}}"><img src="{{ url('/public/assets/images/icon-pencil-green.png') }}" class="img-fluid"></a>
                                             @endif
                                     </div>
                                     <div class="selected-technician">
                                         <div class="technician-item {{ (isset($order['technician']))?"":"not"}}">
                                             <div class="img">
-                                                <i class="fas fa-user"></i>
+                                                <img src="{{ url('/public/assets/images/icon-user.png') }}" class="img-fluid">
                                             </div>
                                             @if($order['technician'])
                                                 <p>{{$order['technician']['user']['name']}}</p>
@@ -146,7 +145,7 @@
                                     @if($order['progress_status'] == NULL)
                                     <div class="service-progress-info">
                                         <div class="img">
-                                            <i class="far fa-calendar"></i>
+                                            <img src="{{ url('/public/assets/images/icon-calender-green.png') }}" class="img-fluid">
                                         </div>
                                         <div class="desc">
                                             <p class="title">Service is scheduled for</p>

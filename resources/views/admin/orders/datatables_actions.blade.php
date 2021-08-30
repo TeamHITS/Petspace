@@ -6,16 +6,32 @@
     </a>
     @endability
     @ability('super-admin' ,'orders.edit')
-    <a href="{{ route('admin.orders.edit', $id) }}" class='btn btn-default btn-xs'>
+
+    @php
+        $hlink = route('admin.orders.edit', $id);
+        if($status == 30 || $status == 40){
+             $hlink =  "javascript:void(0)";
+         } 
+    @endphp
+    <a href="{{ $hlink }}" @if($status == 30 || $status == 40) disabled="disabled" @endif class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     @endability
     @ability('super-admin' ,'orders.destroy')
-    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [
+    @php
+        $attributes = [
         'type' => 'submit',
         'class' => 'btn btn-danger btn-xs',
         'onclick' => "confirmDelete($(this).parents('form')[0]); return false;"
-    ]) !!}
+    ];
+
+        if($status == 30 || $status == 40){
+            $attributes['disabled'] = 'disabled'; 
+            $attributes['onclick'] = 'javascript:void(0)'; 
+         }
+
+    @endphp
+    {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', $attributes) !!}
     @endability
 </div>
 {!! Form::close() !!}

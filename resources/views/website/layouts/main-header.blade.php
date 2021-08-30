@@ -7,10 +7,13 @@
             <div class="col-lg-8 col-md-8 col-9">
                 <ul class="auth-top-btn">
                     <ul class="auth-top-btn">
-                        <li><a href="#!"><i class="far fa-bell"></i></a></li>
+                        <li><a id="notification-dropdown" href="#!"><img
+                                        src="{{ url('/public/assets/images/bell-icon.png') }}" class="img-fluid"></a>
+                        </li>
                         <li>
                             <div class="dropdown user-action-dropdown">
-                                <a class="user-btn" type="button" id="userAction" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="user-btn" type="button" id="userAction" data-bs-toggle="dropdown"
+                                   aria-expanded="false">
                                     K
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userAction">

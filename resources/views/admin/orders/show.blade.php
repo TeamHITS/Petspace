@@ -22,7 +22,14 @@
                     </div>
                     <div class='btn-group'>
                         @ability('super-admin' ,'orders.edit')
-                        <a href="{{ route('admin.orders.edit', $order->id) }}" class='btn btn-default'>
+
+                        @php
+                            $hlink = route('admin.orders.edit', $order->id);
+                            if($order->status == 30 || $order->status == 40){
+                                 $hlink =  "javascript:void(0)";
+                             } 
+                        @endphp
+                        <a @if($order->status == 30 || $order->status == 40) disabled="disabled" @endif href="{{ $hlink }}" class='btn btn-default'>
                             <i class="glyphicon glyphicon-edit"></i> Edit
                         </a>
                         @endability
@@ -35,6 +42,11 @@
                             'onclick' => "confirmDelete($(this).parents('form')[0]); return false;"
                         ]) !!}
                         @endability
+                    </div>
+                     <div class='btn-group'>
+                        <a href="javascript:void(0)" id="confirm_payment" data-id="{{$order->id}}" class='btn btn-default'>
+                            <i class="glyphicon glyphicon-ok"></i> Confirm Payment
+                        </a>
                     </div>
                     {!! Form::close() !!}
                 </div>

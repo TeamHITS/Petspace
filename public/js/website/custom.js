@@ -74,8 +74,56 @@ $('.select2').each(function () {
     });
 });
 
+
+ $('#nonrestricted, #restricted').on('change', function() {
+    console.log(this.value);
+    if(this.value != ""){
+        var url = $('#assign_url').val()+this.value;
+        ajaxGet(url, null, (status, data) => {
+            if (status) {
+                console.log(data);
+               
+            } else {
+                alert( "Not Found" );
+            }
+        });
+
+    }
+
+});
+
+ function show_tech_fee($this) {
+     if($this.value != ""){
+        var url = $('#assign_url').val()+$this.value;
+        ajaxGet(url, null, (status, data) => {
+            if (status) {
+                $('#fees').removeClass('d-none');
+                $('#minOrderFee').html('AED ' +data.data.min_order);
+                $('#minDeliveryFee').html('AED ' +data.data.delivery_fee);
+               
+            } else {
+                alert( "Not Found" );
+            }
+        });
+
+    }
+ }
+
 function goBack() {
     window.history.back(function () {
         location.reload();
     });
+}
+
+
+function showAllTech($this) {
+
+    //console.log('coming in checkbox',$this.checked);
+      if($this.checked) {
+            $('#nonrestricted').removeClass('d-none');
+            $('#restricted').addClass('d-none');
+        } else {
+            $('#restricted').removeClass('d-none');        
+            $('#nonrestricted').addClass('d-none');
+        }
 }

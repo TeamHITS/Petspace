@@ -163,6 +163,7 @@ class Petspace extends Model
         'google_rating',
         'is_approved',
         'is_temporary_closed',
+        'open_text',
         'rating'
     ];
 
@@ -193,6 +194,7 @@ class Petspace extends Model
         'city'                   => 'string',
         'is_approved'            => 'boolean',
         'is_temporary_closed'    => 'boolean',
+        'open_text'              => 'string',
 
     ];
 
@@ -245,7 +247,8 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes',
-        'is_temporary_closed'    => 'sometimes'
+        'is_temporary_closed'    => 'sometimes',
+        'open_text'              => 'sometimes',
     ];
 
     /**
@@ -272,7 +275,8 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes',
-        'is_temporary_closed'    => 'sometimes'
+        'is_temporary_closed'    => 'sometimes',
+        'open_text'              => 'sometimes'
     ];
 
     /**
@@ -299,7 +303,8 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes',
-        'is_temporary_closed'    => 'sometimes'
+        'is_temporary_closed'    => 'sometimes',
+        'open_text'              => 'sometimes',
     ];
 
     /**
@@ -326,7 +331,8 @@ class Petspace extends Model
         'rating'                 => 'sometimes',
         'google_rating'          => 'sometimes',
         'is_approved'            => 'sometimes',
-        'is_temporary_closed'    => 'sometimes'
+        'is_temporary_closed'    => 'sometimes',
+        'open_text'              => 'sometimes',
     ];
 
     public function category()

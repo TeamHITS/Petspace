@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
+use App\Models\OrderHistory;
 
 /**
  * Class OrderController
@@ -191,27 +192,39 @@ class OrderAPIController extends AppBaseController
             "note"            => $input['note']
         );
         $orders = $this->orderRepository->saveRecord($order);
-        foreach ($input['services'] as $service) {
 
-            $service_data = array(
-                "order_id"   => $orders->id,
-                "pet_id"     => $service['pet_id'],
-                "service_id" => $service['service_id'],
-                "duration"   => $service['service_duration'],
-                "price"      => $service['price']
+        $OrderHistory = new OrderHistory;
 
-            );
+        $OrderHistory->order_id = $orders->id;
 
-            $orderService = $this->orderServiceRepository->saveRecord($service_data);
-            if (isset($service['addons'])) {
-                foreach ($service['addons'] as $addon) {
-                    $addon_data         = array(
-                        "order_service_id"   => $orderService->id,
-                        "submenu_service_id" => $addon['submenu_service_id'],
-                        "duration"           => $addon['service_duration'],
-                        "price"              => $addon['price']
-                    );
-                    $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);
+        $OrderHistory->total = $orders->total;
+
+        $OrderHistory->save();
+        if(isset($input['services'])){
+            foreach ($input['services'] as $service) {
+    
+                $service_data = array(
+                    "order_id"   => $orders->id,
+                    "pet_id"     => $service['pet_id'],
+                    "service_id" => $service['service_id'],
+                    "duration"   => $service['service_duration'],
+                    "price"      => $service['price']
+    
+                );
+    
+                $orderService = $this->orderServiceRepository->saveRecord($service_data);
+    
+                
+                if (isset($service['addons'])) {
+                    foreach ($service['addons'] as $addon) {
+                        $addon_data         = array(
+                            "order_service_id"   => $orderService->id,
+                            "submenu_service_id" => $addon['submenu_service_id'],
+                            "duration"           => $addon['service_duration'],
+                            "price"              => $addon['price']
+                        );
+                        $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);
+                    }
                 }
             }
         }

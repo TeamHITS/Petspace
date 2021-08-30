@@ -11,7 +11,8 @@ use App\Repositories\Admin\CategoryServiceRepository;
 use App\Http\Controllers\AppBaseController;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Response;
-
+use App\Criteria\CategoryServiceCriteria;
+use App\Models\UserPet;
 class CategoryServiceController extends AppBaseController
 {
     /** ModelName */
@@ -165,5 +166,21 @@ class CategoryServiceController extends AppBaseController
 
         Flash::success($this->BreadCrumbName . ' deleted successfully.');
         return redirect(route('admin.category-services.index'))->with(['title' => $this->BreadCrumbName]);
+    }
+
+    public function getServicesWithAddon($user_id,$id)
+    {
+        $categoryService = $this->categoryServiceRepository->resetCriteria()
+            ->pushCriteria(new CategoryServiceCriteria(
+                [
+                    'with_submenu' => true,
+                    'category_id' => $id
+                ]
+            ))->get();
+
+            $userpets = UserPet::where('user_id',$user_id)->get();
+            //dd($userpets);
+        $view = view('admin.orders.modalbody', compact('categoryService','userpets'))->render();
+        return response()->json(['code' => 1, 'html'=>$view]);
     }
 }

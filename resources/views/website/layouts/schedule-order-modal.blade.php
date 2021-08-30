@@ -161,7 +161,8 @@
                                         </div>--}}
                                     @endforeach
                                     <div class="time-box">
-                                        <p><i class="far fa-clock"></i>Total Service Duration: {{$total_duration}}mins
+                                        <p><img
+                                                    src="{{ url('/public/assets/images/icon-clock.png') }}" class="img-fluid">Total Service Duration: {{$total_duration}}mins
                                         </p>
                                     </div>
                                     <div class="amount-box">
@@ -220,7 +221,8 @@
                                     @if($order['progress_status'] == NULL)
                                         <div class="service-progress-info">
                                             <div class="img">
-                                                <i class="far fa-calendar"></i>
+                                                <img
+                                                        src="{{ url('/public/assets/images/icon-calender-green.png') }}" class="img-fluid">
                                             </div>
                                             <div class="desc">
                                                 <p class="title">Service is scheduled for</p>

@@ -13,15 +13,15 @@
 Route::get('/get-google-reviews', 'Web\PetspaceController@getGoogleReviews');
 
 Route::get('/', function () {
-    if (!\Auth::check()) {
-        return redirect('/login');
-    }
-    return redirect('/dashboard');
-})->middleware('userRole:vendor');
+    //if (!\Auth::check()) {
+       return view('welcome');
+    //}
+    //return redirect('/dashboard');
+});//->middleware('userRole:vendor');//->middleware('userRole:vendor');
 
 Route::get('/login', function () {
     if (\Auth::check()) {
-        return redirect('/');
+        return redirect('/dashboard');
     }
     return view('website.login');
 });
@@ -107,6 +107,7 @@ Route::post('/verify-code', 'Web\UserController@verifyCode');
 Route::get('reset-password', 'Web\UserController@resetPassword');
 Route::post('reset-password', 'Web\UserController@updatePassword');
 
+Route::get('/get-technician-min-order-fee/{id}', 'Web\PetspaceController@getTechnicianMinOrderFee');
 
 /************ TECHNICIAN END ROUTES ************/
 

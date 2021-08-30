@@ -21,6 +21,11 @@
     <!-- SWIPER SLIDER -->
     <link rel="stylesheet" href="{{ url('/public/assets/css/swiper-bundle.min.css') }}" />
 
+    <!-- DATE TIME PICKER -->
+    <link rel="stylesheet" type="text/css" href="{{ url('/public/assets/tui-picker/css/tui-date-picker.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/public/assets/tui-picker/css/tui-time-picker.css') }}" />
+    <!-- DATE TIME PICKER -->
+
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     @stack('css')
 </head>
@@ -28,6 +33,10 @@
 <body>
 
 @yield('content')
+<!-- DATE TIME PICKER -->
+<script src="{{ url('/public/assets/tui-picker/js/tui-time-picker.min.js') }}"></script>
+<script src="{{ url('/public/assets/tui-picker/js/tui-date-picker.min.js') }}"></script>
+
 
 <!-- SWIPER SLIDER -->
 <script src="{{ url('/public/assets/js/swiper-bundle.min.js') }}"></script>
@@ -37,6 +46,8 @@
 <script src="{{ url('/public/assets/js/stellarnav.min.js') }}"></script>
 <script src="{{ url('/public/assets/js/custom.js') }}"></script>
 <script src="{{ asset('public/js/website/custom.js') }}"></script>
+
+
 
 
 {{--<script--}}
@@ -152,6 +163,7 @@
             }
         });
         //Home Page end
+
     });
 
 

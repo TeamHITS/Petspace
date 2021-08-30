@@ -15,8 +15,9 @@
             </li>
             <li>
                 <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" role="button" id="notification-dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="far fa-bell"></i>
+                    <a class="dropdown-toggle" href="#" role="button" id="notification-dropdown"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{ url('/public/assets/images/bell-icon.png') }}" class="img-fluid">
                     </a>
 
                     <ul class="dropdown-menu notification-dropdown" aria-labelledby="notification-dropdown">

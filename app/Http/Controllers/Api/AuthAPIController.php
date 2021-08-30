@@ -110,7 +110,7 @@ class AuthAPIController extends AppBaseController
 
         try {
 
-            $request->merge(["user_status"=>1]);
+            $request->merge(["user_status" => 1]);
             $user = $this->userRepository->saveRecord($request);
             $this->userDetailRepository->saveRecord($user->id, $request);
 
@@ -188,8 +188,8 @@ class AuthAPIController extends AppBaseController
     public function login(LoginAPIRequest $request)
     {
         $credentials = request(['email', 'password']);
-        $user = $this->userRepository->getUserByEmail($request->email);
-        if($user->status == 0){
+        $user        = $this->userRepository->getUserByEmail($request->email);
+        if ($user->status == 0) {
             return $this->sendErrorWithData([
                 "loginFailed" => "Inactive User"
             ], 403, []);
@@ -262,7 +262,7 @@ class AuthAPIController extends AppBaseController
                 $userData['name']     = $input['username'] ?? "user_" . $input['client_id'];
                 $userData['email']    = $input['email'] ?? $input['client_id'] . '_' . $input['platform'] . '@' . config('app.name') . '.com';
                 $userData['password'] = bcrypt(substr(str_shuffle(MD5(microtime())), 0, 12));
-                $userData['status'] = 1;
+                $userData['status']   = 1;
                 $user                 = $this->userRepository->create($userData);
 
                 $userDetails['user_id']    = $user->id;
@@ -501,8 +501,16 @@ class AuthAPIController extends AppBaseController
         $user = $this->userRepository->getUserByEmail($request->email);
 
         if (!$user) {
-
             return $this->sendErrorWithData(["Email" => "Your email address was not found."], 403);
+        }
+
+        if (!$user->details->is_verified) {
+            return $this->sendErrorWithData(["Email" => "Code can not be sent on an unverified account"], 403);
+        }
+
+        $checkSocialLogin = DB::table('user_social_accounts')->where('user_id', $user->id)->first();
+        if ($checkSocialLogin) {
+            return $this->sendErrorWithData(["Email" => "Password can not be changed on social login"], 403);
         }
 
         $code = rand(1111, 9999);

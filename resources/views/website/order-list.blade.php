@@ -21,12 +21,12 @@
                             </div>
                             <div class="calender">
                                     <div class="date-range-box" id="reportrange">
-                                    <i class="fa fa-calendar"></i>
+                                        <img src="{{ url('/public/assets/images/icon-calender-grey.png') }}" class="img-fluid">
                                     <span>Today</span>
                                 </div>
                             </div>
                             <div class="filter">
-                                <button type="button" id="filter-side-toggle"><i class="fas fa-filter"></i>Filters</button>
+                                <button type="button" id="filter-side-toggle"><img src="{{ url('/public/assets/images/icon-filter.png') }}" class="img-fluid">Filters</button>
                             </div>
                             <div class="filter-list">
                                 {{--<ul>

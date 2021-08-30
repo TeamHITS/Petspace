@@ -17,6 +17,7 @@ class CheckAdminPermission
     public function handle($request, Closure $next)
     {
         $routeName = str_replace([$request->route()->action['prefix'] . '.', 'store', 'update'], ['', 'create', 'edit'], $request->route()->action['as']);
+
         $permissionName = ($routeName == "") ? "dashboard" : $routeName;
 
         if (\Auth::guest()) {

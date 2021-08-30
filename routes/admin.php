@@ -142,3 +142,14 @@ Route::resource('user-cards', 'UserCardController');
 Route::resource('transactions', 'TransactionController');
 
 Route::resource('promotions', 'PromotionController');
+
+/* by Waqas Hafeez @vicky92727*/
+
+/*route to edit order at admin*/
+
+Route::get('orders/edit/{id}', 'OrderController@edit');
+Route::post('remove_order_services_addon', 'OrderController@removeOrderServicesAddon');
+Route::get('get_order_services_addon/{user_id}/{id}', 'CategoryServiceController@getServicesWithAddon');
+Route::post('update_order_services_addon', 'OrderController@updateOrderServicesAddon');
+Route::post('make_payment', 'OrderController@makePayment');
+Route::post('confirm_payment', 'OrderController@confirmPayment');

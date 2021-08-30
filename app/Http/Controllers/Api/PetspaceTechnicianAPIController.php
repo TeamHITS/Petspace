@@ -11,7 +11,9 @@ use App\Http\Controllers\AppBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
-
+use Location\Coordinate;
+use Location\Polygon;
+use DB;
 /**
  * Class PetspaceTechnicianController
  * @package App\Http\Controllers\Api
@@ -345,5 +347,85 @@ class PetspaceTechnicianAPIController extends AppBaseController
         $this->petspaceTechnicianRepository->deleteRecord($id);
 
         return $this->sendResponse($id, 'Petspace Technician deleted successfully');
+    }
+
+    public function getRestrictedTechnicians(Request $request)
+    {
+        $latitude   = $request->latitude;
+        
+        $longitude  = $request->longitude;
+        $techniciansArray = [];
+
+        $technicians = DB::table('petspace_technicians')
+            ->select('petspace_technicians.id', 'users.name')
+            ->join('users', 'users.id', '=', 'petspace_technicians.user_id')
+            ->where('petspace_technicians.petspace_id', $request->petspace_id)
+            ->where('petspace_technicians.status', '!=', 20)
+            ->get();
+        
+        $techarray = $technicians->toArray();
+        
+        foreach($techarray as $tech) {
+            $techniciansArray[] = $tech;
+        }
+        //dd($techniciansArray);
+        $technicians = $this->getGeoFencing($latitude, $longitude, $techniciansArray);
+        $message = false;
+        if(!empty($technicians)) {
+            $message = true;
+        }
+        return $this->sendResponse($technicians, $message);
+    }
+
+    public function getGeoFencing($latitude, $longitude, $technicians)
+    {
+        $insidePoint = new Coordinate($latitude, $longitude);
+        $technicianids = [];
+        $min_order = 0;
+        $techArray = [];
+        foreach($technicians as $tech){
+
+           $techId =  $tech->id;
+
+           $areas = DB::table('technician_areas')
+                        ->where('technician_id', '=', $techId)
+                        ->get();
+
+           $geofence = new Polygon();
+
+           foreach ($areas as $key => $coord) {
+           $coordinates =  json_decode($coord->cordinates, true);
+               foreach($coordinates as $coordinate) {
+                    $lat = $coordinate[0];
+                    $lng = $coordinate[1];
+                $geofence->addPoint(new Coordinate($lat,$lng));
+
+               }
+                
+            if($geofence->contains($insidePoint)){
+                //if($coord->min_order > $min_order){
+                    //$min_order = $coord->min_order;
+
+                    $technicianids['id'] = $techId;
+                    $technicianids['name'] = $tech->name;
+                    $technicianids['min_order'] = $coord->min_order;
+                    $technicianids['delivery_fee'] = $coord->delivery_fee;
+                //}
+                    array_push($techArray,$technicianids);
+
+               }
+           }
+           // array_push($techArray,$technicianids);
+
+        }
+        $finalarray = [];
+        foreach ($techArray as $key => $value) {
+            if($value['min_order'] > $min_order) {
+                $min_order = $value['min_order'];
+                $finalarray = $techArray[$key];
+            }
+        }
+        return $finalarray;
+
     }
 }

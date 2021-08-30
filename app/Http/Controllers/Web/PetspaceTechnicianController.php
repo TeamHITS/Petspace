@@ -206,7 +206,7 @@ class PetspaceTechnicianController extends AppBaseController
         $userId         = \Auth::id();
         $user           = $this->petspaceTechnicianRepository->findWhere(["user_id" => $userId])->first();
         $currentDate = date('Y-m-d');
-        $futureDate = date('Y-m-d',(strtotime($currentDate) + (3600*24)));
+        $futureDate = date('Y-m-d',(strtotime($currentDate) + (3600*48)));
 	 //echo $currentDate .'-------------'. $futureDate; die;
         $activeOrders   = $this->orderRepository->whereRaw("technician_id = ".$user->id." AND status = ". 20 . " AND DATE(date_time) BETWEEN  '" . $currentDate  ."' AND '". $futureDate."'" )->get();
         $scheduleOrders   = $this->orderRepository->whereRaw("technician_id = ".$user->id." AND status = ". 10 . " AND DATE(date_time) BETWEEN  '" . $currentDate ."' AND '". $futureDate."'")->get();
@@ -258,14 +258,13 @@ class PetspaceTechnicianController extends AppBaseController
 
         $isActiveOrder = $this->orderRepository->findWhere(["technician_id" => $technician->id, "status" => Order::ACTIVE])->first();
 
-
+        //dd($order->toArray());
         if (isset($isActiveOrder) && $isActiveOrder->id != $id) {
             return view('technician.technician-single-order')->with([
                 'user'  => $user->toArray(),
                 'order' => $order->toArray()
             ]);
         }
-
         $progressData = array(
             "order_id"        => $id,
             "progress_status" => $progress,

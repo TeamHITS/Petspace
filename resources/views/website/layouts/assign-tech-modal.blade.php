@@ -7,10 +7,26 @@
         <form id="technician-form" action="{{URL::to('/assign-tech')}}" method="POST">
         <div class="modal-body">
             <div class="form-group">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" onchange="showAllTech(this)" id="show_all_tech">
+                  <label class="form-check-label" for="show_all_tech">View All Technicians</label>
+                </div>
                 <label>Technician Name</label>
-                <select class="gen-input" name="technician_id">
+                <select class="gen-input" name="technician_id" onchange="show_tech_fee(this)" id="restricted">
                     <option value="" {{(!isset($order['technician_id']))?"selected":""}} disabled>Select A Technician</option>
                     @foreach($technicians as $technician)
+                        @if($order['technician_id'] && $order['technician_id'] == $technician['id'])
+                            <option value="{{$technician['id']}}" selected >{{$technician['name']}}</option>
+                            @else
+                            <option value="{{$technician['id']}}">{{$technician['name']}}</option>
+                            @endif
+
+                    @endforeach
+                </select>
+
+                <select class="gen-input d-none" name="technician_id" onchange="show_tech_fee(this)" id="nonrestricted">
+                    <option value="" {{(!isset($order['technician_id']))?"selected":""}} disabled>Select A Technician</option>
+                    @foreach($alltechnicians as $technician)
                         @if($order['technician_id'] && $order['technician_id'] == $technician->id)
                             <option value="{{$technician->id}}" selected >{{$technician->name}}</option>
                             @else
@@ -20,6 +36,7 @@
                     @endforeach
                 </select>
                 <input type="text" name="order_id" hidden value="{{$order['id']}}">
+                <input type="text" id="assign_url" name="assign_url" hidden value="{{url('get-technician-min-order-fee').'/'}}">
             </div>
             <div class="form-group technician-schedule-wrap">
                 <div class="btn-group dropend">
@@ -40,6 +57,18 @@
         </div>
         <div class="modal-footer">
             @csrf
+            <div class="row d-none" id="fees">
+                <div class="col-md-6">
+                    <label style="font-size: 12px;">Minimum Order Fee : 
+                        <span id="minOrderFee"></span>
+                    </label>
+                </div>
+                <div class="col-md-6">
+                    <label style="font-size: 12px;">Minimum Delivery Fee : 
+                        <span id="minDeliveryFee"></span>
+                    </label>
+                </div>
+            </div>
             <button type="button" class="modal-cancel-btn" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="gen-btn">Save</button>
         </div>

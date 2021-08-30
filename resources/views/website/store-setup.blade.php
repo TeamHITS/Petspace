@@ -33,8 +33,7 @@
 							    	    <div class="upload-img-box">
 							    		    <input type="file" id="petspace-image" name="image" onchange="readURL(this);">
 							    		    <img id="uploaded_img" src="http://placehold.it/130" alt="image" />
-											<a id="edit-image-link" class="edit-btn"><i
-														class="fas fa-pencil-alt"></i></a>
+											<a id="edit-image-link" class="edit-btn"><img src="{{ url('/public/assets/images/icon-pencil-grey.png') }}" class="img-fluid"></a>
 											<a id="delete-image-link" class="delete-btn"><i class="fas fa-times"></i></a>
 							    	    </div>
 							    	</div>

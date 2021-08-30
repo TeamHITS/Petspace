@@ -37,6 +37,13 @@
     {!! Form::label('delivery_fee', 'Delivery Fee:') !!}
     {!! Form::text('delivery_fee', null, ['class' => 'form-control', 'placeholder'=>'Enter delivery_fee']) !!}
 </div>
+
+<!-- Open Text Field -->
+<div class="form-group col-sm-12">
+    {!! Form::label('open_text', 'Text / Discount:') !!}
+    {!! Form::text('open_text', null, ['class' => 'form-control', 'placeholder'=>'Enter Discount / Text']) !!}
+</div>
+
 {{--<!-- Is Delivery Fee Field -->--}}
 {{--<div class="form-group col-sm-6">--}}
     {{--{!! Form::label('is_delivery_fee', 'Is Delivery Fee:') !!}--}}

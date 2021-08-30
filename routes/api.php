@@ -87,6 +87,9 @@ Route::get('v1/restricted', [
    }
 ]);
 
+
+Route::resource('v1/banner-managements', 'BannerManagementAPIController');
+    
 Route::middleware('auth:api')->group(function () {
     ## Token Required to below APIs
 
@@ -138,7 +141,8 @@ Route::middleware('auth:api')->group(function () {
 
 });
 
-    Route::resource('v1/banner-managements', 'BannerManagementAPIController');
+    Route::post('v1/petspace-restrict-technicians', 'PetspaceTechnicianAPIController@getRestrictedTechnicians');
+
     Route::resource('v1/petspaces', 'PetspaceAPIController');
 
     Route::resource('v1/categories', 'CategoryAPIController');

@@ -1,0 +1,319 @@
+/* Other CSS starts here*/
+
+html{
+  font-size: 62.5%;
+}
+
+body{
+  overflow-x: hidden;
+  font-family: 'Manrope', sans-serif;
+  background-image: url(../images/background-img.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* OTHER CSS ends here*/
+
+/*Custom Navbar starts here*/
+
+.custom-navbar{
+  background: #fff;
+  padding: 10px 0;
+}
+
+.custom-navbar .navbar-brand img{
+  width: 35%;
+}
+
+.custom-navbar ul.socialIcons{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  margin: 0;
+  list-style: none;
+  padding-left: 0;
+}
+
+.custom-navbar ul.socialIcons li{
+  margin-left: 15px;
+}
+
+.custom-navbar ul.socialIcons li a{
+  font-size: 1.6rem;
+  color: #2D2D2D;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  background: #eeeeee;
+  display: grid;
+  place-items: center;
+  transition: all .3s ease;
+  text-decoration: none;
+}
+
+.custom-navbar ul.socialIcons li a:hover{
+  background: #2D2D2D;
+  color: #eeeeee;
+  transition: all .3s ease;
+}
+
+/*Custom Navbar ends here*/
+
+
+/* SECTIONS CSS starts here */
+
+.homeSection {
+  padding: 100px 0;
+}
+
+.homeSection .section1box.section1right{
+  text-align: right;
+}
+
+.homeSection .section1box.section1right > img.dog{
+  position: relative;
+  right: -15%;
+}
+
+.homeSection .section1box h1{
+  color: #2d2d2d;
+  font-size: 6.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  position: relative;
+  margin-top: 120px;
+}
+
+.homeSection .section1box h1 span{
+  position: relative;
+  display: inline-block;
+}
+
+.homeSection .section1box h1 span::after{
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  width: 179px;
+  height: 18px;
+  background: url(../images/bottom-line.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: right center;
+}
+
+.homeSection .section1box .section1innerbox p{
+  color: #2d2d2d;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin: 0;
+  text-align: left;
+}
+
+.homeSection .section1box .section1innerbox p span{
+  color: #E06548;
+  display: inline-block;
+}
+
+.homeSection .section1box .section1innerbox{
+  text-align: center;
+  margin-right: 25%;
+}
+
+.homeSection .section1box .section1innerbox h5{
+  color: #2d2d2d;
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.homeSection .section1box .section1innerbox a{
+  margin: 0 5px;
+  display: inline-block;
+  width: 34%;
+}
+
+.homeSection .section1box .subscribe-form{
+  display: flex;
+  justify-content: space-between;
+}
+
+.homeSection .section1box form{
+  margin: 20px 0;
+}
+
+.homeSection .section1box form input:not(input[type="submit"]){
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #000;
+  width: 100%;
+  background: #F4F5F7;
+  padding: 20px 15px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: none;
+}
+
+.homeSection .section1box form input[type="submit"]{
+  font-size: 1.4rem;
+  font-weight: 700;
+  background: #2D2D2D;
+  color: #fff;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: none;
+  padding: 0 15px;
+  transition: all .3s ease;
+}
+
+.homeSection .section1box form input[type="submit"]:hover{
+  background: #19B69B;
+  color: #fff;
+  transition: all .3s ease;
+}
+
+.homeSection .section1box form input:not(input[type="submit"])::placeholder{
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #474A57;
+}
+
+.homeSection .section1box img.phone{
+  display: none;
+}
+
+/* SECTIONS CSS ends here*/
+
+/*Scrollbar Designing starts here*/
+  /* width */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+    box-shadow: inset 0 0 5px grey;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #19b69b; 
+    border-radius: 0;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+    transition: all .3s linear;
+  }
+/*Scrollbar Desgining ends here*/
+
+/* RESPONSIVE CSS here*/
+
+/*Large Devices*/
+@media (min-width: 1920px) {
+    /* CSS */
+}
+
+/*  IPAD PRO (portrait) */
+@media only screen 
+and (min-device-width: 1024px) 
+and (max-device-width: 1366px) 
+and (orientation : portrait) {
+  .homeSection {
+    height: 100vh;
+  }
+  .homeSection .section1box.section1right > img.dog {
+    right: 0;
+  }
+  .homeSection .section1box h1 {
+    margin-top: 0;
+  }
+}
+
+/* IPAD PRO (landscape) */
+@media only screen 
+and (min-device-width: 1024px) 
+and (max-device-width: 1366px) 
+and (orientation : landscape) {
+
+}
+
+/* iPads (portrait) ----------- */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1023px)
+and (orientation : portrait) {
+  .homeSection .section1box h1 {
+    font-size: 5.4rem;
+    margin-top: 0;
+  }
+  .homeSection .section1box .section1innerbox p br{
+    display: none;
+  }
+  .homeSection .section1box.section1right > img.dog {
+    right: 0;
+  }
+  .homeSection {
+    height: 100vh;
+  }
+}
+
+/* iPads (landscape) ----------- */
+@media only screen 
+and (min-device-width : 768px) 
+and (max-device-width : 1023px) 
+and (orientation : landscape) {
+
+}
+
+  @media (min-width: 768px) and (max-width: 992px) {
+    .homeSection .section1box .section1innerbox{
+      margin-right: 0;
+    }
+  }
+
+/*Mobiles Devices*/
+  @media (min-width: 100px) and (max-width: 767px) {
+    body{
+      background-image: url(../images/mobile-bg.png);
+      background-position: left top;
+    }
+    .custom-navbar .navbar-brand img {
+      width: 100%;
+    }
+    .homeSection .section1box .section1innerbox p{
+      text-align: left;
+    }
+    .homeSection {
+       height: initial; 
+    }
+    .homeSection .section1box h1 {
+      margin-top: 0;
+      line-height: initial;
+      font-size: 5.4rem;
+    }
+    .homeSection .section1box img.dog{
+      display: none;
+    }
+    .homeSection .section1box img.phone{
+      width: 70%;
+      margin: 0 auto;
+      display: block;
+    }
+    .homeSection .section1box p br{
+      display: none;
+    }
+    .custom-navbar ul.socialIcons li a{
+      font-size: 1.4rem;
+      width: 24px;
+      height: 24px;
+    }
+    .homeSection .section1box .section1innerbox {
+      padding-right: 0;
+      margin-bottom: 50px;
+      margin-right: 0;
+    }
+  }

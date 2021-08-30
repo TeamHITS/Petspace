@@ -22,11 +22,13 @@ use App\Repositories\Admin\SubmenuListRepository;
 use App\Repositories\Admin\SubmenuServiceRepository;
 use App\Repositories\Admin\UserDetailRepository;
 use App\Repositories\Admin\UserRepository;
+use App\Repositories\Admin\UserAddressRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Response;
-
+use Location\Coordinate;
+use Location\Polygon;
 class PetspaceController extends AppBaseController
 {
     /** ModelName */
@@ -40,6 +42,7 @@ class PetspaceController extends AppBaseController
 
     private $userRepository;
     private $userDetailRepository;
+    private $userAddressRepository;
 
     private $petspaceTechnicianRepository;
     private $orderRepository;
@@ -48,10 +51,11 @@ class PetspaceController extends AppBaseController
     private $categoryServiceRepository;
     private $submenuServiceRepository;
 
-    public function __construct(PetspaceRepository $petspaceRepo, UserDetailRepository $userDetailRepo, UserRepository $userRepo, PetspaceTechnicianRepository $petspaceTechnicianRepo, OrderRepository $orderRepo, CategoryRepository $categoryRepo, CategoryServiceRepository $categoryServiceRepo, SubmenuListRepository $submenuListRepo, SubmenuServiceRepository $submenuServiceRepo)
+    public function __construct(PetspaceRepository $petspaceRepo, UserDetailRepository $userDetailRepo, UserRepository $userRepo, PetspaceTechnicianRepository $petspaceTechnicianRepo, OrderRepository $orderRepo, CategoryRepository $categoryRepo, CategoryServiceRepository $categoryServiceRepo, SubmenuListRepository $submenuListRepo, SubmenuServiceRepository $submenuServiceRepo, UserAddressRepository $userAddressRepository)
     {
         $this->petspaceRepository           = $petspaceRepo;
         $this->userRepository               = $userRepo;
+        $this->userAddressRepository        = $userAddressRepository;
         $this->userDetailRepository         = $userDetailRepo;
         $this->petspaceTechnicianRepository = $petspaceTechnicianRepo;
         $this->orderRepository              = $orderRepo;
@@ -283,18 +287,66 @@ class PetspaceController extends AppBaseController
     public function assignTechModal($id)
     {
         $order = $this->orderRepository->findWhere(["id" => $id])->first();
-//        $technicians = $this->petspaceTechnicianRepository->findWhere(["petspace_id" => $order->petspace_id]);
+        
+        $userAddress = $this->userAddressRepository->findWhere(["id" => $order->user_address_id])->first();
+        
+        $latitude   = $userAddress->latitude;
+        
+        $longitude  = $userAddress->longitude;
+        
+        $techniciansArray = [];
+
         $technicians = DB::table('petspace_technicians')
             ->select('petspace_technicians.id', 'users.name')
             ->join('users', 'users.id', '=', 'petspace_technicians.user_id')
             ->where('petspace_technicians.petspace_id', $order->petspace_id)
             ->where('petspace_technicians.status', '!=', 20)
             ->get();
+        
+        $techarray = $technicians->toArray();
+        
+        foreach($techarray as $tech) {
+            $techniciansArray[] = $tech;
+        }
+        $technicians = $this->getGeoFencing($latitude, $longitude, $techniciansArray);
 
-        $view = view('website.layouts.assign-tech-modal')->with(['order' => $order->toArray(), 'technicians' => $technicians->toArray()]);
+        $view = view('website.layouts.assign-tech-modal')->with(['order' => $order->toArray(), 'technicians' => $technicians, 'alltechnicians' => $techarray]);
         return $this->sendResponse($view->render(), '');
     }
 
+    public function getGeoFencing($latitude, $longitude, $technicians)
+    {
+        $insidePoint = new Coordinate($latitude, $longitude);
+        $technicianids = [];
+        foreach($technicians as $tech){
+
+           $techId =  $tech->id;
+
+           $areas = DB::table('technician_areas')
+                        ->where('technician_id', '=', $techId)
+                        ->get();
+
+           $geofence = new Polygon();
+           foreach ($areas as $key => $coordinates) {
+           $coordinates =  json_decode($coordinates->cordinates, true);
+               foreach($coordinates as $coordinate) {
+                    $lat = $coordinate[0];
+                    $lng = $coordinate[1];
+                $geofence->addPoint(new Coordinate($lat,$lng));
+
+               }
+                
+                if($geofence->contains($insidePoint)){
+                    $technicianids[$techId]['id'] = $techId;
+                    $technicianids[$techId]['name'] = $tech->name;
+
+               }
+           }
+
+        }
+        return $technicianids;
+
+    }
     public function activeOrderModal($id)
     {
         $order = $this->orderRepository->findWhere(["id" => $id])->first();
@@ -469,7 +521,7 @@ class PetspaceController extends AppBaseController
 
         $order       = $this->orderRepository->findWhere(["id" => $id])->first();
         $technicians = $this->petspaceTechnicianRepository->findWhere(["petspace_id" => $order->petspace_id]);
-//        dd($order->toArray());
+        //dd($technicians->toArray());
         return view('website.order-detail')->with(['order' => $order->toArray(), 'technicians' => $technicians->toArray(), 'title' => "Orders"]);
     }
 
@@ -568,4 +620,18 @@ class PetspaceController extends AppBaseController
 //        dd($result);
     }
 
+    public function getTechnicianMinOrderFee($id)
+    {
+        $areas = DB::select('select * from petspace.technician_areas where min_order=(select max(min_order) from petspace.technician_areas where technician_id = '.$id.')');
+
+        $technicianids = [];
+        if(count($areas) > 0) {
+            foreach ($areas as $key => $value) {
+                $technicianids['id'] = $id;
+                $technicianids['min_order'] = $value->min_order;
+                $technicianids['delivery_fee'] = $value->delivery_fee;
+            }
+        }
+        return response()->json(['status' => true, 'data' => $technicianids]);
+    }
 }

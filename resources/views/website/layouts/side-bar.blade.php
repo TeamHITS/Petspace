@@ -7,27 +7,36 @@
         </div>
         <ul class="sidebar-list">
             <li class="{{  request()->is('dashboard') ? 'active' : '' }}">
-                <a href="{{URL::to('/dashboard')}}"><i class="fas fa-home"></i><span>Dashboard</span></a>
+                <a href="{{URL::to('/dashboard')}}"><img src="{{ url('/public/assets/images/dashboard-icon-1.png') }}"
+                                                         class="img-fluid"><span>Dashboard</span></a>
             </li>
-            <li><a href="#!"><i class="far fa-calendar"></i><span>Calendar</span></a></li>
+            <li class="{{  request()->is('calendar') ? 'active' : '' }}"><a href="{{URL::to('/calendar')}}"><img
+                            src="{{ url('/public/assets/images/dashboard-icon-2.png') }}" class="img-fluid"><span>Calendar</span></a>
+            </li>
             <li class="{{  request()->is('orders') ? 'active' : '' }}">
-                <a href="{{URL::to('/orders')}}"><i class="fas fa-truck"></i><span>Orders</span></a>
+                <a href="{{URL::to('/orders')}}"><img src="{{ url('/public/assets/images/dashboard-icon-3.png') }}"
+                                                      class="img-fluid"><span>Orders</span></a>
             </li>
             <li class="{{  request()->is('service-menu') ? 'active' : '' }}">
-                <a href="{{URL::to('/service-menu')}}"><i class="far fa-file-alt"></i><span>Service Menu</span></a>
+                <a href="{{URL::to('/service-menu')}}"><img
+                            src="{{ url('/public/assets/images/dashboard-icon-4.png') }}" class="img-fluid"><span>Service Menu</span></a>
             </li>
 
             <li class="{{  request()->is('tech-list') ? 'active' : '' }}">
-                <a href="{{URL::to('/tech-list')}}"><i class="fas fa-user"></i><span>Technicians</span></a>
+                <a href="{{URL::to('/tech-list')}}"><img src="{{ url('/public/assets/images/dashboard-icon-5.png') }}"
+                                                         class="img-fluid"><span>Technicians</span></a>
             </li>
         </ul>
     </div>
     <div class="sidebar-bottom">
         <ul class="sidebar-bottom-list">
             <li class="{{  request()->is('store-setting') ? 'active' : '' }}">
-                <a href="{{URL::to('/store-setting')}}"><i class="fas fa-cog"></i><span>Store Settings</span></a>
+                <a href="{{URL::to('/store-setting')}}"><img
+                            src="{{ url('/public/assets/images/dashboard-icon-6.png') }}" class="img-fluid"><span>Store Settings</span></a>
             </li>
-            <li><a href="#!" data-bs-toggle="modal" data-bs-target="#contactPetspace"><i class="far fa-envelope"></i><span>Contact Petspace</span></a></li>
+            <li><a href="#!" data-bs-toggle="modal" data-bs-target="#contactPetspace"><img
+                            src="{{ url('/public/assets/images/dashboard-icon-7.png') }}" class="img-fluid"><span>Contact Petspace</span></a>
+            </li>
         </ul>
     </div>
 </div>
@@ -45,7 +54,7 @@
                             <label for="">Email</label>
                             <input type="email" class="gen-input"
                                    disabled
-                                   value="woof@petspace.app" >
+                                   value="woof@petspace.app">
                         </div>
                     </div>
                     <div class="col-12">

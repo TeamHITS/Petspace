@@ -27,7 +27,8 @@
 											<div class="slider-card">
 												<div class="slider-card-top">
 													<p class="order-no">Order #{{$activeOrder['id']}}</p>
-													<a href="#!" class="edit btn-active-order" data-id="{{$activeOrder['id']}}"><i class="far fa-edit"></i></a>
+													<a href="#!" class="edit btn-active-order" data-id="{{$activeOrder['id']}}"><img
+																src="{{ url('/public/assets/images/icon-edit.png') }}" class="img-fluid"></a>
 
 												</div>
 												<div class="order-info">
@@ -229,7 +230,8 @@
 											<div class="slider-card">
 												<div class="slider-card-top">
 													<p class="order-no">Order #{{$scheduleOrder['id']}}</p>
-													<a href="#!" class="edit btn-schedule-order" data-id="{{$scheduleOrder['id']}}"><i class="far fa-edit"></i></a>
+													<a href="#!" class="edit btn-schedule-order" data-id="{{$scheduleOrder['id']}}"><img
+																src="{{ url('/public/assets/images/icon-edit.png') }}" class="img-fluid"></a>
 												</div>
 												<div class="order-info">
 													<div class="order-info-detail-wrap">

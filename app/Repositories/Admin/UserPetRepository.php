@@ -56,8 +56,12 @@ class UserPetRepository extends BaseRepository
             $file           = $request->file('image');
             $input['image'] = Storage::putFile('pets', $file);
         }
-
         $userPet = $this->create($input);
+
+        $user = \Auth::user();
+        $user->is_pet_added = 1;
+        $user->save();
+
         return $userPet;
     }
 
@@ -73,7 +77,13 @@ class UserPetRepository extends BaseRepository
             $file           = $request->file('image');
             $input['image'] = Storage::putFile('pets', $file);
         }
+        
         $userPet = $this->update($input, $userPet->id);
+
+        $user = \Auth::user();
+        $user->is_pet_added = 1;
+        $user->save();
+        
         return $userPet;
     }
 
