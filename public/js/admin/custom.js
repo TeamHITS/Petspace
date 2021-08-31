@@ -300,13 +300,18 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
            //$('#servaddon').submit();
             var $form = $("#servaddon");
             var data = getFormData($form);
-
+            console.log(data);
             var spname = data.service_name;
             var price = data.service_price;
             var service_id = data.service_id;
             var petsize = data.petsize;
             var petsize_price = data.petsize_price;
             var petid = data.petid;
+            var service_duration = data.service_duration;
+            var submenu_service_duration = data.submenu_service_duration;
+            var submenu_service_price = data.submenu_service_price;
+            var submenu_sevice_id = data.submenu_sevice_id;
+            var order_id = data.order_id;
 
             var addons = data.addons;
             var addonHtml = '';
@@ -330,11 +335,6 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                         <div class="col-xs-6 text-right">\
                                 <h6><strong>'+addonprice+'</strong></h6>\
                         </div>\
-                         <div class="col-xs-2">\
-                            <button type="button" onclick="removeme('+addons[i]+addonprice+','+addonprice+','+addons[i]+',2,2)" class="btn btn-link btn-xs">\
-                                <span class="glyphicon glyphicon-trash"> </span>\
-                            </button>\
-                        </div>\
                     </div>';
 
                     accumulative_price+= parseFloat(addonprice);
@@ -345,10 +345,11 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
 
                 }
 
-               $('#new_addons').val(new_addons);
+               //$('#new_addons').val(new_addons);
             }
-            var cartHtml = '<div id="'+service_id+'">\
-                            <div id="'+service_id+price+'" class="row">\
+
+            var cartHtml = '<div id="'+service_id+price+'">\
+                            <div class="row">\
                                 <div class="col-xs-4">\
                                     <h4 class="product-name"><strong>'+spname+'</strong></h4>\
                                 </div>\
@@ -357,7 +358,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                                         <h6><strong>'+price+'</strong></h6>\
                                     </div>\
                                     <div class="col-xs-2">\
-                                        <button type="button" onclick="removeme('+service_id+price+','+price+','+service_id+',1,2)" class="btn btn-link btn-xs">\
+                                        <button type="button" onclick="removeme('+service_id+price+','+accumulative_price+','+service_id+',1,2)" class="btn btn-link btn-xs">\
                                             <span class="glyphicon glyphicon-trash"> </span>\
                                         </button>\
                                     </div>\
@@ -370,37 +371,52 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                                 <div class="col-xs-6 text-right">\
                                         <h6><strong>'+petsize_price+'</strong></h6>\
                                 </div>\
-                                 <div class="col-xs-2">\
-                                    <button type="button" onclick="removeme('+petid+petsize_price+','+petsize_price+','+petid+',1,2)" class="btn btn-link btn-xs">\
-                                        <span class="glyphicon glyphicon-trash"> </span>\
-                                    </button>\
-                                </div>\
                             </div>\
                             '+addonHtml+'\
                         </div><hr>';
+            var serviceObj = {
+                service_price  : price,
+                service_id     : service_id,
+                service_duration : service_duration,
+                petid          : petid,
+                petsize        : petsize,
+                order_id       : order_id,
+                submenu_service_price : submenu_service_price,
+                submenu_service_duration : submenu_service_duration,
+                submenu_sevice_id  : submenu_sevice_id,
+                addons             : new_addons
+              
+            }
+             var ip = $('<input>').attr({
+                    type: 'hidden',
+                    name: 'services[]',
+                    id: service_id+price+'_del',
+                   value: serviceObj 
+                })
+                $(ip).appendTo('.finalform');
 
-            var new_pets = $("input[name='new_pets[]']")
+            /*var new_pets = $("input[name='new_pets[]']")
               .map(function(){
                     return $(this).val();
                 }).get();
 
             new_pets.push(petid);
 
-            $('#new_pets').val(new_pets);
+            $('#new_pets').val(new_pets);*/
             
 
-            var new_services = $("input[name='new_services[]']")
+           /* var new_services = $("input[name='new_services[]']")
               .map(function(){
                     return $(this).val();
                 }).get();
 
-            new_services.push(service_id);
+            new_services.push(service_id);*/
 
-            $('#new_services').val(new_services);
+            //$('#new_services').val(new_services);
 
 
 
-            $('.order-cart').append(cartHtml);
+            $('.dynamic-order').append(cartHtml);
 
             var total_amount = $('#total_amount').val();
             var total_tax = $('#total_tax').val();
@@ -533,8 +549,8 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
 
                 }
 
-            
-
+                var delId = deleteindex+'_del';
+                $('#'+delId).remove();
                 /*$.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -126,6 +126,7 @@
 							<input type="hidden" name="orderid" id="orderid" value="{{$order->id}}">
 							<input type="hidden" name="user_id" id="user_id" value="{{$order->user_id}}">
 							<div class="panel-body">
+								<div class="dynamic-order">
 								<?php foreach($order->services as $key => $services) { ?>
 
 								<div class="row" id="{{$services->id.$key}}">
@@ -188,11 +189,9 @@
 											<hr>
 								<?php } ?>
 								</div>
-
-
 								<hr>
 								<?php } ?>
-								<hr>
+							</div>
 								<div class="row">
 									<div class="text-center">
 										
@@ -219,6 +218,7 @@
 								</div>
 							</div>
 							<div class="panel-footer">
+								
 								<div class="row text-center">
 									<div class="col-xs-9">
 
@@ -230,14 +230,8 @@
 
 										<h4 class="text-right">Total <strong class="tamnt">AED {{$order->total}}</strong></h4>
 									</div>
-									<div class="col-xs-3">
+									<div class="col-xs-3 finalform">
 										<input type="hidden" name="deleted_items[]" value="[]" id="deleted_items" />
-
-										<input type="hidden" name="new_services[]" value="[]" id="new_services" />
-										
-										<input type="hidden" name="new_addons[]" value="[]" id="new_addons" />
-										
-										<input type="hidden" name="new_pets[]" value="[]" id="new_pets" />
 
 										<button 
 										@if($old_total == $order->total)disabled="disabled" @endif 
