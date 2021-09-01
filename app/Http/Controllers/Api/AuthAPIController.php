@@ -507,12 +507,7 @@ class AuthAPIController extends AppBaseController
         if (!$user->details->is_verified) {
             return $this->sendErrorWithData(["Email" => "Code can not be sent on an unverified account"], 403);
         }
-
-        $checkSocialLogin = DB::table('user_social_accounts')->where('user_id', $user->id)->first();
-        if ($checkSocialLogin) {
-            return $this->sendErrorWithData(["Email" => "Password can not be changed on social login"], 403);
-        }
-
+        
         $code = rand(1111, 9999);
 
         $subject = "Forgot Password Verification Code";

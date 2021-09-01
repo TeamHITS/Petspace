@@ -152,4 +152,5 @@ Route::post('remove_order_services_addon', 'OrderController@removeOrderServicesA
 Route::get('get_order_services_addon/{user_id}/{id}', 'CategoryServiceController@getServicesWithAddon');
 Route::post('update_order_services_addon', 'OrderController@updateOrderServicesAddon');
 Route::post('make_payment', 'OrderController@makePayment');
+Route::post('make_latepayment', 'OrderController@makeLatePayment');
 Route::post('confirm_payment', 'OrderController@confirmPayment');

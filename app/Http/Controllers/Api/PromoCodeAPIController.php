@@ -222,10 +222,10 @@ class PromoCodeAPIController extends AppBaseController
         /** @var PromoCode $promoCode */
 
         $promoCode = $this->promoCodeRepository->findWhere(array("code" => $code));
-        if(empty($promoCode[0])){
+        if (empty($promoCode[0])) {
             return $this->sendErrorWithData(['Promo Code not found']);
         }
-       
+
         $promoCodeValidity = DB::table('promo_codes')
             ->where('code', '=', $code)
             ->where('valid_to', '>=', Carbon::now())
@@ -244,13 +244,7 @@ class PromoCodeAPIController extends AppBaseController
         if (!empty($checkUsed)) {
             return $this->sendErrorWithData(['Promo Code already used']);
         }
-
-        DB::table('used_promo_codes')->insert([
-            'user_id'       => \Auth::id(),
-            'promo_code_id' => $promoCode[0]['id'],
-        ]);
-
-
+        
         return $this->sendResponse($promoCode->toArray(), 'Promo Code retrieved successfully');
     }
 

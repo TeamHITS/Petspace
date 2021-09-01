@@ -391,7 +391,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                     type: 'hidden',
                     name: 'services[]',
                     id: service_id+price+'_del',
-                   value: serviceObj 
+                   value: JSON.stringify(serviceObj)
                 })
                 $(ip).appendTo('.finalform');
 
@@ -426,6 +426,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
 
             var floatamnt = parseFloat(netamnt);
             $('#sub_total').val(floatamnt);
+            $('#grosstotal').val(floatamnt);
             var taxcalculation = (floatamnt*5/100).toFixed(2);
 
             $('#vat').html('AED ' +taxcalculation);
@@ -433,6 +434,15 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                 $('#net_amnt').val(netamnt);
 
             $('.tamnt').html('AED '+final_amnt);
+
+            if(final_amnt!=total_amount){
+                $('#checkbtn').removeAttr('disabled');
+            }
+            $('#finalamount').val(final_amnt);
+            $('#grosstotal').val(floatamnt);
+            $('#finaltax').val(taxcalculation);
+
+
              $('#GSCCModal').modal('hide');
         }
     });    
@@ -471,6 +481,16 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
         $('#payWithCard').submit();
     });
 
+    $(document).on("click", "#pay_with_card_late", function(){
+    
+        $('#payWithCardLate').submit();
+    });
+
+    $(document).on("click", "#late_payment", function(event){
+        var orderid = $(this).data('id');
+        $('#payment_order_id').val(orderid);
+        $('#lateCheckout').modal('show');
+    });
     $(document).on("click", "#confirm_payment", function(event){
         var orderid = $(this).data('id');
         $.ajaxSetup({
@@ -544,8 +564,16 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                 }).get();
 
                 if(ptype == 1) {
-                    deleted_items_array.push(id);
-                    $("#deleted_items").val(deleted_items_array);
+
+                    var serviceDelObj = {id : id,type : type};
+
+                    var delip = $('<input>').attr({
+                        type: 'hidden',
+                        name: 'deleted_items[]',
+                       value: JSON.stringify(serviceDelObj)
+                    });
+                    $(delip).appendTo('.finalform');
+
 
                 }
 

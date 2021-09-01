@@ -218,7 +218,7 @@
 								</div>
 							</div>
 							<div class="panel-footer">
-								
+
 								<div class="row text-center">
 									<div class="col-xs-9">
 
@@ -230,10 +230,8 @@
 
 										<h4 class="text-right">Total <strong class="tamnt">AED {{$order->total}}</strong></h4>
 									</div>
-									<div class="col-xs-3 finalform">
-										<input type="hidden" name="deleted_items[]" value="[]" id="deleted_items" />
-
-										<button 
+									<div class="col-xs-3">
+										<button id="checkbtn"
 										@if($old_total == $order->total)disabled="disabled" @endif 
 											type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#GSCCModalCheckout">
 											Checkout

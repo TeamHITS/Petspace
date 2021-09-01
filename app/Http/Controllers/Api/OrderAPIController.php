@@ -176,8 +176,8 @@ class OrderAPIController extends AppBaseController
      */
     public function store(CreateOrderAPIRequest $request)
     {
-        $input  = $request->toArray();
-        $order  = array(
+        $input = $request->toArray();
+        $order = array(
             "user_id"         => \Auth::id(),
             "cart_id"         => $input['cart_id'],
             "petspace_id"     => $input['petspace_id'],
@@ -191,6 +191,15 @@ class OrderAPIController extends AppBaseController
             "total"           => $input['total'],
             "note"            => $input['note']
         );
+
+        if (isset($input['promo_code'])) {
+            $order['promo_code'] = $input['promo_code'];
+            DB::table('used_promo_codes')->insert([
+                'user_id'       => \Auth::id(),
+                'promo_code_id' => $input['promo_code'],
+            ]);
+        }
+
         $orders = $this->orderRepository->saveRecord($order);
 
         $OrderHistory = new OrderHistory;
@@ -200,21 +209,21 @@ class OrderAPIController extends AppBaseController
         $OrderHistory->total = $orders->total;
 
         $OrderHistory->save();
-        if(isset($input['services'])){
+        if (isset($input['services'])) {
             foreach ($input['services'] as $service) {
-    
+
                 $service_data = array(
                     "order_id"   => $orders->id,
                     "pet_id"     => $service['pet_id'],
                     "service_id" => $service['service_id'],
                     "duration"   => $service['service_duration'],
                     "price"      => $service['price']
-    
+
                 );
-    
+
                 $orderService = $this->orderServiceRepository->saveRecord($service_data);
-    
-                
+
+
                 if (isset($service['addons'])) {
                     foreach ($service['addons'] as $addon) {
                         $addon_data         = array(

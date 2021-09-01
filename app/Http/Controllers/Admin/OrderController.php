@@ -123,15 +123,17 @@ class OrderController extends AppBaseController
      */
     public function show($id)
     {
+        $transactions = $this->transactionRepository->getTransactionByOrderId($id);
+
         $order = $this->orderRepository->findWithoutFail($id);
 
         if (empty($order)) {
             Flash::error($this->BreadCrumbName . ' not found');
             return redirect(route('admin.orders.index'));
         }
-
+        $usercards = UserCard::where('user_id',$order->user_id)->get();
         BreadcrumbsRegister::Register($this->ModelName,$this->BreadCrumbName, $order);
-        return view('admin.orders.show')->with(['order' => $order, 'title' => $this->BreadCrumbName]);
+        return view('admin.orders.show')->with(['order' => $order, 'title' => $this->BreadCrumbName, 'transactions' => $transactions, 'usercards' => $usercards]);
     }
 
     /**
@@ -244,100 +246,102 @@ class OrderController extends AppBaseController
         return redirect(route('admin.orders.index'))->with(['title' => $this->BreadCrumbName]);
     }
 
-    public function removeOrderServicesAddon(Request $request)
+    public function removeOrderServicesAddon($id,$type)
     {
-        $id = $request->id;
-        $type = $request->type;
-        $price = $request->price;
-        $sub_total = $request->sub_total;
-        $orderid = $request->orderid;
-        $subtotal = $sub_total - $price;
-        $delivery_fee = $request->delivery_fee;
 
-        
-        $orderRequest['tax'] = $tax = $subtotal*5/100;
-        $orderRequest['sub_total'] = $subtotal;
-        $orderRequest['total'] = $subtotal + $tax + $delivery_fee;
         if ($type == 1) {
             $this->orderServiceRepository->deleteRecord($id);
         } else {
             $this->orderServiceAddonRepository->deleteRecord($id);
         }
 
-        $order = $this->orderRepository->findWithoutFail($orderid);
-
-        $order = $this->orderRepository->updateRecord($orderRequest, $order);
-
-        return response()->json(['code' => 1]);
+        return true;
     }
 
-    public function updateOrderServicesAddon(Request $request)
+    public function updateOrderServicesAddon($request)
     {
-        dd($request);
-        
-        $service_price  = $request->service_price;
-        $service_id     = $request->service_id;
-        $service_duration = $request->service_duration;
-        $petid          = $request->petid;
-        $petsize        = $request->petsize;
-        $order_id       = $request->order_id;
-        $submenu_service_price      = $request->submenu_service_price;
-        $submenu_service_duration   = $request->submenu_service_duration;
-        $submenu_sevice_id  = $request->submenu_sevice_id;
-        $cart_subtotal      = $request->cart_subtotal;
-        $addons             = $request->addons;
+        $services = $request->services;
+        $order_id = $request->order_id;
+        $deleted_items = $request->deleted_items;
+                               // dd($deleted_items);
 
-
-
-        $service_data = array(
-                "order_id"   => $order_id,
-                "pet_id"     => $petid,
-                "service_id" => $service_id,
-                "duration"   => $service_duration,
-                "price"      => $service_price
-
-            );
-
-        $orderService = $this->orderServiceRepository->saveRecord($service_data);
-        $addon_price = 0;
-        if (isset($addons) && $addons!="") {
-                foreach ($addons as $addon) {
-                    $submenu_service = SubmenuService::where('id',$addons)->first();
-                    //dd($submenu_service);
-                    $addon_price+=$submenu_service['price'];
-
-                    $addon_data         = array(
-                        "order_service_id"   => $orderService->id,
-                        "submenu_service_id" => $submenu_service['id'],
-                        "duration"           => $submenu_service['service_duration'],
-                        "price"              => $submenu_service['price']
-                    );
-                    $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);
-                }
+        if($deleted_items!=""){
+            foreach ($deleted_items as $key => $delItem) {
+                $delItem = json_decode($delItem,true);
+                $id = $delItem['id'];
+                $type = $delItem['type'];
+                $this->removeOrderServicesAddon($id,$type);
+            }
         }
 
-        $addon_data = array(
-                        "order_service_id"   => $orderService->id,
-                        "submenu_service_id" => $submenu_sevice_id,
-                        "duration"           => $submenu_service_duration,
-                        "price"              => $submenu_service_price
-            );
-        $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);
+        if($services!=""){
+            foreach ($services as $key => $service)
+                {
+                        $service = json_decode($service,true);
+        
+                        $service_price  = $service['service_price'];
+                        $service_id     = $service['service_id'];
+                        $service_duration = $service['service_duration'];
+                        $petid          = $service['petid'];
+                        $petsize        = $service['petsize'];
+                        $order_id       = $service['order_id'];
+                        $submenu_service_price      = $service['submenu_service_price'];
+                        $submenu_service_duration   = $service['submenu_service_duration'];
+                        $submenu_sevice_id  = $service['submenu_sevice_id'];
+                        //$cart_subtotal      = $service[''];
+                        $addons             = $service['addons'];
+                
+                
+                
+                        $service_data = array(
+                                "order_id"   => $order_id,
+                                "pet_id"     => $petid,
+                                "service_id" => $service_id,
+                                "duration"   => $service_duration,
+                                "price"      => $service_price
+                
+                            );
+                
+                        $orderService = $this->orderServiceRepository->saveRecord($service_data);
+                        //$addon_price = 0;
+                        if (isset($addons) && $addons!="") {
+                                foreach ($addons as $addon) {
+                                    $submenu_service = SubmenuService::where('id',$addons)->first();
+                                    //dd($submenu_service);
+                                    //$addon_price+=$submenu_service['price'];
+                
+                                    $addon_data         = array(
+                                        "order_service_id"   => $orderService->id,
+                                        "submenu_service_id" => $submenu_service['id'],
+                                        "duration"           => $submenu_service['service_duration'],
+                                        "price"              => $submenu_service['price']
+                                    );
+                                    $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);
+                                }
+                        }
+                
+                       /* $addon_data = array(
+                                        "order_service_id"   => $orderService->id,
+                                        "submenu_service_id" => $submenu_sevice_id,
+                                        "duration"           => $submenu_service_duration,
+                                        "price"              => $submenu_service_price
+                            );
+                        $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);*/
+                }
+            }
 
         $order = $this->orderRepository->findWithoutFail($order_id);
-
-        $subtotal = $cart_subtotal + $addon_price + $service_price + $submenu_service_price;
-        $orderRequest['tax'] = $tax = $subtotal*5/100;
+        $subtotal = $request->grosstotal;
+        $tax = $request->finaltax;
+        $finalamount = $request->finalamount;
+        //$subtotal = $cart_subtotal + $addon_price + $service_price + $submenu_service_price;
+        $orderRequest['tax'] = $tax;
         $orderRequest['sub_total'] = $subtotal;
-        $orderRequest['total'] = $subtotal + $tax + $order->delivery_fee;
+        $orderRequest['total'] = $finalamount;// + $tax + $order->delivery_fee;
 
 
         $order = $this->orderRepository->updateRecord($orderRequest, $order);
-
-         Flash::success('Order updated successfully.');
-        return redirect(route('admin.orders.edit',[$order_id]))->with(['id' => $order_id]);
-        
-
+        return true;
     }
 
     public function makePayment(Request $request)
@@ -346,13 +350,27 @@ class OrderController extends AppBaseController
         $ref = $request->user_cards;
         $order = $this->orderRepository->findWithoutFail($request->order_id);
         $amount = $order->total;
+
         $refget = Transaction::where('order_id',$order->id)->first();
         if(!empty($refget)) {
            $ref = $refget->transaction_id;
-           $old_total = OrderHistory::where('order_id',$order->id)->pluck('total');
-           $amount = $old_total;
            $this->releasePayment($amount,$ref);
         }
+
+       /*$services = $request->services;
+        foreach ($services as $key => $service) {
+           $service = json_decode($service);
+        }
+
+
+         Flash::success('Order updated successfully.');
+        return redirect(route('admin.orders.edit',[$order_id]))->with(['id' => $order_id]);
+        */
+
+        if($this->updateOrderServicesAddon($request)){
+
+        
+        $order = $this->orderRepository->findWithoutFail($request->order_id);
 
         $cartid = random_int(100000, 999999);
         //$userdetail = UserDetail::where('user_id', $order->user_id)->toSql();
@@ -484,6 +502,7 @@ class OrderController extends AppBaseController
                 ['total' => $order->total]
             );
         return view('admin.orders.payment_status')->with(['order' => $order, 'response' => $response, 'title' => $this->BreadCrumbName, 'card_status' => $card_status]);
+        }
     }
     public function releasePayment($amount,$ref)
     {
@@ -585,5 +604,139 @@ class OrderController extends AppBaseController
         }
         return response()->json($resp);
 
+    }
+
+
+    public function makeLatePayment(Request $request)
+    {
+        $card_status = $request->payment;
+        $ref = $request->user_cards;
+        $order = $this->orderRepository->findWithoutFail($request->order_id);
+        $amount = $order->total;   
+
+        $cartid = random_int(100000, 999999);
+        $userdetail = collect(\DB::select('SELECT * FROM user_details WHERE user_id = ?' , [$order->user_id]))->first();
+
+        $useraddress = UserAddress::where('user_id', $order->user_id)->first();
+        if ($card_status == 'oldcard') {
+            $URL = 'https://secure.telr.com/gateway/remote.xml';
+            $HTTPHEADER = array(
+                'Content-Type: application/xml'
+              );
+            $POSTFIELDS = '<?xml version="1.0" encoding="UTF-8"?>
+                            <remote>
+                                <store>25561</store>
+                                <key>VCV28@KRkF^hsgTv</key>
+                                <tran>
+                                    <type>auth</type>
+                                    <class>cont</class>
+                                    <cartid>'.$cartid.'</cartid>
+                                    <description>Order Payment</description>
+                                    <test>1</test>
+                                    <currency>AED</currency>
+                                    <amount>'.$order->total.'</amount>
+                                    <ref>'.$ref.'</ref>
+                                </tran>
+                            </remote>';
+
+        } else {
+            $URL = 'https://secure.telr.com/gateway/order.json';
+            $HTTPHEADER = array(
+                'Content-Type: application/json'
+              );
+            $POSTFIELDS = '{
+                "method": "create",
+                "store": 25561,
+                "authkey": "6mZ3^zXMFb-8pmxz",
+                "order": {
+                    "cartid": '.$cartid.',
+                    "test": 1,
+                    "amount": '.$order->total.',
+                    "currency": "AED",
+                    "description": "Order Payment",
+                    "trantype": "auth"
+                },
+                "customer": {
+                    "email": "'.$order->user->email.'",
+                    "phone": "'.$userdetail->phone.'",
+                    "name": {
+                        "forenames": "'.$userdetail->first_name.'",
+                        "surname": "'.$userdetail->last_name.'"
+                    },
+                    "address": {
+                        "line1": "'.$useraddress->address.'",
+                        "city": "Dubai",
+                        "country": "AE"
+                    }
+                },
+                "return": {
+                    "authorised": "https://petspace.app/payment-authorized",
+                    "declined": "https://petspace.app/payment-declined",
+                    "cancelled": "https://petspace.app/payment-cancelled"
+                }
+            }';
+        }
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $URL,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS =>$POSTFIELDS,
+          CURLOPT_HTTPHEADER => $HTTPHEADER,
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        if($card_status == 'oldcard') {
+            $xml = simplexml_load_string($response);
+            $json = json_encode($xml);
+            $arr = json_decode($json,true);
+
+            $temp = array();
+            foreach($arr as $k=>$v) {
+              foreach($v as $k1=>$v1) {
+                $temp[$k][$k1] = $v1;
+              }
+            }
+
+            $response = $temp;
+
+            $transact = [
+                'user_id' => $order->user_id,
+                'order_id'       => $order->id,
+                'transaction_id' => $response['auth']['tranref'],
+                'card_type'      => 'Visa Credit',
+                'currency'       => 'AED',
+                'status_code'    => $response['auth']['status'],
+                'status_text'    => $response['auth']['message'],
+                'message'        => $response['payment']['description'],
+                'amount'         => $order->total
+            ];
+            $transactions = $this->transactionRepository->saveRecord($transact);
+            $orderRef = UserCard::updateOrCreate(
+                ['user_id' => $order->user_id,'ref' => $ref],
+                ['ref' => $response['auth']['tranref']]
+            );
+
+        } else {
+            $response = json_decode($response,true);
+
+
+            $orderRef = OrderReference::updateOrCreate(
+                ['order_id' => $order->id],
+                ['reference' => $response['order']['ref']]
+            );
+        }
+
+        return view('admin.orders.payment_status')->with(['order' => $order, 'response' => $response, 'title' => $this->BreadCrumbName, 'card_status' => $card_status]);
     }
 }

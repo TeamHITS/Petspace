@@ -6,6 +6,7 @@
 
 @section('content')
     <div class="content">
+        @include('admin.orders.latepayment')
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
@@ -46,6 +47,12 @@
                      <div class='btn-group'>
                         <a href="javascript:void(0)" id="confirm_payment" data-id="{{$order->id}}" class='btn btn-default'>
                             <i class="glyphicon glyphicon-ok"></i> Confirm Payment
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a @if($transactions!=null) disabled="disabled" @endif  href="javascript:void(0)" id="late_payment" data-id="{{$order->id}}" class='btn btn-default'>
+                            <i class="glyphicon glyphicon-ok"></i> Make Payment
                         </a>
                     </div>
                     {!! Form::close() !!}

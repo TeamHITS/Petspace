@@ -76,4 +76,10 @@ class TransactionRepository extends BaseRepository
         $transaction = $this->delete($id);
         return $transaction;
     }
+
+    public function getTransactionByOrderId($id)
+    {
+        $order_transaction = $this->findWhere(['order_id' => $id,'status_code' => 2])->first();
+       return $order_transaction;
+    }
 }

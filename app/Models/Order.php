@@ -198,7 +198,7 @@ class Order extends Model
      *
      * @var array
      */
-    protected $with = ["user", "address", "shop", "services", "technician",'progress'];
+    protected $with = ["user", "address", "shop", "services", "technician",'progress','promo'];
 
     /**
      * The attributes that should be append to toArray.
@@ -383,5 +383,10 @@ class Order extends Model
             return self::$PROGRESS_STATUS[$this->progress_status];
         }
         return null;
+    }
+
+    public function promo()
+    {
+        return $this->belongsTo(PromoCode::class, "promo_code", "id")->withTrashed();
     }
 }
