@@ -22,7 +22,9 @@ class BannerManagementDataTable extends DataTable
     public function dataTable($query)
     {
         $dataTable = new EloquentDataTable($query);
-
+        $dataTable->editColumn('status', function (BannerManagement $model) {
+            return $model->status ? "Active": "Inactive";
+        });
         return $dataTable->addColumn('action', 'admin.banner_managements.datatables_actions');
     }
 
@@ -73,8 +75,8 @@ class BannerManagementDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'id',
-            'name'
+            'name',
+            'status',
         ];
     }
 
