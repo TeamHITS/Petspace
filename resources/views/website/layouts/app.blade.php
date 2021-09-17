@@ -16,17 +16,20 @@
     <link rel="stylesheet" href="{{ url('/public/assets/css/style.css') }}"/>
     <link rel="stylesheet" href="{{ url('/public/assets/css/responsive.css') }}"/>
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="{{ url('/public/assets/css/daterangepicker.css') }}" />
+    <link rel="stylesheet" href="{{ url('/public/assets/css/daterangepicker.css') }}"/>
 
     <!-- SWIPER SLIDER -->
-    <link rel="stylesheet" href="{{ url('/public/assets/css/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ url('/public/assets/css/swiper-bundle.min.css') }}"/>
 
     <!-- DATE TIME PICKER -->
-    <link rel="stylesheet" type="text/css" href="{{ url('/public/assets/tui-picker/css/tui-date-picker.css') }}" />
-    <link rel="stylesheet" type="text/css" href="{{ url('/public/assets/tui-picker/css/tui-time-picker.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url('/public/assets/tui-picker/css/tui-date-picker.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url('/public/assets/tui-picker/css/tui-time-picker.css') }}"/>
     <!-- DATE TIME PICKER -->
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <!-- Google Maps JavaScript library -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAtE6o_3Gvd8ud0Xt_NJcpAiNPik03Ubuk"></script>
     @stack('css')
 </head>
 
@@ -48,11 +51,9 @@
 <script src="{{ asset('public/js/website/custom.js') }}"></script>
 
 
-
-
 {{--<script--}}
-        {{--src="https://maps.googleapis.com/maps/api/js?key={{config('constants.google.maps.api_key')}}&callback=initAutocomplete&libraries=places&v=weekly"--}}
-        {{--async--}}
+{{--src="https://maps.googleapis.com/maps/api/js?key={{config('constants.google.maps.api_key')}}&callback=initAutocomplete&libraries=places&v=weekly"--}}
+{{--async--}}
 {{--></script>--}}
 
 <!-- DATATABLE LIBRARY -->
@@ -82,13 +83,13 @@
             var form_data = new FormData($(this)[0]);
             if (method == "POST") {
 
-                if($('#response-alert').length) {
+                if ($('#response-alert').length) {
                     $('#response-alert').css('display', 'none');
                 }
                 ajaxPost(url, form_data, (status, data) => {
                     if (status) {
 
-                        if($('#response-alert').length) {
+                        if ($('#response-alert').length) {
                             $('#response-alert').css('display', 'block');
                             $('#response-alert').addClass('success-notification');
                             $('#response-alert').removeClass('error-notification');
@@ -116,7 +117,7 @@
                         // $('#response-alert').html(data.responseJSON.message);
                         if (data.status == 422) {
 
-                            if($('#response-alert').length){
+                            if ($('#response-alert').length) {
                                 $('#response-alert').html("");
                             }
                             if (!$.isArray(data.responseJSON.errors)) {

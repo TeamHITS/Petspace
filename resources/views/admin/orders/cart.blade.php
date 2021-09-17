@@ -132,43 +132,38 @@
 								<div class="row" id="{{$services->id.$key}}">
 									<div class="col-xs-4">
 										<h4 class="product-name">
-											<strong>{{$services->getServiceNameAttribute()}}</strong></h4>
+											<strong>{{@$services->getServiceNameAttribute()}}</strong></h4>
 									</div>
 									<div class="col-xs-6">
 										<div class="col-xs-6 text-right">
 											<h6><strong>AED {{$services->price}}</strong></h6>
 										</div>
 										<div class="col-xs-2">
-											<button type="button" onclick="removeme({{$services->id.$key}},{{$services->price}},{{$services->id}},1,1)" class="btn btn-link btn-xs">
+
+											<?php
+
+												$servicePrice = $services->price;
+												foreach($services->addons as $index => $serAddons) {
+													$servicePrice+=$serAddons->price;
+												}
+											 ?>
+											<button type="button" onclick="removeme({{$services->id.$key}},{{$servicePrice}},{{$services->id}},1,1)" class="btn btn-link btn-xs">
 												<span class="glyphicon glyphicon-trash"> </span>
 											</button>
 										</div>
 									</div>
-								</div>
 								
 							<?php if(isset($services->pet) && $services->pet!=null) { ?>
-								<div class="row" id="{{$services->pet->id.$key}}">
-									
-									<div class="col-xs-4">
-										<h4 class="product-name"><strong>{{$services->pet->name}}</strong></h4><h4><small>{{$services->pet->breed .' | '.$services->pet->weight .' | '.$services->pet->gender }}</small></h4>
-									</div>
-<!-- 									<div class="col-xs-6">
-										<div class="col-xs-6 text-right">
-											<h6><strong>AED {{$services->price}}</strong></h6>
-										</div>
-										<div class="col-xs-2">
-											<button type="button" onclick="removeme({{$services->pet->id.$key}},{{$services->price}},{{$services->pet->id}},1)" class="btn btn-link btn-xs">
-												<span class="glyphicon glyphicon-trash"> </span>
-											</button>
-										</div>
-									</div> -->
+							<div class="row" id="{{$services->pet->id.$key}}">
+								<div style="margin-left:25px" class="col-xs-8">
+									<h4 class="product-name"><strong>{{$services->pet->name}}</strong></h4><h4><small>{{$services->pet->breed .' | '.$services->pet->weight .' | '.$services->pet->gender }}</small></h4>
 								</div>
+							</div>
 							<?php } ?>
 										<div class="order-cart">
 										<?php 
-
 											foreach($services->addons as $index => $serAddons) { ?>
-											<div class="row" id="{{$serAddons->id.$index}}">
+											<div style="margin-left:10px" class="row" id="{{$serAddons->id.$index}}">
 												
 												<div class="col-xs-4">
 													<h4 class="product-name"><strong>{{$serAddons->getSubmenuNameAttribute()}}</strong></h4><h4><small>{{$services->getServiceNameAttribute()}}</small></h4>
@@ -178,9 +173,11 @@
 														<h6><strong>AED {{$serAddons->price}}</strong></h6>
 													</div>
 													<div class="col-xs-2">
+														<?php if($serAddons->getSubmenuNameAttribute() != 'Large' && $serAddons->getSubmenuNameAttribute() != 'Medium' && $serAddons->getSubmenuNameAttribute() != 'Small') {?>
 														<button type="button" onclick="removeme({{$serAddons->id.$index}},{{$serAddons->price}},{{$serAddons->id}},2,1)" class="btn btn-link btn-xs">
 															<span class="glyphicon glyphicon-trash"> </span>
 														</button>
+														<?php } ?>
 													</div>
 												</div>
 											</div>
@@ -188,6 +185,7 @@
 													
 											<hr>
 								<?php } ?>
+								</div>
 								</div>
 								<hr>
 								<?php } ?>
@@ -226,6 +224,7 @@
 										<input type="hidden" name="delivery_fee" id="delivery_fee" value="{{$order->delivery_fee}}" />
 										<input type="hidden" name="total_tax" id="total_tax" value="{{$order->tax}}" />
 										<input type="hidden" name="sub_total" id="sub_total" value="{{$order->sub_total}}" />
+										<input type="hidden" name="min_order" id="min_order" value="{{$order->min_order}}" />
 										<input type="hidden" name="net_amnt" id="net_amnt" value="" />
 
 										<h4 class="text-right">Total <strong class="tamnt">AED {{$order->total}}</strong></h4>
@@ -233,7 +232,7 @@
 									<div class="col-xs-3">
 										<button id="checkbtn"
 										@if($old_total == $order->total)disabled="disabled" @endif 
-											type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#GSCCModalCheckout">
+											type="button" class="btn btn-success btn-block">
 											Checkout
 										</button>
 									</div>

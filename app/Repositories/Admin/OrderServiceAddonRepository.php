@@ -65,4 +65,10 @@ class OrderServiceAddonRepository extends BaseRepository
         $orderServiceAddon = $this->delete($id);
         return $orderServiceAddon;
     }
+
+    public function deleteWhere($array)
+    {
+        $osaddon = $this->where($array)->delete();
+        return $osaddon;
+    }
 }

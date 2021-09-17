@@ -71,15 +71,29 @@ class TransactionRepository extends BaseRepository
      * @param $id
      * @return mixed
      */
+    public function deleteWhere($array)
+    {
+        $transaction = $this->where($array)->delete();
+        return $transaction;
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function deleteRecord($id)
     {
         $transaction = $this->delete($id);
         return $transaction;
     }
 
-    public function getTransactionByOrderId($id)
+    public function getTransactionByOrderId($id,$code)
     {
-        $order_transaction = $this->findWhere(['order_id' => $id,'status_code' => 2])->first();
+        $where = array('order_id' => $id);
+        if($code!=null){
+            $where = array('order_id' => $id,'status_code' => $code);    
+        }
+        $order_transaction = $this->findWhere($where)->first();
        return $order_transaction;
     }
 }

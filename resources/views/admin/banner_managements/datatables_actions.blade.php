@@ -1,5 +1,14 @@
 {!! Form::open(['route' => ['admin.banner-managements.destroy', $id], 'method' => 'delete']) !!}
-<div class='btn-group'>
+<div style="width: 150px;" class='btn-group'>
+
+    <a href="{{ url('admin/banner-active').'/'. $id}}" class='btn btn-default btn-xs'>
+        @if($status)
+            <i class="fa fa-ban"></i>
+        @else
+            <i class="fa fa-check"></i>
+        @endif
+    </a>
+
     @ability('super-admin' ,'banner-managements.show')
     <a href="{{ route('admin.banner-managements.show', $id) }}" class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-eye-open"></i>
@@ -10,6 +19,7 @@
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     @endability
+
     @ability('super-admin' ,'banner-managements.destroy')
     {!! Form::button('<i class="glyphicon glyphicon-trash"></i>', [
         'type' => 'submit',

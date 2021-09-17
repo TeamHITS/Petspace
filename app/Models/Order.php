@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @SWG\Definition(
  *      definition="Order",
- *      required={"user_id","cart_id", "petspace_id", "user_address_id","technician_id", "slot_id", "date_time", "status", "progress_status", "sub_total", "tax", "delivery_fee", "total", "rating", "rating_comment", "note","promo_code"},
+ *      required={"user_id","cart_id", "petspace_id", "user_address_id","technician_id", "slot_id", "date_time", "status", "progress_status", "sub_total", "tax", "delivery_fee", "total", "rating", "rating_comment", "note","promo_code","min_order"},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -85,6 +85,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      @SWG\Property(
  *          property="total",
  *          description="total",
+ *          type="number",
+ *          format="number"
+ *      ),
+ *      @SWG\Property(
+ *          property="min_order",
+ *          description="min_order",
  *          type="number",
  *          format="number"
  *      ),
@@ -164,7 +170,8 @@ class Order extends Model
         "rating",
         "rating_comment",
         "note",
-        "promo_code"
+        "promo_code",
+        "min_order"
     ];
 
     /**
@@ -188,9 +195,10 @@ class Order extends Model
         'delivery_fee'    => 'float',
         'total'           => 'float',
         'rating'          => 'float',
+        'min_order'       => 'float',
         'rating_comment'  => 'string',
         'note'            => 'string',
-        'promo_code'      => 'string'
+        'promo_code'      => 'integer'
     ];
 
     /**
@@ -198,7 +206,7 @@ class Order extends Model
      *
      * @var array
      */
-    protected $with = ["user", "address", "shop", "services", "technician",'progress','promo'];
+    protected $with = ["user", "address", "shop", "services", "technician", 'progress', 'promo'];
 
     /**
      * The attributes that should be append to toArray.
@@ -235,7 +243,8 @@ class Order extends Model
         'rating'          => 'sometimes',
         'rating_comment'  => 'sometimes',
         'note'            => 'sometimes',
-        'promo_code'      => 'sometimes'
+        'promo_code'      => 'sometimes',
+        'min_order'       => 'sometimes'
     ];
 
     /**
@@ -260,7 +269,8 @@ class Order extends Model
         'rating'          => 'sometimes',
         'rating_comment'  => 'sometimes',
         'note'            => 'sometimes',
-        'promo_code'      => 'sometimes'
+        'promo_code'      => 'sometimes',
+        'min_order'       => 'sometimes'
     ];
 
     /**
@@ -285,7 +295,8 @@ class Order extends Model
         'rating'          => 'sometimes',
         'rating_comment'  => 'sometimes',
         'note'            => 'sometimes',
-        'promo_code'      => 'sometimes'
+        'promo_code'      => 'sometimes',
+        'min_order'       => 'sometimes'
     ];
 
     /**
@@ -310,7 +321,8 @@ class Order extends Model
         'rating'          => 'sometimes',
         'rating_comment'  => 'sometimes',
         'note'            => 'sometimes',
-        'promo_code'      => 'sometimes'
+        'promo_code'      => 'sometimes',
+        'min_order'       => 'sometimes'
     ];
 
     public function address()
@@ -341,7 +353,7 @@ class Order extends Model
 
     public function services()
     {
-        return $this->hasMany(OrderService::class)->withTrashed()->withTrashed();
+        return $this->hasMany(OrderService::class)->withTrashed();
     }
 
     public function getStatusTextAttribute()

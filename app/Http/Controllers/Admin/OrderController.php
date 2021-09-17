@@ -123,7 +123,8 @@ class OrderController extends AppBaseController
      */
     public function show($id)
     {
-        $transactions = $this->transactionRepository->getTransactionByOrderId($id);
+
+        $transactions = $this->transactionRepository->getTransactionByOrderId($id,$code=2);
 
         $order = $this->orderRepository->findWithoutFail($id);
 
@@ -162,7 +163,6 @@ class OrderController extends AppBaseController
                 ['with_category' => true]
             ))->findWithoutFail($id);
         $petspace = $petspace->toArray();
-                    //dd($order);
         //$this->checkSession($order->total);
         $total = OrderHistory::where('order_id',$order->id)->first();
         BreadcrumbsRegister::Register($this->ModelName,$this->BreadCrumbName, $order);
@@ -250,7 +250,9 @@ class OrderController extends AppBaseController
     {
 
         if ($type == 1) {
+            $addons = array('order_service_id' => $id);
             $this->orderServiceRepository->deleteRecord($id);
+            $this->orderServiceAddonRepository->deleteWhere($addons);
         } else {
             $this->orderServiceAddonRepository->deleteRecord($id);
         }
@@ -274,7 +276,7 @@ class OrderController extends AppBaseController
             }
         }
 
-        if($services!=""){
+        if($services!="" && $services!=null){
             foreach ($services as $key => $service)
                 {
                         $service = json_decode($service,true);
@@ -289,9 +291,7 @@ class OrderController extends AppBaseController
                         $submenu_service_duration   = $service['submenu_service_duration'];
                         $submenu_sevice_id  = $service['submenu_sevice_id'];
                         //$cart_subtotal      = $service[''];
-                        $addons             = $service['addons'];
-                
-                
+                        $addons             = isset($service['addons']) ? $service['addons'] : ''; 
                 
                         $service_data = array(
                                 "order_id"   => $order_id,
@@ -303,6 +303,16 @@ class OrderController extends AppBaseController
                             );
                 
                         $orderService = $this->orderServiceRepository->saveRecord($service_data);
+                        
+                        $submenu_service_data = array(
+                                "order_service_id"   => $orderService->id,                                
+                                "submenu_service_id" => $submenu_sevice_id,
+                                "duration"   => $submenu_service_duration,
+                                "price"      => $submenu_service_price
+                
+                            );
+                        $submenuOrderService = $this->orderServiceAddonRepository->saveRecord($submenu_service_data);
+
                         //$addon_price = 0;
                         if (isset($addons) && $addons!="") {
                                 foreach ($addons as $addon) {
@@ -327,8 +337,8 @@ class OrderController extends AppBaseController
                                         "price"              => $submenu_service_price
                             );
                         $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);*/
-                }
             }
+        }
 
         $order = $this->orderRepository->findWithoutFail($order_id);
         $subtotal = $request->grosstotal;
@@ -351,29 +361,21 @@ class OrderController extends AppBaseController
         $order = $this->orderRepository->findWithoutFail($request->order_id);
         $amount = $order->total;
 
-        $refget = Transaction::where('order_id',$order->id)->first();
-        if(!empty($refget)) {
-           $ref = $refget->transaction_id;
-           $this->releasePayment($amount,$ref);
+        $transactions = $this->transactionRepository->getTransactionByOrderId($order->id,$code=null);
+        if(!empty($transactions)) {
+           $ref = $transactions->transaction_id;
+           $id = $transactions->id;
+           $this->releasePayment($amount,$ref,$id);
         }
 
-       /*$services = $request->services;
-        foreach ($services as $key => $service) {
-           $service = json_decode($service);
-        }
-
-
-         Flash::success('Order updated successfully.');
-        return redirect(route('admin.orders.edit',[$order_id]))->with(['id' => $order_id]);
-        */
 
         if($this->updateOrderServicesAddon($request)){
 
         
         $order = $this->orderRepository->findWithoutFail($request->order_id);
-
         $cartid = random_int(100000, 999999);
-        //$userdetail = UserDetail::where('user_id', $order->user_id)->toSql();
+        $orderreq['cart_id'] = $cartid;
+        $orderUpdate = $this->orderRepository->updateRecord($orderreq, $order);
         $userdetail = collect(\DB::select('SELECT * FROM user_details WHERE user_id = ?' , [$order->user_id]))->first();
 
         $useraddress = UserAddress::where('user_id', $order->user_id)->first();
@@ -437,7 +439,6 @@ class OrderController extends AppBaseController
                 }
             }';
         }
-        
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -490,12 +491,12 @@ class OrderController extends AppBaseController
 
         } else {
             $response = json_decode($response,true);
-
-            
-            $orderRef = OrderReference::updateOrCreate(
-                ['order_id' => $order->id],
-                ['reference' => $response['order']['ref']]
-            );
+            if(isset($response['order'])){
+                $orderRef = OrderReference::updateOrCreate(
+                    ['order_id' => $order->id],
+                    ['reference' => $response['order']['ref']]
+                ); 
+            }
         }
         $orderHistory = OrderHistory::updateOrCreate(
                 ['order_id' => $order->id],
@@ -504,7 +505,7 @@ class OrderController extends AppBaseController
         return view('admin.orders.payment_status')->with(['order' => $order, 'response' => $response, 'title' => $this->BreadCrumbName, 'card_status' => $card_status]);
         }
     }
-    public function releasePayment($amount,$ref)
+    public function releasePayment($amount,$ref,$id)
     {
         $cartid = random_int(100000, 999999);
         $curl = curl_init();
@@ -541,6 +542,9 @@ class OrderController extends AppBaseController
         $response = curl_exec($curl);
 
         curl_close($curl);
+
+        $transact = Transaction::destroy($id);
+
         return $response;
     }
 
@@ -582,7 +586,7 @@ class OrderController extends AppBaseController
             $response = curl_exec($curl);
             $res = json_decode($response,true);
             curl_close($curl);
-            if($res['order']['status']['code'] == 2) {
+            if(isset($res['order']) && $res['order']['status']['code'] == 2) {
             $transact = [
                 'user_id' => $order->user_id,
                 'order_id'       => $order->id,
@@ -709,32 +713,35 @@ class OrderController extends AppBaseController
             }
 
             $response = $temp;
-
-            $transact = [
-                'user_id' => $order->user_id,
-                'order_id'       => $order->id,
-                'transaction_id' => $response['auth']['tranref'],
-                'card_type'      => 'Visa Credit',
-                'currency'       => 'AED',
-                'status_code'    => $response['auth']['status'],
-                'status_text'    => $response['auth']['message'],
-                'message'        => $response['payment']['description'],
-                'amount'         => $order->total
-            ];
-            $transactions = $this->transactionRepository->saveRecord($transact);
-            $orderRef = UserCard::updateOrCreate(
-                ['user_id' => $order->user_id,'ref' => $ref],
-                ['ref' => $response['auth']['tranref']]
-            );
+            if(isset($response['auth'])){
+                $transact = [
+                    'user_id' => $order->user_id,
+                    'order_id'       => $order->id,
+                    'transaction_id' => $response['auth']['tranref'],
+                    'card_type'      => 'Visa Credit',
+                    'currency'       => 'AED',
+                    'status_code'    => $response['auth']['status'],
+                    'status_text'    => $response['auth']['message'],
+                    'message'        => $response['payment']['description'],
+                    'amount'         => $order->total
+                ];
+                $transactions = $this->transactionRepository->saveRecord($transact);
+                $orderRef = UserCard::updateOrCreate(
+                    ['user_id' => $order->user_id,'ref' => $ref],
+                    ['ref' => $response['auth']['tranref']]
+                );
+            }
 
         } else {
             $response = json_decode($response,true);
 
+            if(isset($response['order'])){
 
-            $orderRef = OrderReference::updateOrCreate(
-                ['order_id' => $order->id],
-                ['reference' => $response['order']['ref']]
-            );
+                $orderRef = OrderReference::updateOrCreate(
+                    ['order_id' => $order->id],
+                    ['reference' => $response['order']['ref']]
+                );
+            }
         }
 
         return view('admin.orders.payment_status')->with(['order' => $order, 'response' => $response, 'title' => $this->BreadCrumbName, 'card_status' => $card_status]);

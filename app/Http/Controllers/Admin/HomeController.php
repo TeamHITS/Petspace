@@ -66,23 +66,22 @@ class HomeController extends Controller
             ->count();
 
         $orderCount = DB::table('orders')
-            ->where('status', '=', 20)->count();
+            ->whereDate('created_at', '=', date('Y-m-d'))->count();
 
-      /*  $android = $this->userRepository
-            ->resetCriteria()
-            ->pushCriteria(new UserCriteria([
-                'role_id' => 3
-            ]))
-            ->findWhereNotIn('id', [1])
-            ->count();
+        $dailyEarning = DB::table('transactions')->selectRaw('SUM(amount) as amount, DATE(created_at) as cdate')->whereDate('created_at', '=', date('Y-m-d'))->groupBy('cdate')->first();
 
-        $ios = $this->userRepository
-            ->resetCriteria()
-            ->pushCriteria(new UserCriteria([
-                'device_type' => 'ios'
-            ]))
-            ->findWhereNotIn('id', [1])
-            ->count();*/
+        if ($dailyEarning) {
+            $dailyEarning = $dailyEarning->amount;
+        } else {
+            $dailyEarning = 0;
+        }
+        $monthlyEarning = DB::table('transactions')->selectRaw('SUM(amount) as amount, MONTH(created_at) as cdate')->whereYear('created_at', '=', date('Y'))->whereMonth('created_at', '=', date('m'))->groupBy('cdate')->first();
+
+        if ($monthlyEarning) {
+            $monthlyEarning = $monthlyEarning->amount;
+        } else {
+            $monthlyEarning = 0;
+        }
 
         //<editor-fold desc="User Device Graphs">
         $graphAndroid = $this->userRepository
@@ -121,6 +120,8 @@ class HomeController extends Controller
         return view('admin.home')->with(compact(
             'usersCount',
             'orderCount',
+            'dailyEarning',
+            'monthlyEarning',
             'deviceGraph'
         ));
     }

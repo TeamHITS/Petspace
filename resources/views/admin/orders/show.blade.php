@@ -49,12 +49,13 @@
                             <i class="glyphicon glyphicon-ok"></i> Confirm Payment
                         </a>
                     </div>
-
+                    @if($transactions==null)
                     <div class="btn-group">
-                        <a @if($transactions!=null) disabled="disabled" @endif  href="javascript:void(0)" id="late_payment" data-id="{{$order->id}}" class='btn btn-default'>
+                        <a href="javascript:void(0)" id="late_payment" data-id="{{$order->id}}" class='btn btn-default'>
                             <i class="glyphicon glyphicon-ok"></i> Make Payment
                         </a>
                     </div>
+                    @endif
                     {!! Form::close() !!}
                 </div>
             </div>

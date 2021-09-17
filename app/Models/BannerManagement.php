@@ -56,14 +56,15 @@ class BannerManagement extends Model
     use SoftDeletes;
 
     public $table = 'banner_managements';
-    
+
 
     protected $dates = ['deleted_at'];
 
 
     public $fillable = [
         'name',
-        'image'
+        'image',
+        'status'
     ];
 
     /**
@@ -74,7 +75,8 @@ class BannerManagement extends Model
     protected $casts = [
         'id' => 'integer',
         'name' => 'string',
-        'image' => 'string'
+        'image' => 'string',
+        'status' => 'boolean'
     ];
 
     /**
@@ -82,7 +84,7 @@ class BannerManagement extends Model
      *
      * @var array
      */
-     protected $with = [];
+    protected $with = [];
 
     /**
      * The attributes that should be append to toArray.
@@ -105,7 +107,8 @@ class BannerManagement extends Model
      */
     public static $rules = [
         'name' => 'required',
-        'image' => 'required'
+        'image' => 'required',
+        'status' => 'sometimes'
     ];
 
     /**
@@ -115,7 +118,8 @@ class BannerManagement extends Model
      */
     public static $update_rules = [
         'name' => 'required',
-        'image' => 'required'
+        'image' => 'required',
+        'status' => 'sometimes'
     ];
 
     /**
@@ -125,22 +129,24 @@ class BannerManagement extends Model
      */
     public static $api_rules = [
         'name' => 'required',
-        'image' => 'required'
+        'image' => 'required',
+        'status' => 'sometimes'
     ];
-	
-	/**
+
+    /**
      * Validation api update rules
      *
      * @var array
      */
     public static $api_update_rules = [
         'name' => 'required',
-        'image' => 'required'
+        'image' => 'required',
+        'status' => 'sometimes'
     ];
 
     public function getImageUrlAttribute()
     {
         return ($this->image && storage_path(url('storage/app/' . $this->image))) ? route('api.resize', ['img' => $this->image]) : route('api.resize', ['img' => 'banners/banner.png', 'w=100', 'h=100']);
     }
-    
+
 }

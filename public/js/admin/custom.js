@@ -300,7 +300,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
            //$('#servaddon').submit();
             var $form = $("#servaddon");
             var data = getFormData($form);
-            console.log(data);
+            var delivery_fee = $('#delivery_fee').val();
             var spname = data.service_name;
             var price = data.service_price;
             var service_id = data.service_id;
@@ -317,7 +317,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
             var addonHtml = '';
 
             var accumulative_price = parseFloat(price) + parseFloat(petsize_price);
-            if(addons!="" || addons!=undefined){
+            if(addons!="" && addons!=undefined){
                 
                 var new_addons = $("input[name='new_addons[]']")
               .map(function(){
@@ -430,7 +430,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
             var taxcalculation = (floatamnt*5/100).toFixed(2);
 
             $('#vat').html('AED ' +taxcalculation);
-             var final_amnt = parseFloat(taxcalculation) + parseFloat(netamnt); 
+             var final_amnt = parseFloat(taxcalculation) + parseFloat(netamnt)+ parseFloat(delivery_fee); 
                 $('#net_amnt').val(netamnt);
 
             $('.tamnt').html('AED '+final_amnt);
@@ -438,6 +438,7 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
             if(final_amnt!=total_amount){
                 $('#checkbtn').removeAttr('disabled');
             }
+            
             $('#finalamount').val(final_amnt);
             $('#grosstotal').val(floatamnt);
             $('#finaltax').val(taxcalculation);
@@ -555,7 +556,15 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
                 var delivery_fee = $('#delivery_fee').val();
 
                 $('.tamnt').html('AED '+final_amnt);
+                var total_amount = $('#total_amount').val();
 
+                 $('#finalamount').val(final_amnt);
+                 $('#grosstotal').val(grossprice);
+                 $('#finaltax').val(taxcalculation);
+
+                if(final_amnt!=total_amount){
+                    $('#checkbtn').removeAttr('disabled');
+                }
                 deleted_array = [];
 
                 var deleted_items_array = $("input[name='deleted_items[]']")
@@ -579,6 +588,15 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
 
                 var delId = deleteindex+'_del';
                 $('#'+delId).remove();
+
+                if(grossprice <= 0){
+                    $("#checkbtn"). prop('disabled', true); 
+                    swal({
+                          icon: 'warning',
+                          title: 'Oops...',
+                          text: 'Kindly add some items in the cart!'
+                        });
+                }
                 /*$.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -610,7 +628,17 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
             }
         });
     }
-
-    function checkout(){
-
-    }
+    $(document).on('click', '#checkbtn', function () {
+        var min_order = $('#min_order').val();
+        var sub_total = $('#sub_total').val();
+        if(sub_total < min_order){
+            swal({
+              icon: 'warning',
+              title: 'Oops...',
+              text: 'Minimum order value is AED '+min_order+' Kindly add more items in the cart!'
+            });
+        } else {
+            $('#GSCCModalCheckout').modal('show');
+        }
+    });
+    

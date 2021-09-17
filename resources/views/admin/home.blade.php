@@ -17,7 +17,7 @@
                 @include("admin.counter_widget", [
                     "bgColor" => "aqua",
                     "counter" => $orderCount,
-                    "title" => "Active Orders",
+                    "title" => "Today's Orders",
                     "icon" => 'fa fa-shopping-cart',
                     "route" => route('admin.orders.index')
                 ])
@@ -25,8 +25,8 @@
             <div class="col-lg-3 col-xs-6">
                 @include("admin.counter_widget", [
                     "bgColor" => "light-blue",
-                    "counter" => 0,
-                    "title" => "Daily Sale",
+                    "counter" => number_format((float)$dailyEarning, 2, '.', ''),
+                    "title" => "Daily Earnings",
                     "icon" => 'fa fa-money',
                     "route" => url('admin/')
                 ])
@@ -34,8 +34,8 @@
             <div class="col-lg-3 col-xs-6">
                 @include("admin.counter_widget", [
                     "bgColor" => "blue",
-                    "counter" => 0,
-                    "title" => "Monthly Sale",
+                    "counter" => number_format((float)$monthlyEarning, 2, '.', ''),
+                    "title" => "Monthly Earnings",
                     "icon" => 'fa fa-money',
                     "route" =>url('admin/')
                 ])

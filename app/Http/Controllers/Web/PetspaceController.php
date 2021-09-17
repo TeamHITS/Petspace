@@ -29,6 +29,7 @@ use Laracasts\Flash\Flash;
 use Illuminate\Http\Response;
 use Location\Coordinate;
 use Location\Polygon;
+
 class PetspaceController extends AppBaseController
 {
     /** ModelName */
@@ -99,6 +100,7 @@ class PetspaceController extends AppBaseController
      */
     public function store(CreatePetspaceRequest $request)
     {
+        $input = $request->all();
         $id   = \Auth::id();
         $user = $this->userRepository->findWithoutFail($id);
         if (empty($user)) {
@@ -109,6 +111,46 @@ class PetspaceController extends AppBaseController
         $user = $this->userDetailRepository->updateRecord($id, $request);
         $request->request->add(['user_id' => $id]);
         $request->request->add(['name' => $request->name]);
+
+        if(isset($input['latitude'])){
+
+            $name = str_replace(' ', '%20', $request->name);
+            $url = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:2000@" . $request->latitude . ",%20" . $request->longitude . "&key=AIzaSyAtE6o_3Gvd8ud0Xt_NJcpAiNPik03Ubuk&input=". $name;
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_POSTFIELDS => "",
+                CURLOPT_HTTPHEADER     => array(
+                    "Postman-Token: ed685e3b-46b1-41fd-bbde-bc7233a4d3c7",
+                    "cache-control: no-cache"
+                ),
+            ));
+
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+
+            curl_close($curl);
+
+            if ($err) {
+                $request->request->add(['google_rating' => 0]);
+            } else {
+                $response = json_decode($response);
+                if($response->status == "OK"){
+                    $request->request->add(['google_rating' => $response->candidates[0]->rating]);
+                }else{
+                    $request->request->add(['google_rating' => 0]);
+                }
+            }
+        }
+
         $petspace = $this->petspaceRepository->saveRecord($request);
 
         return $this->sendResponse(['petspace' => $petspace, 'url' => 'dashboard'], 'Store detail updated successfully.');
@@ -287,13 +329,13 @@ class PetspaceController extends AppBaseController
     public function assignTechModal($id)
     {
         $order = $this->orderRepository->findWhere(["id" => $id])->first();
-        
+
         $userAddress = $this->userAddressRepository->findWhere(["id" => $order->user_address_id])->first();
-        
-        $latitude   = $userAddress->latitude;
-        
-        $longitude  = $userAddress->longitude;
-        
+
+        $latitude = $userAddress->latitude;
+
+        $longitude = $userAddress->longitude;
+
         $techniciansArray = [];
 
         $technicians = DB::table('petspace_technicians')
@@ -302,10 +344,10 @@ class PetspaceController extends AppBaseController
             ->where('petspace_technicians.petspace_id', $order->petspace_id)
             ->where('petspace_technicians.status', '!=', 20)
             ->get();
-        
+
         $techarray = $technicians->toArray();
-        
-        foreach($techarray as $tech) {
+
+        foreach ($techarray as $tech) {
             $techniciansArray[] = $tech;
         }
         $technicians = $this->getGeoFencing($latitude, $longitude, $techniciansArray);
@@ -316,37 +358,38 @@ class PetspaceController extends AppBaseController
 
     public function getGeoFencing($latitude, $longitude, $technicians)
     {
-        $insidePoint = new Coordinate($latitude, $longitude);
+        $insidePoint   = new Coordinate($latitude, $longitude);
         $technicianids = [];
-        foreach($technicians as $tech){
+        foreach ($technicians as $tech) {
 
-           $techId =  $tech->id;
+            $techId = $tech->id;
 
-           $areas = DB::table('technician_areas')
-                        ->where('technician_id', '=', $techId)
-                        ->get();
+            $areas = DB::table('technician_areas')
+                ->where('technician_id', '=', $techId)
+                ->get();
 
-           $geofence = new Polygon();
-           foreach ($areas as $key => $coordinates) {
-           $coordinates =  json_decode($coordinates->cordinates, true);
-               foreach($coordinates as $coordinate) {
+            $geofence = new Polygon();
+            foreach ($areas as $key => $coordinates) {
+                $coordinates = json_decode($coordinates->cordinates, true);
+                foreach ($coordinates as $coordinate) {
                     $lat = $coordinate[0];
                     $lng = $coordinate[1];
-                $geofence->addPoint(new Coordinate($lat,$lng));
+                    $geofence->addPoint(new Coordinate($lat, $lng));
 
-               }
-                
-                if($geofence->contains($insidePoint)){
-                    $technicianids[$techId]['id'] = $techId;
+                }
+
+                if ($geofence->contains($insidePoint)) {
+                    $technicianids[$techId]['id']   = $techId;
                     $technicianids[$techId]['name'] = $tech->name;
 
-               }
-           }
+                }
+            }
 
         }
         return $technicianids;
 
     }
+
     public function activeOrderModal($id)
     {
         $order = $this->orderRepository->findWhere(["id" => $id])->first();
@@ -413,10 +456,10 @@ class PetspaceController extends AppBaseController
         $request->request->add(['name' => $name]);
 
         if ($request->has('first_name')) {
-           
-            if($request->has('user_status')){
+
+            if ($request->has('user_status')) {
                 $request->request->add(['status' => 1]);
-            }else{
+            } else {
                 $request->request->add(['status' => 0]);
             }
             $this->userRepository->updateRecord($request, $user);
@@ -507,7 +550,7 @@ class PetspaceController extends AppBaseController
         $technicians = $this->petspaceTechnicianRepository->findWhere(["petspace_id" => $petspace->id]);
 //        $orders      = $this->orderRepository->findWhere(["petspace_id" => $petspace->id])->orderBy('id', 'desc');
 
-        $orders      = $this->orderRepository->resetCriteria()->pushCriteria(new OrderCriteria([
+        $orders = $this->orderRepository->resetCriteria()->pushCriteria(new OrderCriteria([
             'petspace_id' => $petspace->id,
             'latest'      => 1,
         ]))->all();
@@ -622,16 +665,30 @@ class PetspaceController extends AppBaseController
 
     public function getTechnicianMinOrderFee($id)
     {
-        $areas = DB::select('select * from petspace.technician_areas where min_order=(select max(min_order) from petspace.technician_areas where technician_id = '.$id.')');
+        $areas = DB::select('select * from petspace.technician_areas where min_order=(select max(min_order) from petspace.technician_areas where technician_id = ' . $id . ')');
 
         $technicianids = [];
-        if(count($areas) > 0) {
+        if (count($areas) > 0) {
             foreach ($areas as $key => $value) {
-                $technicianids['id'] = $id;
-                $technicianids['min_order'] = $value->min_order;
+                $technicianids['id']           = $id;
+                $technicianids['min_order']    = $value->min_order;
                 $technicianids['delivery_fee'] = $value->delivery_fee;
             }
         }
         return response()->json(['status' => true, 'data' => $technicianids]);
+    }
+
+    /**
+     * Show the form for editing the specified Petspace.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function calendar()
+    {
+
+        BreadcrumbsRegister::Register($this->ModelName, $this->BreadCrumbName, []);
+        return view('admin.petspaces.calendar')->with(['petspace' => [], 'title' => $this->BreadCrumbName]);
     }
 }

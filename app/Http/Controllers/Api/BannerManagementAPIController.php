@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Criteria\BannerManagementCriteria;
 use App\Http\Requests\Api\CreateBannerManagementAPIRequest;
 use App\Http\Requests\Api\UpdateBannerManagementAPIRequest;
 use App\Models\BannerManagement;
@@ -102,7 +103,9 @@ class BannerManagementAPIController extends AppBaseController
         $bannerManagements = $this->bannerManagementRepository
             ->pushCriteria(new RequestCriteria($request))
             ->pushCriteria(new LimitOffsetCriteria($request))
-            //->pushCriteria(new bannerManagementCriteria($request))
+            ->pushCriteria(new bannerManagementCriteria([
+                "status" => 1
+            ]))
             ->all();
 
         return $this->sendResponse($bannerManagements->toArray(), 'Banner Managements retrieved successfully');

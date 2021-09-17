@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\CreateBannerManagementRequest;
 use App\Http\Requests\Admin\UpdateBannerManagementRequest;
 use App\Repositories\Admin\BannerManagementRepository;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\DB;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Response;
 
@@ -165,5 +166,29 @@ class BannerManagementController extends AppBaseController
 
         Flash::success($this->BreadCrumbName . ' deleted successfully.');
         return redirect(route('admin.banner-managements.index'))->with(['title' => "Banner Management"]);
+    }
+
+    public function bannerActiveInactive($id)
+    {
+
+        $banner = $this->bannerManagementRepository->findWithoutFail($id);
+        if (empty($banner)) {
+            Flash::error('Banner not found');
+            return redirect(route('admin.banner-managements.index'));
+        }
+        if ($banner->status == 1) {
+            DB::table('banner_managements')
+                ->where('id', $id)
+                ->limit(1)
+                ->update(array('status' => 0));
+        } else {
+            DB::table('banner_managements')
+                ->where('id', $id)
+                ->limit(1)
+                ->update(array('status' => 1));
+        }
+
+        Flash::success('Banner updated successfully.');
+        return redirect(route('admin.banner-managements.index'))->with(['title' => $this->BreadCrumbName]);
     }
 }

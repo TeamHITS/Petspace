@@ -273,6 +273,71 @@ class UserCardAPIController extends AppBaseController
     }
 
     /**
+     * @param Request $request
+     * @return Response
+     *
+     * @SWG\Post(
+     *      path="/save-transaction",
+     *      summary="Store a newly created transaction in storage",
+     *      tags={"UserCard"},
+     *      description="Store UserCard",
+     *      produces={"application/json"},
+     *      @SWG\Parameter(
+     *          name="Authorization",
+     *          description="User Auth Token{ Bearer ABC123 }",
+     *          type="string",
+     *          required=true,
+     *          default="Bearer ABC123",
+     *          in="header"
+     *      ),
+     *      @SWG\Parameter(
+     *          name="body",
+     *          in="body",
+     *          description="UserCard that should be stored",
+     *          required=false,
+     *          @SWG\Schema(ref="#/definitions/UserCard")
+     *      ),
+     *      @SWG\Response(
+     *          response=200,
+     *          description="successful operation",
+     *          @SWG\Schema(
+     *              type="object",
+     *              @SWG\Property(
+     *                  property="success",
+     *                  type="boolean"
+     *              ),
+     *              @SWG\Property(
+     *                  property="data",
+     *                  ref="#/definitions/UserCard"
+     *              ),
+     *              @SWG\Property(
+     *                  property="message",
+     *                  type="string"
+     *              )
+     *          )
+     *      )
+     * )
+     */
+    public function saveTransaction(Request $request)
+    {
+        $input = $request->all();
+
+        $transactionDetail = array(
+            "user_id"        => \Auth::id(),
+            "order_id"       => $input['order_id'],
+            "transaction_id" => $input['transaction_ref'],
+            "card_type"      => $input['card_type'],
+            "amount"         => $input['amount'],
+            "currency"       => $input['currency'],
+            "status_code"    => $input['status_code'],
+            "status_text"    => $input['status_text']
+        );
+        $transactionResult = $this->transactionRepository->saveRecord($transactionDetail);
+
+        return $this->sendResponse($transactionResult->toArray(), 'User Card and Transaction saved successfully');
+    }
+
+    /**
      * @param int $id
      * @return Response
      *

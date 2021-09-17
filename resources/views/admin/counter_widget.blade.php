@@ -1,7 +1,7 @@
 <!-- small box -->
 <div class="small-box bg-{{$bgColor}}">
     <div class="inner">
-        <h3>{{ $counter }}</h3>
+        <h4 style="font-size: 22px;"><b>{{ $counter }}</b></h4>
         <h4>{{ $title }}</h4>
     </div>
     <div class="icon">

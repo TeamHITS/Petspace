@@ -12,6 +12,8 @@ use App\Http\Requests\Api\SocialLoginAPIRequest;
 use App\Http\Requests\Api\UpdateForgotPasswordRequest;
 use App\Http\Requests\Api\VerifyCodeRequest;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\UserDetail;
 use App\Repositories\Admin\SocialAccountRepository;
 use App\Repositories\Admin\UDeviceRepository;
 use App\Repositories\Admin\UserDetailRepository;
@@ -109,6 +111,15 @@ class AuthAPIController extends AppBaseController
 
 
         try {
+
+            $user = $this->userRepository->findByField('email', $request->email)->first();
+
+            if ($user && $user->details->is_verified == 1) {
+                return $this->sendErrorWithData(["The email has already been taken."], 403);
+            } else if ($user) {
+                User::where('id', $user->id)->forceDelete();
+                UserDetail::where('user_id', $user->id)->forceDelete();
+            }
 
             $request->merge(["user_status" => 1]);
             $user = $this->userRepository->saveRecord($request);
@@ -250,6 +261,11 @@ class AuthAPIController extends AppBaseController
         if ($account) {
             // Account found. generate token;
             $user = $account->user;
+            if ($user->status == 0) {
+                return $this->sendErrorWithData([
+                    "loginFailed" => "Inactive User"
+                ], 403, []);
+            }
         } else {
             // Check if email address already exists. if yes, then link social account. else register new user.
             if (isset($input['email'])) {
@@ -277,6 +293,8 @@ class AuthAPIController extends AppBaseController
                 $userDetails['email_updates']   = 1;
                 $userDetails['is_social_login'] = 1;
                 $this->userDetailRepository->create($userDetails);
+
+                $this->userRepository->attachRole($user->id, 3);
             }
             // Add social media link to the user
             $this->socialAccountRepository->saveRecord($user->id, $request);
@@ -505,9 +523,9 @@ class AuthAPIController extends AppBaseController
         }
 
         if (!$user->details->is_verified) {
-            return $this->sendErrorWithData(["Email" => "Code can not be sent on an unverified account"], 403);
+            return $this->sendErrorWithData(["Email" => "Your email address was not found."], 403);
         }
-        
+
         $code = rand(1111, 9999);
 
         $subject = "Forgot Password Verification Code";

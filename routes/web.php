@@ -87,6 +87,8 @@ Route::middleware('userRole:vendor')->group(function () {
 
     Route::post('/update-services-stock', 'Web\PetspaceController@updateServiceStock');
     Route::post('/update-sub-services-stock', 'Web\PetspaceController@updateSubServiceStock');
+
+    Route::get('/calendar', 'Web\PetspaceController@calendar');
 });
 //
 //Route::get('/order-confirm/{id}', 'Web\PetspaceController@orderConfirmEmail');

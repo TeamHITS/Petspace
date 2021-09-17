@@ -200,6 +200,10 @@ class OrderAPIController extends AppBaseController
             ]);
         }
 
+        if (isset($input['min_order'])) {
+            $order['min_order'] = $input['min_order'];
+        }
+
         $orders = $this->orderRepository->saveRecord($order);
 
         $OrderHistory = new OrderHistory;
@@ -237,7 +241,7 @@ class OrderAPIController extends AppBaseController
                 }
             }
         }
-
+        $orders = $this->orderRepository->findWithoutFail($orders->id);
         return $this->sendResponse($orders->toArray(), 'Order saved successfully');
     }
 

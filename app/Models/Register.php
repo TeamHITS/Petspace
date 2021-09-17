@@ -71,7 +71,7 @@ class Register
         'image'                 => 'sometimes|image|mimes:jpg,png',
         'gender'                => 'sometimes',
         'date_of_birth'         => 'sometimes',
-        'email'                 => 'required|email|unique:users,email',
+        'email'                 => 'required|email',//|unique:users,email
         'device_token'          => 'sometimes|required',
         'device_type'           => 'required|string|in:ios,android,web',
         'password'              => 'min:6|required_with:password_confirmation|same:password_confirmation',
