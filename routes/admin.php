@@ -95,12 +95,12 @@ Route::post('add-area', 'PetspaceTechnicianController@addArea');
 Route::get('shop-open-close/{id}', 'PetspaceController@shopOpenClose');
 Route::post('shop-timings', 'PetspaceController@shopTimings');
 
-Route::get('get-vendor-table','UserController@getVendorDataTables');
-Route::get('get-technician-table','UserController@getTechnicianDataTables');
-Route::get('get-manager-table','UserController@getManagerDataTables');
-Route::get('get-supervisor-table','UserController@getSupervisorDataTables');
+Route::get('get-vendor-table', 'UserController@getVendorDataTables');
+Route::get('get-technician-table', 'UserController@getTechnicianDataTables');
+Route::get('get-manager-table', 'UserController@getManagerDataTables');
+Route::get('get-supervisor-table', 'UserController@getSupervisorDataTables');
 
-Route::get('/get-reviews-table/{id}','PetspaceController@getReviewDataTables');
+Route::get('/get-reviews-table/{id}', 'PetspaceController@getReviewDataTables');
 
 
 Route::resource('petspaces', 'PetspaceController');
@@ -154,3 +154,6 @@ Route::post('update_order_services_addon', 'OrderController@updateOrderServicesA
 Route::post('make_payment', 'OrderController@makePayment');
 Route::post('make_latepayment', 'OrderController@makeLatePayment');
 Route::post('confirm_payment', 'OrderController@confirmPayment');
+
+
+Route::get('banner-active/{id}', 'BannerManagementController@bannerActiveInactive');

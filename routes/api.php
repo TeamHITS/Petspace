@@ -69,31 +69,30 @@ Route::post('v1/refresh', 'AuthAPIController@refresh');
 Route::post('v1/send-notification', 'NotificationAPIController@sendNotification');
 
 Route::get('v1/valid', function () {
-        return response()->json([ 'valid' => auth()->check() ]);
+    return response()->json(['valid' => auth()->check()]);
 });
 
 Route::get('v1/restricted', [
-   'before' => 'jwt-auth',
-   function () {
-       $token = JWTAuth::getToken();
-       $user = JWTAuth::toUser($token);
+    'before' => 'jwt-auth',
+    function () {
+        $token = JWTAuth::getToken();
+        $user  = JWTAuth::toUser($token);
 
-       return Response::json([
-           'data' => [
-               'email' => $user->email,
-               'registered_at' => $user->created_at->toDateTimeString()
-           ]
-       ]);
-   }
+        return Response::json([
+            'data' => [
+                'email'         => $user->email,
+                'registered_at' => $user->created_at->toDateTimeString()
+            ]
+        ]);
+    }
 ]);
 
 
 Route::resource('v1/banner-managements', 'BannerManagementAPIController');
-    
+
 Route::middleware('auth:api')->group(function () {
     ## Token Required to below APIs
 
-   
 
     Route::post('v1/logout', 'AuthAPIController@logout');
 
@@ -107,6 +106,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('v1/orders/rating', 'OrderAPIController@addRating');
 
     Route::post('v1/check-transaction', 'UserCardAPIController@checkTransaction');
+    Route::post('v1/save-transaction', 'UserCardAPIController@saveTransaction');
 
     Route::resource('v1/roles', 'RoleAPIController');
     Route::resource('v1/permissions', 'PermissionAPIController');
@@ -141,23 +141,23 @@ Route::middleware('auth:api')->group(function () {
 
 });
 
-    Route::post('v1/petspace-restrict-technicians', 'PetspaceTechnicianAPIController@getRestrictedTechnicians');
+Route::post('v1/petspace-restrict-technicians', 'PetspaceTechnicianAPIController@getRestrictedTechnicians');
 
-    Route::resource('v1/petspaces', 'PetspaceAPIController');
+Route::resource('v1/petspaces', 'PetspaceAPIController');
 
-    Route::resource('v1/categories', 'CategoryAPIController');
+Route::resource('v1/categories', 'CategoryAPIController');
 
-    Route::resource('v1/category-services', 'CategoryServiceAPIController');
+Route::resource('v1/category-services', 'CategoryServiceAPIController');
 
-    Route::resource('v1/submenu-lists', 'SubmenuListAPIController');
+Route::resource('v1/submenu-lists', 'SubmenuListAPIController');
 
-    Route::resource('v1/submenu-services', 'SubmenuServiceAPIController');
+Route::resource('v1/submenu-services', 'SubmenuServiceAPIController');
 
-    Route::resource('v1/email-templates', 'EmailTemplateAPIController');
+Route::resource('v1/email-templates', 'EmailTemplateAPIController');
 
-    Route::resource('v1/petspace-technicians', 'PetspaceTechnicianAPIController');
+Route::resource('v1/petspace-technicians', 'PetspaceTechnicianAPIController');
 
-    Route::get('v1/server-time', 'AuthAPIController@getServerTime');
+Route::get('v1/server-time', 'AuthAPIController@getServerTime');
 
 
 Route::resource('v1/order-progresses', 'OrderProgressAPIController');
