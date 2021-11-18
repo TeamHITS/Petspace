@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @push('css')
-    {{--<link rel="stylesheet" href="{{ url('/public/assets/css/style.css') }}"/>--}}
-    <link rel="stylesheet" href="{{ url('/public/assets/css/font-awesome.css') }}">
-    {{--<link rel="stylesheet" href="{{ url('/public/assets/css/bootstrap.min.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}"/>--}}
+    <link rel="stylesheet" href="{{ url('public/assets/css/font-awesome.css') }}">
+    {{--<link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">--}}
     <style>
         /*SERVICE MENU PAGES START'S HERE*/
         .service-menu-card-wrap {
@@ -1144,7 +1144,7 @@
                                 <p>{{$petspace['grooming_text']}}</p>
                                 <ul class="info-list">
                                     <li>{{$petspace['rating']}} <i class="fas fa-star"></i> (200) <img
-                                                src="{{ url('/public/assets/images/google-icon.png') }}" alt="icon"
+                                                src="{{ url('public/assets/images/google-icon.png') }}" alt="icon"
                                                 class="img-fluid"></li>
                                     @if($petspace['min_order'] != 0 )
                                         <li>AED {{$petspace['min_order']}}</li>
@@ -1176,10 +1176,17 @@
                                                                                    style="cursor: pointer;"><i
                                                             class="fas fa-pencil-alt"></i></a></p>
                                             <p>{{$service['description']}}</p>
-                                            <p class="price">
-                                                AED {{($service['discount'] > 0 )? ($service['price'] - $service['discount'] ): $service['price']}}
-                                                <span class="cut-price">{{($service['discount'] > 0 )? "AED ".($service['price'] ): ""}} </span>•
-                                                Duration: {{$service['service_duration']}}mins</p>
+                                            @if($service['discount'] > 0 )
+                                                <p class="price">
+                                                    AED {{$service['price'] - (($service['discount'] /100) * $service['price'])}}
+                                                    <span class="cut-price">{{ "AED ".$service['price']}} </span>•
+                                                    Duration: {{$service['service_duration']}}mins</p>
+                                            @else
+                                                <p class="price">
+                                                    AED {{$service['price']}} •
+                                                    Duration: {{$service['service_duration']}}mins</p>
+                                            @endif
+
                                             <a href="{{url('admin/petspaces/service-submenu').'/'.$service['id']}}"
                                                class="sub-menu">View Submenu <i class="fas fa-arrow-right"></i></a>
                                         </div>
@@ -1222,7 +1229,7 @@
     </div>
 @endsection
 @push('scripts')
-    {{--<script src="{{ url('/public/assets/js/custom.js') }}"></script>--}}
+    {{--<script src="{{ url('public/assets/js/custom.js') }}"></script>--}}
     <script>
 
 

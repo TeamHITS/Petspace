@@ -2,28 +2,28 @@
     <div class="sidebar-top">
         <div class="logo-box">
             <a href="#!">
-                <img src="{{ url('/public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
+                <img src="{{ url('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
             </a>
         </div>
         <ul class="sidebar-list">
             <li class="{{  request()->is('dashboard') ? 'active' : '' }}">
-                <a href="{{URL::to('/dashboard')}}"><img src="{{ url('/public/assets/images/dashboard-icon-1.png') }}"
+                <a href="{{URL::to('/dashboard')}}"><img src="{{ url('public/assets/images/dashboard-icon-1.png') }}"
                                                          class="img-fluid"><span>Dashboard</span></a>
             </li>
             <li class="{{  request()->is('calendar') ? 'active' : '' }}"><a href="{{URL::to('/calendar')}}"><img
-                            src="{{ url('/public/assets/images/dashboard-icon-2.png') }}" class="img-fluid"><span>Calendar</span></a>
+                            src="{{ url('public/assets/images/dashboard-icon-2.png') }}" class="img-fluid"><span>Calendar</span></a>
             </li>
             <li class="{{  request()->is('orders') ? 'active' : '' }}">
-                <a href="{{URL::to('/orders')}}"><img src="{{ url('/public/assets/images/dashboard-icon-3.png') }}"
+                <a href="{{URL::to('/orders')}}"><img src="{{ url('public/assets/images/dashboard-icon-3.png') }}"
                                                       class="img-fluid"><span>Orders</span></a>
             </li>
             <li class="{{  request()->is('service-menu') ? 'active' : '' }}">
                 <a href="{{URL::to('/service-menu')}}"><img
-                            src="{{ url('/public/assets/images/dashboard-icon-4.png') }}" class="img-fluid"><span>Service Menu</span></a>
+                            src="{{ url('public/assets/images/dashboard-icon-4.png') }}" class="img-fluid"><span>Service Menu</span></a>
             </li>
 
             <li class="{{  request()->is('tech-list') ? 'active' : '' }}">
-                <a href="{{URL::to('/tech-list')}}"><img src="{{ url('/public/assets/images/dashboard-icon-5.png') }}"
+                <a href="{{URL::to('/tech-list')}}"><img src="{{ url('public/assets/images/dashboard-icon-5.png') }}"
                                                          class="img-fluid"><span>Technicians</span></a>
             </li>
         </ul>
@@ -32,10 +32,10 @@
         <ul class="sidebar-bottom-list">
             <li class="{{  request()->is('store-setting') ? 'active' : '' }}">
                 <a href="{{URL::to('/store-setting')}}"><img
-                            src="{{ url('/public/assets/images/dashboard-icon-6.png') }}" class="img-fluid"><span>Store Settings</span></a>
+                            src="{{ url('public/assets/images/dashboard-icon-6.png') }}" class="img-fluid"><span>Store Settings</span></a>
             </li>
             <li><a href="#!" data-bs-toggle="modal" data-bs-target="#contactPetspace"><img
-                            src="{{ url('/public/assets/images/dashboard-icon-7.png') }}" class="img-fluid"><span>Contact Petspace</span></a>
+                            src="{{ url('public/assets/images/dashboard-icon-7.png') }}" class="img-fluid"><span>Contact Petspace</span></a>
             </li>
         </ul>
     </div>

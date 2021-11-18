@@ -64,10 +64,11 @@ class PetspaceCriteria extends BaseCriteria implements CriteriaInterface
 
             $model = $model->select('*')->selectRaw($distanceQuery, [$area, $latitude, $longitude, $latitude])->having('distance', '<', $distance);
 
-
         }
+
+        $model = $model->orderBy('is_temporary_closed', 'ASC');
 //        dd($model->getBindings());
-//                dd($model->toSql());
+//        dd($model->toSql());
         return $model;
     }
 }

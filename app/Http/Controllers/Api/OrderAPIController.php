@@ -9,17 +9,24 @@ use App\Http\Requests\Api\UpdateOrderAPIRequest;
 use App\Models\Order;
 use App\Models\OrderService;
 use App\Models\OrderServiceAddon;
+use App\Models\UserPet;
 use App\Repositories\Admin\OrderRepository;
 use App\Repositories\Admin\OrderServiceAddonRepository;
+use App\Repositories\Admin\OrderServicePetRepository;
 use App\Repositories\Admin\OrderServiceRepository;
 use App\Repositories\Admin\PetspaceRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Notification;
 use Illuminate\Support\Facades\DB;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
 use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
 use App\Models\OrderHistory;
+use App\Models\OrderReference;
+use App\Models\Petspace;
+use App\Models\PetspaceTechnician;
+use App\Services\FirebaseService;
 
 /**
  * Class OrderController
@@ -32,17 +39,20 @@ class OrderAPIController extends AppBaseController
     private $orderServiceRepository;
     private $orderServiceAddonRepository;
     private $petspaceRepository;
+    private $orderServicePetRepository;
 
     public function __construct(OrderRepository $orderRepo,
                                 OrderServiceRepository $orderServiceRepo,
                                 OrderServiceAddonRepository $orderServiceAddonRepo,
-                                PetspaceRepository $petspaceRepo
+                                PetspaceRepository $petspaceRepo,
+                                OrderServicePetRepository $orderServicePetRepo
     )
     {
         $this->orderRepository             = $orderRepo;
         $this->orderServiceRepository      = $orderServiceRepo;
         $this->orderServiceAddonRepository = $orderServiceAddonRepo;
         $this->petspaceRepository          = $petspaceRepo;
+        $this->orderServicePetRepository   = $orderServicePetRepo;
     }
 
     /**
@@ -206,6 +216,14 @@ class OrderAPIController extends AppBaseController
 
         $orders = $this->orderRepository->saveRecord($order);
 
+        $petspace = Petspace::where('id', $input['petspace_id'])->first();
+        $user_id  = $petspace->user_id;
+        $title    = __('notifications.order.order_created.title');
+        $message  = __('notifications.order.order_created.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         $OrderHistory = new OrderHistory;
 
         $OrderHistory->order_id = $orders->id;
@@ -216,25 +234,45 @@ class OrderAPIController extends AppBaseController
         if (isset($input['services'])) {
             foreach ($input['services'] as $service) {
 
+                $userPet = UserPet::where('id', $service['pet_id'])->first();
+
+                $servicePet      = array(
+                    "user_id"     => $userPet['user_id'],
+                    "name"        => $userPet['name'],
+                    "type"        => $userPet['type'],
+                    "gender"      => $userPet['gender'],
+                    "breed"       => $userPet['breed'],
+                    "weight"      => $userPet['weight'],
+                    "color"       => $userPet['color'],
+                    "chip_id_num" => $userPet['chip_id_num'],
+                    "image"       => $userPet['image'],
+                    "birthdate"   => $userPet['birthdate'],
+                    "neutered"    => $userPet['neutered'],
+                    "instruction" => $userPet['instruction'],
+                );
+                $orderServicePet = $this->orderServicePetRepository->saveRecord($servicePet);
+
                 $service_data = array(
                     "order_id"   => $orders->id,
-                    "pet_id"     => $service['pet_id'],
+                    "pet_id"     => $orderServicePet->id,
                     "service_id" => $service['service_id'],
+                    "name"       => $service['name'],
                     "duration"   => $service['service_duration'],
-                    "price"      => $service['price']
+                    "price"      => $service['price'],
+                    "discount"   => $service['discount']
 
                 );
 
                 $orderService = $this->orderServiceRepository->saveRecord($service_data);
-
-
                 if (isset($service['addons'])) {
                     foreach ($service['addons'] as $addon) {
                         $addon_data         = array(
                             "order_service_id"   => $orderService->id,
                             "submenu_service_id" => $addon['submenu_service_id'],
+                            "name"               => $addon['name'],
                             "duration"           => $addon['service_duration'],
-                            "price"              => $addon['price']
+                            "price"              => $addon['price'],
+                            "discount"           => $addon['discount']
                         );
                         $orderServiceAddons = $this->orderServiceAddonRepository->saveRecord($addon_data);
                     }
@@ -371,6 +409,25 @@ class OrderAPIController extends AppBaseController
         }
 
         $order = $this->orderRepository->updateRecord($request, $order);
+
+        $petspace = Petspace::where('id', $order->petspace_id)->first();
+        $user_id  = $petspace->user_id;
+        $title    = __('notifications.order.order_updated.title');
+        $message  = __('notifications.order.order_updated.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
+        if ($order->technician_id) {
+
+            $technicians   = PetspaceTechnician::where('id', $order->technician_id)->first();
+            $technician_id = $technicians->user_id;
+            $title         = __('notifications.order.order_updated.title');
+            $message       = __('notifications.order.order_updated.message');
+
+            Notification::create_notification($technician_id, $title, $message);
+            FirebaseService::sendBellNotification($technician_id, $title, $message);
+        }
 
         return $this->sendResponse($order->toArray(), 'Order updated successfully');
     }
@@ -566,5 +623,24 @@ class OrderAPIController extends AppBaseController
         $petspaceUpdated = $this->petspaceRepository->updateRecord(array("rating" => $petspaceRating), $petspace);
 //        dd($petspaceUpdated);
         return $this->sendResponse($order->toArray(), 'Order rating added successfully');
+    }
+
+    public function orderReference(Request $request)
+    {
+        $orderid = $request->order_id;
+        $ref     = $request->reference;
+        /** @var Order $order */
+        $order = $this->orderRepository->findWithoutFail($orderid);
+
+        if (empty($order)) {
+            return $this->sendErrorWithData(['Order not found']);
+        }
+
+        $orderRef = OrderReference::updateOrCreate(
+            ['order_id' => $orderid],
+            ['reference' => $ref]
+        );
+
+        return $this->sendResponse($orderRef->toArray(), 'Order reference added successfully');
     }
 }

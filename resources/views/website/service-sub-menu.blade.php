@@ -14,7 +14,7 @@
                             </div>
                             <div class="button-box">
                                 <a id="publish-btn" style="cursor: pointer" class="gen-btn"><img
-                                            src="{{ url('/public/assets/images/icon-upload.png') }}" class="img-fluid">Publish
+                                            src="{{ url('public/assets/images/icon-upload.png') }}" class="img-fluid">Publish
                                     changes</a>
                             </div>
                         </div>
@@ -24,9 +24,16 @@
                                 <div class="text">
                                     <p class="name">{{ $service['name'] }}</p>
                                     <p>{{ $service['description'] }}</p>
-                                    <p class="price">AED {{ $service['price'] }} <span
-                                                class="cut-price">{{($service['discount'] > 0 )? "AED ".($service['price'] - $service['discount'] ): ""}} </span>•
-                                        Duration: {{ $service['service_duration'] }}mins</p>
+                                    @if($service['discount'] > 0 )
+                                        <p class="price">
+                                            AED {{ $service['price'] - (($service['discount'] / 100) * $service['price']) }}
+                                            <span
+                                                    class="cut-price">{{ "AED ". $service['price']}} </span>•
+                                            Duration: {{ $service['service_duration'] }}mins</p>
+                                    @else
+                                        <p class="price">AED {{ $service['price'] }} •
+                                            Duration: {{ $service['service_duration'] }}mins</p>
+                                    @endif
                                 </div>
                                 <div class="img">
                                     <img src="{{ $service['image_url'] }}" alt="icon" class="img-fluid"
@@ -53,9 +60,16 @@
                                         <div class="text">
                                             <p class="name">{{$service['name']}}</p>
                                             <p>{{$service['description']}}</p>
-                                            <p class="price">AED {{$service['price']}} <span
-                                                        class="cut-price">{{($service['discount'] > 0 )? "AED ".($service['price'] - $service['discount'] ): ""}} </span>•
-                                                Duration: {{$service['service_duration']}}mins</p>
+                                            @if($service['discount'] > 0)
+                                                <p class="price">
+                                                    AED {{($service['price'] -($service['discount'] / 100)*$service['price'] )}}
+                                                    <span
+                                                            class="cut-price">{{("AED ". $service['price'])}} </span>•
+                                                    Duration: {{$service['service_duration']}}mins</p>
+                                            @else
+                                                <p class="price">AED {{$service['price']}} •
+                                                    Duration: {{$service['service_duration']}}mins</p>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="bottom">

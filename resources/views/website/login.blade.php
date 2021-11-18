@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-3">
                     <div class="logo-wrap">
-                        <img src="{{ url('/public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
+                        <img src="{{ url('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-9">
@@ -22,6 +22,7 @@
         <div class="container">
             <div class="auth-card">
                 <form  id="submit-form"  action="{{URL::to('/logining')}}" method="POST">
+                    @csrf
                     <div class="form-top">
                         <p class="title">Sign In</p>
                         <p class="sub-title">Please enter your credentials top proceed.</p>

@@ -77,5 +77,6 @@
         @yield('content')
     </main>
 </div>
+@include('components.firebase-script')
 </body>
 </html>

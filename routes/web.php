@@ -10,7 +10,27 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/get-google-reviews', 'Web\PetspaceController@getGoogleReviews');
+Route::get('/home-web', "SiteController@index");
+Route::get('/become-partner', "SiteController@beAPartner");
+Route::get('/about', "SiteController@about");
+Route::get('/contact', "SiteController@contact");
+Route::get('/terms', "SiteController@terms");
+Route::get('/privacy-policy', "SiteController@policy");
+Route::post('/send-to-mail', 'MailChimpController@subscribeMailChimp');
+Route::post('/sendmail2', 'SiteController@storeContactForm');
+
+Route::namespace("Websiteadmin")->prefix('websiteadmin')->group(function () {
+    Route::resource('how-it-works', 'HowItWorksController');
+    Route::resource('testimonials', 'TestimonialsController');
+    Route::resource('faqs', 'FAQSController');
+    Route::get("templates/{page}", "TemplatesController@index");
+    Route::post("templates/{page}", "TemplatesController@store");
+});
 
 Route::get('/', function () {
     //if (!\Auth::check()) {
@@ -20,7 +40,7 @@ Route::get('/', function () {
 });//->middleware('userRole:vendor');//->middleware('userRole:vendor');
 
 Route::get('/login', function () {
-    if (\Auth::check()) {
+    if (Auth::check()) {
         return redirect('/dashboard');
     }
     return view('website.login');
@@ -89,6 +109,13 @@ Route::middleware('userRole:vendor')->group(function () {
     Route::post('/update-sub-services-stock', 'Web\PetspaceController@updateSubServiceStock');
 
     Route::get('/calendar', 'Web\PetspaceController@calendar');
+
+    //Calender Routes
+    Route::get('calendar/resource', 'Web\CalendarSlotsController@resourceCalendar');
+    Route::resource('/calendar', 'Web\CalendarSlotsController');
+    Route::post('calendar/save', 'Web\CalendarSlotsController@update');
+    Route::post('calendar/getSlots', 'Web\CalendarSlotsController@getSlots');
+    Route::get('calendar/getSlots', 'Web\CalendarSlotsController@getSlots');
 });
 //
 //Route::get('/order-confirm/{id}', 'Web\PetspaceController@orderConfirmEmail');
@@ -114,14 +141,14 @@ Route::get('/get-technician-min-order-fee/{id}', 'Web\PetspaceController@getTech
 /************ TECHNICIAN END ROUTES ************/
 
 Route::get('/technician', function () {
-    if (!\Auth::check()) {
+    if (!Auth::check()) {
         return redirect('/technician/login');
     }
     return redirect('/technician/home');
 })->middleware('userRole:technician');
 
 Route::get('/technician/login', function () {
-    if (\Auth::check()) {
+    if (Auth::check()) {
         return redirect('/technician');
     }
     return view('technician.technician-login');
@@ -143,3 +170,17 @@ Route::middleware('userRole:technician')->group(function () {
 });
 
 /************ END TECHNICIAN ROUTES ************/
+
+//firebase push notification
+Route::post('/save-token', 'FirebaseNotificationController@saveToken')->name('save-token');
+Route::post('/fcm/subscribe', 'FirebaseNotificationController@subscribe');
+
+//technician notification
+Route::get('technician/bell-notifications', 'NotificationController@index')->name('notifications.index');
+Route::get('technician/notification-mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
+// Route::post('technician/bell-notifications/{id}/mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
+
+//Vender notification
+Route::get('bell-notifications', 'NotificationController@index')->name('notifications.index');
+Route::get('notification-mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');
+// Route::post('bell-notifications/{id}/mark-as-read', 'NotificationController@markAsRead')->name('notifications.markAsRead');

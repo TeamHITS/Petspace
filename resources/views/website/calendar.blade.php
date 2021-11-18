@@ -479,7 +479,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -490,7 +490,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -501,7 +501,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -621,7 +621,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -632,7 +632,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -643,7 +643,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -766,7 +766,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -777,7 +777,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -788,7 +788,7 @@
                                                     <option>Stephen Hawking</option>
                                                 </select>
                                                 <a href="#!" class="del-technician">
-                                                    <img src="{{ url('/public/assets/images/icon-trash-red.png') }}" class="img-fluid">
+                                                    <img src="{{ url('public/assets/images/icon-trash-red.png') }}" class="img-fluid">
                                                 </a>
                                             </div>
                                         </div>
@@ -1172,7 +1172,7 @@
                                             <div class="selected-technician">
                                                 <div class="technician-item">
                                                     <div class="img">
-                                                        <img src="{{ url('/public/assets/images/icon-user.png') }}" class="img-fluid">
+                                                        <img src="{{ url('public/assets/images/icon-user.png') }}" class="img-fluid">
                                                     </div>
                                                     <p>Jamie Vardy</p>
                                                 </div>

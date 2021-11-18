@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-3">
                     <div class="logo-wrap">
-                        <img src="{{ url('/public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
+                        <img src="{{ url('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-lg-8 col-md-8 col-9">

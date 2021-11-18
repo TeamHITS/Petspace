@@ -6,7 +6,7 @@
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="icon" href="{{ url('/public/assets/images/favicon.png') }}"/>
+    <link rel="icon" href="{{ url('public/assets/images/favicon.png') }}"/>
 
     <!-- Bootstrap WYSIHTML5 -->
     <link rel="stylesheet" href="{{ url('/public/css/admin/bootstrap3-wysihtml5.min.css') }}">
@@ -99,12 +99,12 @@
             <!-- Logo -->
             <a href="{{ url('/admin/home') }}" class="logo">
                 <span class="logo-mini">
-                    <img src="{{ url('/public/assets/images/favicon.png') }}" alt="logo" class="img-fluid" style="width: 30px;height: 30px;">
+                    <img src="{{ url('public/assets/images/favicon.png') }}" alt="logo" class="img-fluid" style="width: 30px;height: 30px;">
                 </span>
                 <!-- logo for regular state and mobile devices -->
                 <span class="logo-lg">
                     {{--<img src="{{ route('api.resize', ['img' => 'public/logo-mini.png', 'w=40', 'h=40']) }}"> {{ config('app.name') }}--}}
-                    <img src="{{ url('/public/assets/images/logo.png') }}" alt="logo" class="img-fluid" style="width: 145px;height: 41px;">
+                    <img src="{{ url('public/assets/images/logo.png') }}" alt="logo" class="img-fluid" style="width: 145px;height: 41px;">
 
                 </span>
             </a>

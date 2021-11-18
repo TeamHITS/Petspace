@@ -14,15 +14,23 @@ use App\Repositories\Admin\CategoryServiceRepository;
 use App\Repositories\Admin\OrderRepository;
 use App\Repositories\Admin\PetspaceRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Category;
+use App\Models\CategoryService;
+use App\Models\Notification;
+use App\Models\Petspace;
+use App\Models\SubmenuList;
+use App\Models\SubmenuService;
 use App\Repositories\Admin\PetspaceTechnicianRepository;
 use App\Repositories\Admin\SettingRepository;
 use App\Repositories\Admin\SubmenuListRepository;
 use App\Repositories\Admin\SubmenuServiceRepository;
+use App\Services\FirebaseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Response;
 use Yajra\DataTables\DataTables;
+use Carbon\Carbon;
 
 class PetspaceController extends AppBaseController
 {
@@ -179,6 +187,13 @@ class PetspaceController extends AppBaseController
 
         $petspace = $this->petspaceRepository->updateRecord($request, $petspace);
 
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.info.personal_info.title');
+        $message = __('notifications.info.personal_info.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         Flash::success($this->BreadCrumbName . ' updated successfully.');
         if (isset($request->continue)) {
             $redirect_to = redirect(route('admin.petspaces.create'));
@@ -266,6 +281,16 @@ class PetspaceController extends AppBaseController
     public function addCategory(Request $request)
     {
         $category = $this->categoryRepository->saveRecord($request);
+
+        $petspace = Petspace::where('id', $request->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.add_category.title');
+        $message = __('notifications.menu.add_category.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         return response(['message' => "New category has been succussfully added"]);
     }
 
@@ -275,6 +300,15 @@ class PetspaceController extends AppBaseController
         if (!$service) {
             return response(['message' => "failed"]);
         }
+        $category = Category::where('id', $request->category_id)->first();
+        $petspace = Petspace::where('id', $category->petspace_id)->first();
+        $user_id  = $petspace->user_id;
+        $title    = __('notifications.menu.add_service.title');
+        $message  = __('notifications.menu.add_service.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         return response(['message' => "New service has been succussfully added"]);
     }
 
@@ -284,6 +318,18 @@ class PetspaceController extends AppBaseController
         if (!$service) {
             return response(['message' => "failed"]);
         }
+
+        $service  = CategoryService::where('id', $request->cat_service_id)->first();
+        $category = Category::where('id', $service->category_id)->first();
+        $petspace = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.add_submenu.title');
+        $message = __('notifications.menu.add_submenu.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         return response(['message' => "New submenu has been succussfully added"]);
     }
 
@@ -293,6 +339,19 @@ class PetspaceController extends AppBaseController
         if (!$service) {
             return response(['message' => "failed"]);
         }
+
+        $submenu         = SubmenuList::where('id', $request->submenu_id)->first();
+        $categoryService = CategoryService::where('id', $submenu->cat_service_id)->first();
+        $category        = Category::where('id', $categoryService->category_id)->first();
+        $petspace        = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.add_submenu_service.title');
+        $message = __('notifications.menu.add_submenu_service.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         return response(['message' => "New service has been succussfully added"]);
     }
 
@@ -331,6 +390,21 @@ class PetspaceController extends AppBaseController
     {
         $service  = $this->categoryServiceRepository->findWithoutFail($id);
         $category = $this->categoryRepository->findWithoutFail($service->category_id);
+
+
+        $petspace = $this->petspaceRepository->findWithoutFail($category->petspace_id);
+
+        $categoryService = CategoryService::where('id', $id)->first();
+        $category        = Category::where('id', $categoryService->category_id)->first();
+        $petspace        = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.delete_service.title');
+        $message = __('notifications.menu.delete_service.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         $this->categoryServiceRepository->deleteRecord($id);
         return redirect(url('admin/petspaces/service-menu') . '/' . $category->petspace_id);
     }
@@ -339,6 +413,20 @@ class PetspaceController extends AppBaseController
     {
         $service = $this->submenuServiceRepository->findWithoutFail($id);
         $submenu = $this->submenuListRepository->findWithoutFail($service->submenu_id);
+
+        $submenuService  = SubmenuService::where('id', $id)->first();
+        $submenu         = SubmenuList::where('id', $submenuService->submenu_id)->first();
+        $categoryService = CategoryService::where('id', $submenu->cat_service_id)->first();
+        $category        = Category::where('id', $categoryService->category_id)->first();
+        $petspace        = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.delete_submenu_service.title');
+        $message = __('notifications.menu.delete_submenu_service.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         $this->submenuServiceRepository->deleteRecord($id);
         return redirect(url('admin/petspaces/service-submenu') . '/' . $submenu->cat_service_id);
     }
@@ -351,6 +439,14 @@ class PetspaceController extends AppBaseController
         if (!$category) {
             return response(['message' => "failed"]);
         }
+        $petspace = Petspace::where('id', $category->petspace_id)->first();
+        $user_id  = $petspace->user_id;
+        $title    = __('notifications.menu.update_category.title');
+        $message  = __('notifications.menu.update_category.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         return response(['message' => "Category succussfully updated"]);
 
     }
@@ -363,6 +459,16 @@ class PetspaceController extends AppBaseController
             return response(['message' => "failed"]);
         }
         $service = $this->categoryServiceRepository->updateRecord($request, $service);
+
+        $category = Category::where('id', $service->category_id)->first();
+        $petspace = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.update_service.title');
+        $message = __('notifications.menu.update_service.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
 
         return response(['message' => "Category service updated"]);
 
@@ -377,6 +483,17 @@ class PetspaceController extends AppBaseController
         }
         $submenu = $this->submenuListRepository->updateRecord($request, $submenu);
 
+        $service  = CategoryService::where('id', $submenu->cat_service_id)->first();
+        $category = Category::where('id', $service->category_id)->first();
+        $petspace = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.update_submenu.title');
+        $message = __('notifications.menu.update_submenu.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
+
         return response(['message' => "Submenu updated"]);
 
     }
@@ -389,6 +506,18 @@ class PetspaceController extends AppBaseController
             return response(['message' => "failed"]);
         }
         $service = $this->submenuServiceRepository->updateRecord($request, $service);
+
+        $submenu         = SubmenuList::where('id', $service->submenu_id)->first();
+        $categoryService = CategoryService::where('id', $submenu->cat_service_id)->first();
+        $category        = Category::where('id', $categoryService->category_id)->first();
+        $petspace        = Petspace::where('id', $category->petspace_id)->first();
+
+        $user_id = $petspace->user_id;
+        $title   = __('notifications.menu.update_submenu_service.title');
+        $message = __('notifications.menu.update_submenu_service.message');
+
+        Notification::create_notification($user_id, $title, $message);
+        FirebaseService::sendBellNotification($user_id, $title, $message);
 
         return response(['message' => "Submenu Service updated"]);
 
@@ -431,9 +560,19 @@ class PetspaceController extends AppBaseController
     {
         $areas = DB::table('technician_areas')
             ->where('technician_id', '=', $id)
+            ->whereNull('deleted_at')
             ->get();
 
         return $this->sendResponse(["areas" => $areas], 'Promo Code deleted successfully');
+    }
+
+    public function deleteTechnicianArea($id)
+    {
+        $technician_areas = DB::table('technician_areas')
+            ->where('id', $id)
+            ->update(['deleted_at' => Carbon::now()]);
+
+        return $this->sendResponse([], 'Area deleted successfully');
     }
 
     public function shopOpenClose($id)
@@ -454,8 +593,8 @@ class PetspaceController extends AppBaseController
 //        dd($request->all());
         $input = $request->all();
 
-       $settings = DB::table('settings')
-            ->update(['start_time' => $input['start_time'],'close_time' => $input['close_time']]);
+        $settings = DB::table('settings')
+            ->update(['start_time' => $input['start_time'], 'close_time' => $input['close_time']]);
         return redirect(route('admin.petspaces.index'))->with(['title' => $this->BreadCrumbName]);
     }
 
@@ -469,7 +608,7 @@ class PetspaceController extends AppBaseController
 
 //        dd($review->toArray());
         BreadcrumbsRegister::Register($this->ModelName, $this->BreadCrumbName);
-        return view('admin.petspaces.reviews')->with(['reviews' => $review->toArray(),"petspace_id" => $id,'title' => $this->BreadCrumbName]);
+        return view('admin.petspaces.reviews')->with(['reviews' => $review->toArray(), "petspace_id" => $id, 'title' => $this->BreadCrumbName]);
     }
 
     public function getReviewDataTables($id)
@@ -480,8 +619,8 @@ class PetspaceController extends AppBaseController
             ->where('rating', '>', 0)
             ->latest()->get();
 
-            return Datatables::of($review)
-                ->make(true);
+        return Datatables::of($review)
+            ->make(true);
 
 //        return view('admin.users.index');
     }

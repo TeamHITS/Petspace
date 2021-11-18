@@ -1,8 +1,8 @@
 @extends('admin.layouts.app')
 @push('css')
-    {{--<link rel="stylesheet" href="{{ url('/public/assets/css/style.css') }}"/>--}}
-    <link rel="stylesheet" href="{{ url('/public/assets/css/font-awesome.css') }}">
-    {{--<link rel="stylesheet" href="{{ url('/public/assets/css/bootstrap.min.css') }}">--}}
+    {{--<link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}"/>--}}
+    <link rel="stylesheet" href="{{ url('public/assets/css/font-awesome.css') }}">
+    {{--<link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}">--}}
     <style>
         /*SERVICE MENU PAGES START'S HERE*/
         .service-menu-card-wrap {
@@ -1038,9 +1038,19 @@
                                 <div class="text">
                                     <p class="name">{{ $service['name'] }}</p>
                                     <p>{{ $service['description'] }}</p>
-                                    <p class="price">AED {{ $service['price'] }} <span
-                                                class="cut-price">{{($service['discount'] > 0 )? "AED ".($service['price'] - $service['discount'] ): ""}} </span>•
-                                        Duration: {{ $service['service_duration'] }}mins</p>
+
+                                    @if($service['discount'] > 0 )
+                                        <p class="price">
+                                            AED {{ $service['price'] - (($service['discount'] / 100) * $service['price']) }}
+                                            <span
+                                                    class="cut-price">{{ "AED ". $service['price']}} </span>•
+                                            Duration: {{ $service['service_duration'] }}mins</p>
+                                    @else
+                                        <p class="price">AED {{ $service['price'] }} •
+                                            Duration: {{ $service['service_duration'] }}mins</p>
+                                    @endif
+
+
                                 </div>
                                 <div class="img">
                                     <img src="{{ $service['image_url'] }}" alt="icon" class="img-fluid"
@@ -1074,9 +1084,17 @@
                                                         data-id="{{$submenuService['id']}}" style="cursor: pointer;"><i
                                                             class="fas fa-pencil-alt"></i></a></p>
                                             <p>{{$submenuService['description']}}</p>
-                                            <p class="price">AED {{$submenuService['price']}} <span
-                                                        class="cut-price">{{($submenuService['discount'] > 0 )? "AED ".($submenuService['price'] - $submenuService['discount'] ): ""}} </span>•
-                                                Duration: {{$submenuService['service_duration']}}mins</p>
+                                            @if($submenuService['discount'] > 0)
+                                                <p class="price">
+                                                    AED {{($submenuService['price'] -($submenuService['discount'] / 100)*$submenuService['price'] )}}
+                                                    <span
+                                                            class="cut-price">{{("AED ". $submenuService['price'])}} </span>•
+                                                    Duration: {{$submenuService['service_duration']}}mins</p>
+                                            @else
+                                                <p class="price">AED {{$submenuService['price']}} •
+                                                    Duration: {{$submenuService['service_duration']}}mins</p>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
@@ -1110,7 +1128,7 @@
     </div>
 @endsection
 @push('scripts')
-    {{--<script src="{{ url('/public/assets/js/custom.js') }}"></script>--}}
+    {{--<script src="{{ url('public/assets/js/custom.js') }}"></script>--}}
     <script>
 
 

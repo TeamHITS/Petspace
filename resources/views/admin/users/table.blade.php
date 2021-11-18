@@ -30,6 +30,9 @@
                     {!! $dataTable->table(['width' => '100%']) !!}
                 </div>
                 <div class="tab-pane fade" id="custom-tabs-three-profile" role="tabpanel" aria-labelledby="custom-tabs-three-profile-tab">
+                    <div class="dt-buttons btn-group">
+                        <a class="btn btn-default buttons-create" tabindex="0" aria-controls="dataTableBuilder" href="{{URL('admin/users/create')}}"><span><i class="fa fa-plus"></i> Create</span></a>
+                    </div>
                     <table id="vendor-datatable" class="table table-bordered yajra-datatable">
                         <thead>
                         <tr>
@@ -60,6 +63,9 @@
                     {{--</table>--}}
                 {{--</div>--}}
                 <div class="tab-pane fade" id="custom-tabs-three-settings" role="tabpanel" aria-labelledby="custom-tabs-three-settings-tab">
+                    <div class="dt-buttons btn-group">
+                        <a class="btn btn-default buttons-create" tabindex="0" aria-controls="dataTableBuilder" href="{{URL('admin/users/create')}}"><span><i class="fa fa-plus"></i> Create</span></a>
+                    </div>
                     <table id="manager-datatable" class="table table-bordered yajra-datatable">
                         <thead>
                         <tr>
@@ -75,6 +81,9 @@
                     </table>
                 </div>
                 <div class="tab-pane fade" id="custom-tabs-three-supervisor" role="tabpanel" aria-labelledby="custom-tabs-three-settings-tab">
+                    <div class="dt-buttons btn-group">
+                        <a class="btn btn-default buttons-create" tabindex="0" aria-controls="dataTableBuilder" href="{{URL('admin/users/create')}}"><span><i class="fa fa-plus"></i> Create</span></a>
+                    </div>
                     <table id="supervisor-datatable" class="table table-bordered yajra-datatable">
                         <thead>
                         <tr>

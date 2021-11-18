@@ -17,12 +17,14 @@ use App\Repositories\Admin\CategoryServiceRepository;
 use App\Repositories\Admin\OrderRepository;
 use App\Repositories\Admin\PetspaceRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Notification;
 use App\Repositories\Admin\PetspaceTechnicianRepository;
 use App\Repositories\Admin\SubmenuListRepository;
 use App\Repositories\Admin\SubmenuServiceRepository;
 use App\Repositories\Admin\UserDetailRepository;
 use App\Repositories\Admin\UserRepository;
 use App\Repositories\Admin\UserAddressRepository;
+use App\Services\FirebaseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laracasts\Flash\Flash;
@@ -316,6 +318,7 @@ class PetspaceController extends AppBaseController
     public function editTechnicianModal($id)
     {
         $technician = $this->petspaceTechnicianRepository->findWhere(["user_id" => $id])->first();
+
         $view       = view('website.layouts.edit-technician-modal')->with(['technician' => $technician]);
         return $this->sendResponse($view->render(), '');
     }
@@ -468,6 +471,12 @@ class PetspaceController extends AppBaseController
             if ($request->has('device_token')) {
                 $this->uDevice->saveRecord(\Auth::id(), $request);
             }
+            $title = __('notifications.info.personal_info.title');
+            $message =  __('notifications.info.personal_info.message');
+
+            Notification::create_notification($userId, $title, $message);
+            FirebaseService::sendBellNotification($userId, $title, $message);
+
             return response(['message' => "Technician updated succussfully"]);
         }
         return $this->sendErrorWithData(['Something Went Wrong!']);
@@ -497,13 +506,20 @@ class PetspaceController extends AppBaseController
     {
         $order_id = $request->input('order_id');
         $order    = $this->orderRepository->findWithoutFail($order_id);
-
-//        dd($request->all());
+        
         if (empty($order)) {
             Flash::error('Technician not found');
             return $this->sendErrorWithData(['Order not found!']);
         }
         $order = $this->orderRepository->updateRecord($request, $order);
+        
+        $technicians = PetspaceTechnician::where('id',$request->technician_id)->first(); 
+        $technician_id = $technicians->user_id;
+        $title = __('notifications.order.assign_order.title');
+        $message =  __('notifications.order.assign_order.message');
+
+        Notification::create_notification($technician_id, $title, $message);
+        FirebaseService::sendBellNotification($technician_id, $title, $message);
 
         return $this->sendResponse(['url' => '/order/' . $order_id], 'Technician assigned succussfully');
 //        return response(['message' => "Technician deleted succussfully"]);

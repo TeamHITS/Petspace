@@ -40,8 +40,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="name",
+ *          description="name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="price",
  *          description="price",
+ *          type="number",
+ *          format="number"
+ *      ),
+ *     @SWG\Property(
+ *          property="discount",
+ *          description="discount",
  *          type="number",
  *          format="number"
  *      ),
@@ -79,8 +90,10 @@ class OrderService extends Model
         'pet_id',
         'order_id',
         'service_id',
+        'name',
         'duration',
-        'price'
+        'price',
+        'discount',
     ];
 
     /**
@@ -93,8 +106,10 @@ class OrderService extends Model
         'pet_id'     => 'integer',
         'order_id'   => 'integer',
         'service_id' => 'integer',
+        'name'       => 'string',
         'duration'   => 'integer',
-        'price'      => 'float'
+        'price'      => 'float',
+        'discount'   => 'float'
     ];
 
     /**
@@ -120,9 +135,11 @@ class OrderService extends Model
         'pet_id',
         'order_id',
         'service_id',
+        'name',
         'service_name',
         'duration',
         'price',
+        'discount',
         'pet',
         'addons',
     ];
@@ -136,8 +153,10 @@ class OrderService extends Model
         'pet_id'     => 'required',
         'order_id'   => 'required',
         'service_id' => 'required',
+        'name'       => 'required',
+        'duration'   => 'required',
         'price'      => 'required',
-        'duration'   => 'required'
+        'discount'   => 'required'
     ];
 
     /**
@@ -149,8 +168,10 @@ class OrderService extends Model
         'pet_id'     => 'required',
         'order_id'   => 'required',
         'service_id' => 'required',
+        'name'       => 'required',
+        'duration'   => 'required',
         'price'      => 'required',
-        'duration'   => 'required'
+        'discount'   => 'required'
     ];
 
     /**
@@ -162,8 +183,10 @@ class OrderService extends Model
         'pet_id'     => 'required',
         'order_id'   => 'required',
         'service_id' => 'required',
+        'name'       => 'required',
+        'duration'   => 'required',
         'price'      => 'required',
-        'duration'   => 'required'
+        'discount'   => 'required'
     ];
 
     /**
@@ -175,8 +198,10 @@ class OrderService extends Model
         'pet_id'     => 'required',
         'order_id'   => 'required',
         'service_id' => 'required',
+        'name'       => 'required',
         'duration'   => 'required',
-        'price'      => 'required'
+        'price'      => 'required',
+        'discount'   => 'required'
     ];
 
     public function addons()
@@ -199,6 +224,6 @@ class OrderService extends Model
 
     public function pet()
     {
-        return $this->belongsTo(UserPet::class, "pet_id", "id");
+        return $this->belongsTo(OrderServicePet::class, "pet_id", "id")->withTrashed();
     }
 }

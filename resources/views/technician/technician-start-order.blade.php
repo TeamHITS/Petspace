@@ -4,13 +4,13 @@
         <section class="technician-dash-top auth-top">
             <a href="{{URL::to('/technician/order-detail/').'/'.$order['id']}}" class="pg-title"><i
                         class="fas fa-chevron-left mr-1"></i> Order #7363523</a>
-            <a href="tel:{{$order["user"]["details"]['phone']}}" class="call-bth"><img src="{{ url('/public/assets/images/phone-outline.png') }}" class="img-fluid"></a>
+            <a href="tel:{{$order["user"]["details"]['phone']}}" class="call-bth"><img src="{{ url('public/assets/images/phone-outline.png') }}" class="img-fluid"></a>
         </section>
         <div class="technicain-dash-body technicain-start-order">
             @if($order['progress_status'] == 10)
                 <div class="start-order-wrap mb-4">
                     <div class="icon-wrap">
-                        <div class="icon"><img src="{{ url('/public/assets/images/map-marker.png') }}"
+                        <div class="icon"><img src="{{ url('public/assets/images/map-marker.png') }}"
                                                class="img-fluid"></div>
                     </div>
                     <div class="start-order-card">
@@ -33,7 +33,7 @@
             @elseif($order['progress_status'] > 10)
                 <div class="start-order-wrap mb-4 completed-service">
                     <div class="icon-wrap">
-                        <div class="icon"><img src="{{ url('/public/assets/images/white-check.png') }}"
+                        <div class="icon"><img src="{{ url('public/assets/images/white-check.png') }}"
                                                class="img-fluid check-icon"></div>
                     </div>
                     <div class="start-order-card">
@@ -52,7 +52,7 @@
             @if($order['progress_status'] < 20 )
                 <div class="start-order-wrap mb-4 opacity-0-3">
                     <div class="icon-wrap no-border">
-                        <div class="icon"><div class="icon"><img src="{{ url('/public/assets/images/truck-dark.png') }}"
+                        <div class="icon"><div class="icon"><img src="{{ url('public/assets/images/truck-dark.png') }}"
                                                                  class="img-fluid truck-icon"></div>
                     </div>
                     <div class="start-order-card">
@@ -72,7 +72,7 @@
             @elseif($order['progress_status'] == 20)
                 <div class="start-order-wrap mb-4">
                     <div class="icon-wrap">
-                        <div class="icon"><img src="{{ url('/public/assets/images/truck-dark.png') }}"
+                        <div class="icon"><img src="{{ url('public/assets/images/truck-dark.png') }}"
                                                class="img-fluid truck-icon"></div>
                     </div>
                     <div class="start-order-card">
@@ -93,7 +93,7 @@
             @elseif($order['progress_status'] > 20)
                 <div class="start-order-wrap mb-4 completed-service">
                     <div class="icon-wrap">
-                        <div class="icon"><img src="{{ url('/public/assets/images/white-check.png') }}"
+                        <div class="icon"><img src="{{ url('public/assets/images/white-check.png') }}"
                                                class="img-fluid check-icon"></div>
                     </div>
                     <div class="start-order-card">
@@ -152,7 +152,7 @@
             @elseif($order['progress_status'] > 30)
                 <div class="start-order-wrap completed-service mb-4">
                     <div class="icon-wrap">
-                        <div class="icon"><img src="{{ url('/public/assets/images/white-check.png') }}"
+                        <div class="icon"><img src="{{ url('public/assets/images/white-check.png') }}"
                                                class="img-fluid check-icon"></div>
                     </div>
                     <div class="start-order-card">
@@ -177,7 +177,7 @@
             @elseif($order['progress_status'] == 40)
                 <div class="start-order-wrap completed-service mb-4">
                     <div class="icon-wrap">
-                        <div class="icon"><img src="{{ url('/public/assets/images/white-check.png') }}"
+                        <div class="icon"><img src="{{ url('public/assets/images/white-check.png') }}"
                                                class="img-fluid check-icon"></div>
                     </div>
                     <div class="start-order-card">

@@ -12,28 +12,30 @@
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                @if($card_status == 'oldcard') 
+                <?php if($card_status === 2){?> 
                       <div class="col-sm-12">
                         @if(isset($response['auth']))
-                            <p>Status :  {{$response['auth']['status']}}</p>
-                            <p>Message :  {{$response['auth']['message']}}</p>
-                            <p>Ref :  {{$response['auth']['tranref']}}</p>
-                            <p>Detail :  {{$response['payment']['description']}}</p>
-                            <p>Card ending :  {{$response['payment']['card_end']}}</p>
-                      @else
+                            <p>Status :  {{ !is_array($response['auth']['status']) ? $response['auth']['status'] : print_r($response['auth']['status'])}}</p>
+                            <p>Message :  {{ !is_array($response['auth']['message']) ? $response['auth']['message'] : print_r($response['auth']['message'])}}</p>
+                            <p>Ref :  {{ !is_array($response['auth']['tranref']) ? $response['auth']['tranref'] : print_r($response['auth']['tranref'])}}</p>
+
+                      	 @else
                         <p>Payment Failure :  Something went wrong</p>
+                        <p>Status :  {{ !is_array($response['auth']['status']) ? $response['auth']['status'] : print_r($response['auth']['status'])}}</p>
+                         <p>Message :  {{ !is_array($response['auth']['message']) ? $response['auth']['message'] : print_r($response['auth']['message'])}}</p>
+                            <p>Ref :  {{ !is_array($response['auth']['tranref']) ? $response['auth']['tranref'] : print_r($response['auth']['tranref'])}}</p>
                       @endif
                       </div>
-                @else
+                <?php } else { ?>
                     <div class="col-sm-12">
-                        @if(isset($response['order']['ref']))
-                            <h3>{{$response['order']['url']}}</h3><br />
+                        @if($response['order']['ref']!==null)
+                            <h3>{{@$response['order']['url']}}</h3><br />
                             <p>Copy above URL and ask customer to pay as soon as possible.</p>
                         @else
                             <p>Payment Failure :  Something went wrong</p>
                         @endif
                     </div>
-                @endif
+                <?php } ?>
            </div>
        </div>
     </div>

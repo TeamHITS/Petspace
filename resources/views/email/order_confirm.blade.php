@@ -10,11 +10,11 @@
           rel="stylesheet">
 </head>
 <body style="font-family: 'Manrope', sans-serif; margin: 0; padding: 0;">
-<table style=" border: none; width: 375px;padding: 70px 12px; font-family: 'Manrope', sans-serif; background: url({{ url('/public/assets/images/email_temp/bg-img.png') }});"
-       cellpadding="0" cellspacing="0" background="{{ url('/public/assets/images/email_temp/bg-img.png') }}">
+<table style=" border: none; width: 375px;padding: 70px 12px; font-family: 'Manrope', sans-serif; background: url({{ url('public/assets/images/email_temp/bg-img.png') }});"
+       cellpadding="0" cellspacing="0" background="{{ url('public/assets/images/email_temp/bg-img.png') }}">
     <tbody>
     <tr style="margin:0 12px 10px 12px;">
-        <td><img style="padding-bottom: 15px;" src="{{ url('/public/assets/images/email_temp/logo.png') }}" alt="">
+        <td><img style="padding-bottom: 15px;" src="{{ url('public/assets/images/email_temp/logo.png') }}" alt="">
         </td>
     </tr>
     <!-- FIRST CARD -->
@@ -24,7 +24,7 @@
                 <tbody>
                 <tr style="text-align: center;">
                     <td style="text-align: center;">
-                        <img src="{{ url('/public/assets/images/email_temp/card-dog.png') }}" alt="" style="max-width: 100%; height: auto;">
+                        <img src="{{ url('public/assets/images/email_temp/card-dog.png') }}" alt="" style="max-width: 100%; height: auto;">
                     </td>
                 </tr>
                 <tr>
@@ -53,7 +53,7 @@
                 <tbody>
                 <tr>
                     <td style="width: 25px;">
-                        <img src="{{ url('/public/assets/images/email_temp/calender-icon.png') }}" alt="calender-logo" style="max-width: 100%; height: auto;">
+                        <img src="{{ url('public/assets/images/email_temp/calender-icon.png') }}" alt="calender-logo" style="max-width: 100%; height: auto;">
                     </td>
                     <td style="padding-left: 20px;">
                         <p style="padding: 0; margin: 0; font-size: 15px; font-weight: 500;color: #97999b;">Order is
@@ -217,7 +217,7 @@
                             <tbody>
                             <tr>
                                 <td style="width: 17%;" colspan="1">
-                                    <img src="{{ url('/public/assets/images/email_temp/chat-icon.png') }}" alt="service-logo"
+                                    <img src="{{ url('public/assets/images/email_temp/chat-icon.png') }}" alt="service-logo"
                                          style="max-width: 100%; height: auto;padding-bottom: 25px;">
                                 </td>
                                 <td style="width: 83%;padding-left: 10px; text-align: left;" colspan="3">
@@ -262,7 +262,7 @@
             <table style="width: 100%;">
                 <tbody>
                 <tr style="text-align: center;">
-                    <td style="text-align: center;"><img src="{{ url('/public/assets/images/email_temp/footer-logo.png') }}" alt="logo"
+                    <td style="text-align: center;"><img src="{{ url('public/assets/images/email_temp/footer-logo.png') }}" alt="logo"
                                                          style="max-width: 100%; height: auto;padding-bottom: 20px;">
                     </td>
                 </tr>
@@ -283,13 +283,13 @@
                 </tr>
                 <tr style="text-align: center;">
                     <td style="text-align: center;">
-                        <a href="#!" style="margin:0 15px; display: inline;"><img src="{{ url('/public/assets/images/email_temp/icon-fb.png') }}" alt=""
+                        <a href="#!" style="margin:0 15px; display: inline;"><img src="{{ url('public/assets/images/email_temp/icon-fb.png') }}" alt=""
                                                                                   style="max-width: 100%; height: auto;"></a>
                         <a href="#!" style="margin:0 15px; display: inline;">
-                            <img src="{{ url('/public/assets/images/email_temp/icon-insta.png') }}" alt="" style="max-width: 100%; height: auto;">
+                            <img src="{{ url('public/assets/images/email_temp/icon-insta.png') }}" alt="" style="max-width: 100%; height: auto;">
                         </a>
                         <a href="#!" style="margin:0 15px; display: inline;">
-                            <img src="{{ url('/public/assets/images/email_temp/icon-tw.png') }}" alt="" style="max-width: 100%; height: auto;">
+                            <img src="{{ url('public/assets/images/email_temp/icon-tw.png') }}" alt="" style="max-width: 100%; height: auto;">
                         </a>
                     </td>
                 </tr>

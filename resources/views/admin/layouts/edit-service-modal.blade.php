@@ -1,7 +1,7 @@
 <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">New Service</h5>
+            <h5 class="modal-title">Edit Service</h5>
             <button type="button" class="btn-close btn-add-cancel" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <form id="menu-form" action="{{URL::to('admin/petspaces/update-service')}}" method="POST">
@@ -52,7 +52,7 @@
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="form-group">
                             <label for="">Total Standard Price</label>
-                            <input name="price" type="text" class="gen-input" placeholder="Service Price"
+                            <input name="price" type="text" class="gen-input" placeholder="Enter Service Price"
                                    value="{{$service['price']}}" required>
                         </div>
                     </div>
@@ -60,15 +60,15 @@
                         <div class="form-group">
                             <label for="">Total Discount Price (Optional)</label>
                             <input name="discount" type="text" class="gen-input" value="{{$service['discount']}}"
-                                   placeholder="Service Discount Price"
-                                   required>
+                                   placeholder="Enter Discount in Percentage" pattern="^[0-9][0-9]?$|^100$"
+                                   title="Enter discount between 0 to 100">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="form-group">
                             <label for="">Service Duration</label>
                             <input name="service_duration" type="text" class="gen-input"
-                                   placeholder="Service Duration in minutes"
+                                   placeholder="Enter Duration in minutes"
                                    value="{{($service['service_duration']) ? $service['service_duration'] : ''}}"
                                    required>
                         </div>
@@ -106,10 +106,10 @@
     }
 
     $("#imageUpload").change(function () {
-        if(this.files[0].size > 2097152){
+        if (this.files[0].size > 2097152) {
             alert("File is too big!");
             this.value = "";
-        }else{
+        } else {
             readURL(this);
         }
     });

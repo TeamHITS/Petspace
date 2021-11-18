@@ -4,36 +4,42 @@
     <meta charset="utf-8">
     <title><?php echo getenv('APP_NAME');?></title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="{{ url('/public/assets/images/favicon.png') }}"/>
+
+    
+    
+    <link href="{{ asset('public/css/app.css') }}" rel="stylesheet">
+
+    <link rel="icon" href="{{ url('public/assets/images/favicon.png') }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
-    <link rel="stylesheet" href="{{ url('/public/assets/css/bootstrap.min.css') }}"/>
-    <link rel="stylesheet" href="{{ url('/public/assets/css/stellarnav.min.css') }}"/>
-    <link rel="stylesheet" href="{{ url('/public/assets/css/font-awesome.css') }}">
+    <link rel="stylesheet" href="{{ url('public/assets/css/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url('public/assets/css/stellarnav.min.css') }}"/>
+    <link rel="stylesheet" href="{{ url('public/assets/css/font-awesome.css') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" href="{{ url('/public/assets/css/style.css') }}"/>
-    <link rel="stylesheet" href="{{ url('/public/assets/css/responsive.css') }}"/>
+    <link rel="stylesheet" href="{{ url('public/assets/css/style.css') }}"/>
+    <link rel="stylesheet" href="{{ url('public/assets/css/responsive.css') }}"/>
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="{{ url('/public/assets/css/daterangepicker.css') }}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/daterangepicker.css') }}" />
 
     <!-- SWIPER SLIDER -->
-    <link rel="stylesheet" href="{{ url('/public/assets/css/swiper-bundle.min.css') }}" />
+    <link rel="stylesheet" href="{{ url('public/assets/css/swiper-bundle.min.css') }}" />
     @stack('css')
 </head>
 
 <body>
-
+<div id="app"></div>
 @yield('content')
 
-<!-- SWIPER SLIDER -->
-<script src="{{ url('/public/assets/js/swiper-bundle.min.js') }}"></script>
 
-<script src="{{ url('/public/assets/js/bootstrap.min.js') }}"></script>
-<script src="{{ url('/public/assets/js/jquery-3.5.1.min.js') }}"></script>
-<script src="{{ url('/public/assets/js/stellarnav.min.js') }}"></script>
-<script src="{{ url('/public/assets/js/custom.js') }}"></script>
+<!-- SWIPER SLIDER -->
+<script src="{{ url('public/assets/js/swiper-bundle.min.js') }}"></script>
+
+<script src="{{ url('public/assets/js/bootstrap.min.js') }}"></script>
+<script src="{{ url('public/assets/js/jquery-3.5.1.min.js') }}"></script>
+<script src="{{ url('public/assets/js/stellarnav.min.js') }}"></script>
+<script src="{{ url('public/assets/js/custom.js') }}"></script>
 <script src="{{ asset('public/js/website/custom.js') }}"></script>
 
 
@@ -43,7 +49,7 @@
 
 <!-- DATE RANGE LIBRARIES -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
-<script src="{{ url('/public/assets/js/daterangepicker.js') }}"></script>
+<script src="{{ url('public/assets/js/daterangepicker.js') }}"></script>
 
 @stack('scripts')
 <!-- Optional JavaScript -->
@@ -145,6 +151,7 @@
         //Home Page end
     });
 </script>
-
+    {{-- <script src="{{ asset('public/js/app.js') }}"></script> --}}
+    @include('components.firebase-script')
 </body>
 </html>

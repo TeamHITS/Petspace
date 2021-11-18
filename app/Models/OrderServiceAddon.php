@@ -34,8 +34,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
+ *          property="name",
+ *          description="name",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="price",
  *          description="price",
+ *          type="number",
+ *          format="number"
+ *      ),
+ *      @SWG\Property(
+ *          property="discount",
+ *          description="discount",
  *          type="number",
  *          format="number"
  *      ),
@@ -72,8 +83,10 @@ class OrderServiceAddon extends Model
     public $fillable = [
         'order_service_id',
         'submenu_service_id',
+        'name',
         'duration',
-        'price'
+        'price',
+        'discount'
     ];
 
     /**
@@ -85,8 +98,10 @@ class OrderServiceAddon extends Model
         'id'                 => 'integer',
         'order_service_id'   => 'integer',
         'submenu_service_id' => 'integer',
+        'name'               => 'string',
         'duration'           => 'integer',
-        'price'              => 'float'
+        'price'              => 'float',
+        'discount'           => 'float'
     ];
 
     /**
@@ -112,8 +127,10 @@ class OrderServiceAddon extends Model
         "id",
         "order_service_id",
         "submenu_service_id",
+        "name",
         "price",
         'duration',
+        'discount',
         "submenu_name"
     ];
 
@@ -125,8 +142,10 @@ class OrderServiceAddon extends Model
     public static $rules = [
         'order_service_id'   => 'required',
         'submenu_service_id' => 'required',
+        'name'               => 'required',
         'duration'           => 'required',
-        'price'              => 'required'
+        'price'              => 'required',
+        'discount'           => 'required'
     ];
 
     /**
@@ -137,8 +156,10 @@ class OrderServiceAddon extends Model
     public static $update_rules = [
         'order_service_id'   => 'required',
         'submenu_service_id' => 'required',
+        'name'               => 'required',
         'duration'           => 'required',
-        'price'              => 'required'
+        'price'              => 'required',
+        'discount'           => 'required'
     ];
 
     /**
@@ -149,8 +170,10 @@ class OrderServiceAddon extends Model
     public static $api_rules = [
         'order_service_id'   => 'required',
         'submenu_service_id' => 'required',
+        'name'               => 'required',
         'duration'           => 'required',
-        'price'              => 'required'
+        'price'              => 'required',
+        'discount'           => 'required'
     ];
 
     /**
@@ -161,8 +184,10 @@ class OrderServiceAddon extends Model
     public static $api_update_rules = [
         'order_service_id'   => 'required',
         'submenu_service_id' => 'required',
-        'price'              => 'required',
+        'name'               => 'required',
         'duration'           => 'required',
+        'price'              => 'required',
+        'discount'           => 'required'
     ];
 
     public function serviceSubmenu()

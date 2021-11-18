@@ -84,12 +84,14 @@ Route::get('petspaces/delete-submenu-service/{id}', 'PetspaceController@deleteSu
 
 Route::get('petspaces/block-user/{id}', 'UserController@userActiveInactive');
 Route::get('petspace-approved/{id}', 'PetspaceController@approvePetspace');
+Route::get('order-cancel/{id}', 'OrderController@cancelOrder');
 Route::get('tech-approved/{id}', 'PetspaceTechnicianController@approveTechnician');
 
 Route::get('map-restriction/{id}', 'PetspaceController@mapRestriction');
 Route::get('petspaces/reviews/{id}', 'PetspaceController@reviews');
 
 Route::get('get-areas/{id}', 'PetspaceController@getTechnicianAreas');
+Route::get('del-areas/{id}', 'PetspaceController@deleteTechnicianArea');
 Route::post('add-area', 'PetspaceTechnicianController@addArea');
 
 Route::get('shop-open-close/{id}', 'PetspaceController@shopOpenClose');
@@ -157,3 +159,4 @@ Route::post('confirm_payment', 'OrderController@confirmPayment');
 
 
 Route::get('banner-active/{id}', 'BannerManagementController@bannerActiveInactive');
+Route::resource('order-service-pets', 'OrderServicePetController');

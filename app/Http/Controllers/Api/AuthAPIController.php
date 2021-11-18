@@ -202,7 +202,7 @@ class AuthAPIController extends AppBaseController
         $user        = $this->userRepository->getUserByEmail($request->email);
         if ($user->status == 0) {
             return $this->sendErrorWithData([
-                "loginFailed" => "Inactive User"
+                "loginFailed" => "User Blocked. Please contact Petspace Team"
             ], 403, []);
         }
         if (!$token = auth()->guard('api')->attempt($credentials)) {
@@ -263,7 +263,7 @@ class AuthAPIController extends AppBaseController
             $user = $account->user;
             if ($user->status == 0) {
                 return $this->sendErrorWithData([
-                    "loginFailed" => "Inactive User"
+                    "loginFailed" => "User Blocked. Please contact Petspace Team"
                 ], 403, []);
             }
         } else {

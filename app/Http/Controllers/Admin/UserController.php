@@ -12,6 +12,8 @@ use App\Repositories\Admin\RoleRepository;
 use App\Repositories\Admin\UserDetailRepository;
 use App\Repositories\Admin\UserRepository;
 use App\Http\Controllers\AppBaseController;
+use App\Models\Notification;
+use App\Services\FirebaseService;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Laracasts\Flash\Flash;
@@ -148,13 +150,27 @@ class UserController extends AppBaseController
      */
     public function update($id, UpdateUserRequest $request)
     {
+        $input = $request->input();
+
         $user = $this->userRepository->findWithoutFail($id);
         if (empty($user)) {
             Flash::error('User not found');
             return redirect(route('admin.users.index'));
         }
 
-        $this->userRepository->updateRecord($request, $user);
+        $user  = $this->userRepository->updateRecord($request, $user);
+        $roles = $input['roles'];
+
+        if (is_array($roles)) {
+            if (in_array(4, $roles)) {
+                $user_id = $user->id;
+                $title   = __('notifications.info.personal_info.title');
+                $message = __('notifications.info.personal_info.message');
+
+                Notification::create_notification($user_id, $title, $message);
+                FirebaseService::sendBellNotification($user_id, $title, $message);
+            }
+        }
 
         Flash::success('User updated successfully.');
         return redirect(route('admin.users.index'))->with(['title' => $this->BreadCrumbName]);
@@ -222,16 +238,16 @@ class UserController extends AppBaseController
     public function getVendorDataTables(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::join('role_user','users.id','=','role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=",4)->latest()->get();
+            $data = User::join('role_user', 'users.id', '=', 'role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=", 4)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('roles', function ($user) {
                     return $user->rolesCsv;
                 })
                 ->editColumn('status', function ($user) {
-                    if($user->status == 1){
+                    if ($user->status == 1) {
                         return "Active";
-                    }else{
+                    } else {
                         return "Deactive";
                     }
                 })
@@ -245,16 +261,16 @@ class UserController extends AppBaseController
     public function getTechnicianDataTables(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::join('role_user','users.id','=','role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=",5)->latest()->get();
+            $data = User::join('role_user', 'users.id', '=', 'role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=", 5)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('roles', function ($user) {
                     return $user->rolesCsv;
                 })
                 ->editColumn('status', function ($user) {
-                    if($user->status == 1){
+                    if ($user->status == 1) {
                         return "Active";
-                    }else{
+                    } else {
                         return "Deactive";
                     }
                 })
@@ -264,19 +280,20 @@ class UserController extends AppBaseController
         }
         return view('admin.users.index');
     }
+
     public function getManagerDataTables(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::join('role_user','users.id','=','role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=",6)->latest()->get();
+            $data = User::join('role_user', 'users.id', '=', 'role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=", 6)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('roles', function ($user) {
                     return $user->rolesCsv;
                 })
                 ->editColumn('status', function ($user) {
-                    if($user->status == 1){
+                    if ($user->status == 1) {
                         return "Active";
-                    }else{
+                    } else {
                         return "Deactive";
                     }
                 })
@@ -290,16 +307,16 @@ class UserController extends AppBaseController
     public function getSupervisorDataTables(Request $request)
     {
         if ($request->ajax()) {
-            $data = User::join('role_user','users.id','=','role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=",7)->latest()->get();
+            $data = User::join('role_user', 'users.id', '=', 'role_user.user_id')->whereNotIn('id', [1, Auth::user()->id])->where('role_user.role_id', "=", 7)->latest()->get();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('roles', function ($user) {
                     return $user->rolesCsv;
                 })
                 ->editColumn('status', function ($user) {
-                    if($user->status == 1){
+                    if ($user->status == 1) {
                         return "Active";
-                    }else{
+                    } else {
                         return "Deactive";
                     }
                 })

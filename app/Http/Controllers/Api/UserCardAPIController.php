@@ -264,12 +264,14 @@ class UserCardAPIController extends AppBaseController
                     "status_text"    => $result['order']['status']['text']
                 );
                 $transactionResult = $this->transactionRepository->saveRecord($transactionDetail);
+                $transaction = $transactionResult->toArray();
             }else{
+            	 $transaction = [];
                 return $this->sendErrorWithData(['User transaction not found']);
             }
         }
 
-        return $this->sendResponse($transactionResult->toArray(), 'User Card and Transaction saved successfully');
+        return $this->sendResponse($transaction, 'User Card and Transaction saved successfully');
     }
 
     /**

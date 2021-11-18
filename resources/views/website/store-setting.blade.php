@@ -31,7 +31,7 @@
                         </ul>
                         <div class=" row m-0" style="padding-bottom: 10px">
                             <div id="response-alert"  class="error-notification" style="display: none">
-                                <span class="icon"><img src="{{ url('/public/assets/images/error-icon.png') }}" alt="icon" class="img-fluid"></span>
+                                <span class="icon"><img src="{{ url('public/assets/images/error-icon.png') }}" alt="icon" class="img-fluid"></span>
                                 <p>ERROR</p>
                             </div>
                         </div>
@@ -66,7 +66,7 @@
                                                             <img id="uploaded_img"
                                                                  src="{{route('api.resize', ['img' => $petspace['image']])}}"
                                                                  alt="image"/>
-                                                            <a id="edit-image-link" class="edit-btn"><img src="{{ url('/public/assets/images/icon-pencil-grey.png') }}" class="img-fluid"></a>
+                                                            <a id="edit-image-link" class="edit-btn"><img src="{{ url('public/assets/images/icon-pencil-grey.png') }}" class="img-fluid"></a>
                                                             <a id="delete-image-link" class="delete-btn"><i class="fas fa-times"></i></a>
                                                         </div>
                                                     </div>

@@ -139,8 +139,11 @@ Route::middleware('auth:api')->group(function () {
 
     Route::resource('v1/user-cards', 'UserCardAPIController');
 
-});
+    //Route::post('v1/order-reference', 'OrderAPIController@orderReference');
 
+
+});
+Route::post('v1/order-reference', 'OrderAPIController@orderReference');
 Route::post('v1/petspace-restrict-technicians', 'PetspaceTechnicianAPIController@getRestrictedTechnicians');
 
 Route::resource('v1/petspaces', 'PetspaceAPIController');
@@ -166,3 +169,5 @@ Route::resource('v1/order-progresses', 'OrderProgressAPIController');
 //Route::resource('v1/transactions', 'TransactionAPIController');
 
 Route::resource('v1/promotions', 'PromotionAPIController');
+
+Route::resource('v1/order-service-pets', 'OrderServicePetAPIController');

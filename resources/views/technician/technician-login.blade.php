@@ -6,7 +6,7 @@
 		<div class="container">
 			<div class="auth-card technician-login-form">
 				<div class="logo-wrap text-center">
-					<img src="{{ url('/public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
+					<img src="{{ url('public/assets/images/logo.png') }}" alt="logo" class="img-fluid">
 				</div>
 				<form  id="submit-form"  action="{{URL::to('/technician/logining')}}" method="POST">
 					<div class="form-top">

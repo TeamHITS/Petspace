@@ -32,12 +32,12 @@
                                         <div class="ordered-service">
                                             <div class="img"></div>
                                             <div class="desc">
-                                                <p class="name">{{$service['service_name']}}</p>
+                                                <p class="name">{{$service['name']}}</p>
                                                 <?php    $duration = 0;
                                                 $addons_price = 0;
                                                 ?>
                                                 @foreach($service['addons'] as $addon)
-                                                    <p>+ {{$addon['submenu_name']}}</p>
+                                                    <p>+ {{$addon['name']}}</p>
                                                     <?php $duration += $addon['duration'];
                                                     $addons_price += $addon['price'];
                                                     ?>
@@ -85,7 +85,7 @@
                                         </div>
                                     @endforeach
                                     <div class="time-box">
-                                        <p><img src="{{ url('/public/assets/images/icon-clock.png') }}" class="img-fluid">Total Service Duration: {{$total_duration}}mins
+                                        <p><img src="{{ url('public/assets/images/icon-clock.png') }}" class="img-fluid">Total Service Duration: {{$total_duration}}mins
                                         </p>
                                     </div>
                                     <div class="amount-box">
@@ -122,13 +122,13 @@
                                         <p class="title">Technician Assigned</p>
                                         @if($order['status'] != \App\Models\Order::COMPLETE )
                                         <a href="#!" class="assign-tech" id="assign-tech"
-                                           data-id="{{$order['id']}}"><img src="{{ url('/public/assets/images/icon-pencil-green.png') }}" class="img-fluid"></a>
+                                           data-id="{{$order['id']}}"><img src="{{ url('public/assets/images/icon-pencil-green.png') }}" class="img-fluid"></a>
                                             @endif
                                     </div>
                                     <div class="selected-technician">
                                         <div class="technician-item {{ (isset($order['technician']))?"":"not"}}">
                                             <div class="img">
-                                                <img src="{{ url('/public/assets/images/icon-user.png') }}" class="img-fluid">
+                                                <img src="{{ url('public/assets/images/icon-user.png') }}" class="img-fluid">
                                             </div>
                                             @if($order['technician'])
                                                 <p>{{$order['technician']['user']['name']}}</p>
@@ -145,7 +145,7 @@
                                     @if($order['progress_status'] == NULL)
                                     <div class="service-progress-info">
                                         <div class="img">
-                                            <img src="{{ url('/public/assets/images/icon-calender-green.png') }}" class="img-fluid">
+                                            <img src="{{ url('public/assets/images/icon-calender-green.png') }}" class="img-fluid">
                                         </div>
                                         <div class="desc">
                                             <p class="title">Service is scheduled for</p>

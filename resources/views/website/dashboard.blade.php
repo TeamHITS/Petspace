@@ -28,7 +28,7 @@
 												<div class="slider-card-top">
 													<p class="order-no">Order #{{$activeOrder['id']}}</p>
 													<a href="#!" class="edit btn-active-order" data-id="{{$activeOrder['id']}}"><img
-																src="{{ url('/public/assets/images/icon-edit.png') }}" class="img-fluid"></a>
+																src="{{ url('public/assets/images/icon-edit.png') }}" class="img-fluid"></a>
 
 												</div>
 												<div class="order-info">
@@ -110,8 +110,8 @@
 														<div class="order-info-detail">
 															<div class="text">
 																<p class="title">Ordered Services</p>
-																<p class="desc">{{$activeOrder['services'][0]['service_name']}}<br>
-																	{{$activeOrder['services'][0]['addons'][0]['submenu_name']}}….</p>
+																<p class="desc">{{$activeOrder['services'][0]['name']}}<br>
+																	{{$activeOrder['services'][0]['addons'][0]['name']}}….</p>
 															</div>
 															<div class="number">
 																<p class="title">Total Amount</p>
@@ -231,7 +231,7 @@
 												<div class="slider-card-top">
 													<p class="order-no">Order #{{$scheduleOrder['id']}}</p>
 													<a href="#!" class="edit btn-schedule-order" data-id="{{$scheduleOrder['id']}}"><img
-																src="{{ url('/public/assets/images/icon-edit.png') }}" class="img-fluid"></a>
+																src="{{ url('public/assets/images/icon-edit.png') }}" class="img-fluid"></a>
 												</div>
 												<div class="order-info">
 													<div class="order-info-detail-wrap">
@@ -258,8 +258,8 @@
 														<div class="order-info-detail">
 															<div class="text">
 																<p class="title">Ordered Services</p>
-																<p class="desc">{{$scheduleOrder['services'][0]['service_name']}}<br>
-																	{{$scheduleOrder['services'][0]['addons'][0]['submenu_name']}}….</p>
+																<p class="desc">{{$scheduleOrder['services'][0]['name']}}<br>
+																	{{$scheduleOrder['services'][0]['addons'][0]['name']}}….</p>
 															</div>
 															<div class="number">
 																<p class="title">Total Amount</p>

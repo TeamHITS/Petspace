@@ -68,14 +68,14 @@ class HomeController extends Controller
         $orderCount = DB::table('orders')
             ->whereDate('created_at', '=', date('Y-m-d'))->count();
 
-        $dailyEarning = DB::table('transactions')->selectRaw('SUM(amount) as amount, DATE(created_at) as cdate')->whereDate('created_at', '=', date('Y-m-d'))->groupBy('cdate')->first();
+        $dailyEarning = DB::table('transactions')->selectRaw('SUM(amount) as amount, DATE(created_at) as cdate')->whereDate('created_at', '=', date('Y-m-d'))->whereNull('deleted_at')->groupBy('cdate')->first();
 
         if ($dailyEarning) {
             $dailyEarning = $dailyEarning->amount;
         } else {
             $dailyEarning = 0;
         }
-        $monthlyEarning = DB::table('transactions')->selectRaw('SUM(amount) as amount, MONTH(created_at) as cdate')->whereYear('created_at', '=', date('Y'))->whereMonth('created_at', '=', date('m'))->groupBy('cdate')->first();
+        $monthlyEarning = DB::table('transactions')->selectRaw('SUM(amount) as amount, MONTH(created_at) as cdate')->whereYear('created_at', '=', date('Y'))->whereMonth('created_at', '=', date('m'))->whereNull('deleted_at')->groupBy('cdate')->first();
 
         if ($monthlyEarning) {
             $monthlyEarning = $monthlyEarning->amount;

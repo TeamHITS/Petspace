@@ -528,6 +528,11 @@ function swappingRequest(prevRowPos, prevRowId, rowPos, rowId, url, token, cb) {
             });
     });
 
+    $(document).on("click", "#viewOrderDetails", function(event){
+        var orderid = $(this).data('id');
+        $('#ordersetails').modal('show');
+    });
+
     function removeme(deleteindex, price, id, type, ptype) {
         
 

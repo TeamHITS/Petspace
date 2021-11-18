@@ -7,6 +7,7 @@
 @section('content')
     <div class="content">
         @include('admin.orders.latepayment')
+        @include('admin.orders.viewdetails')
         <div class="box box-primary">
             <div class="box-body">
                 <div class="row" style="padding-left: 20px">
@@ -34,6 +35,11 @@
                             <i class="glyphicon glyphicon-edit"></i> Edit
                         </a>
                         @endability
+                    </div>
+                    <div class='btn-group'>
+                        <a href="javascript:void(0)" id="viewOrderDetails" data-id="{{$order->id}}" class='btn btn-default'>
+                            <i class="glyphicon glyphicon-eye-open"></i> View order detail
+                        </a>
                     </div>
                     <div class='btn-group'>
                         @ability('super-admin' ,'orders.destroy')

@@ -196,4 +196,31 @@ class Notification extends Model
         return implode(",", $this->users->pluck('name')->all());
     }
 
+    public static function add_new_notification($data)
+    {
+      return Notification::create($data);
+       
+    }
+    
+    public static function create_notification($user_id, $title, $message){
+        $sender_id = \Auth::id();
+        $notification = Notification::create([
+            'sender_id' =>  $sender_id ? $sender_id : 1,
+            'url' => null,
+            'action_type' => $title,
+            'ref_id' => $user_id,
+            'message' => $message,
+            'status' => 1
+        ]);
+        logger($notification);
+        return $notification;
+    }
+
+    public function markAsRead()
+    {
+        return $this->update([
+            'status' =>1
+        ]);
+    }
+
 }

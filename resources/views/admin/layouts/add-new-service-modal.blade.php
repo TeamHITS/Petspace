@@ -49,21 +49,22 @@
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="form-group">
                             <label for="">Total Standard Price</label>
-                            <input name="price" type="text" class="gen-input" placeholder="Service Price" required>
+                            <input name="price" type="text" class="gen-input" placeholder="Enter Service Price" required>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="form-group">
                             <label for="">Total Discount Price (Optional)</label>
-                            <input name="discount" type="text" class="gen-input" placeholder="Service Discount Price"
-                                   required>
+                            <input name="discount" type="text" class="gen-input"
+                                   placeholder="Enter Discount in Percentage" pattern="^[0-9][0-9]?$|^100$"
+                                   title="Enter discount between 0 to 100">
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="form-group">
                             <label for="">Service Duration</label>
                             <input name="service_duration" type="text" class="gen-input"
-                                   placeholder="Service Duration in minutes" required>
+                                   placeholder="Enter Duration in minutes" required>
                         </div>
                     </div>
                 </div>

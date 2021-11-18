@@ -11,12 +11,18 @@
         $hlink = route('admin.orders.edit', $id);
         if($status == 30 || $status == 40){
              $hlink =  "javascript:void(0)";
-         } 
+         }
     @endphp
-    <a href="{{ $hlink }}" @if($status == 30 || $status == 40) disabled="disabled" @endif class='btn btn-default btn-xs'>
+    <a href="{{ $hlink }}" @if($status == 30 || $status == 40) disabled="disabled"
+       @endif class='btn btn-default btn-xs'>
         <i class="glyphicon glyphicon-edit"></i>
     </a>
     @endability
+    @if($status != \App\Models\Order::CANCEL && $status != \App\Models\Order::COMPLETE)
+        <a href="{{ url('admin/order-cancel/').'/'. $id}}" class='btn btn-danger btn-xs'>
+            <i class="glyphicon glyphicon-remove"></i>
+        </a>
+    @endif
     @ability('super-admin' ,'orders.destroy')
     @php
         $attributes = [

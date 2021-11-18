@@ -35,14 +35,14 @@
 				@foreach($order['services'] as $service)
 				<div class="ordered-service">
 					<div class="desc">
-						<p class="name">{{$service['service_name']}}</p>
-						<p>For {{ strtolower($service['addons'][0]['submenu_name'])}} sized pet</p>
+						<p class="name">{{$service['name']}}</p>
+						<p>For {{ strtolower($service['addons'][0]['name'])}} sized pet</p>
 						<p>Service Duration: {{$service['duration']}}m</p>
 					</div>
 					<div class="ordered-service addons">
 						@for($i = 1; $i < count($service['addons']); $i++)
 						<div class="desc">
-							<p class="name">{{$service['addons'][$i]['submenu_name']}}</p>
+							<p class="name">{{$service['addons'][$i]['name']}}</p>
 							<p>Addon</p>
 							<p>Service Duration: {{$service['addons'][$i]['duration']}}m</p>
 						</div>

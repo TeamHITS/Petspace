@@ -37,10 +37,13 @@ class GetGoogleReviews implements ShouldQueue
 
         foreach ($shops as $shop) {
 
+            $name = str_replace(' ', '%20', $shop['name']);
+            $url  = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:2000@" . $shop['latitude'] . ",%20" . $shop['longitude'] . "&key=AIzaSyAtE6o_3Gvd8ud0Xt_NJcpAiNPik03Ubuk&input=" . $name;
+
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL            => "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=" . $shop['name'] . "&inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:2000@" . $shop['latitude'] . "," . $shop['longitude'] . "&key=AIzaSyAtE6o_3Gvd8ud0Xt_NJcpAiNPik03Ubuk",
+                CURLOPT_URL            => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING       => "",
                 CURLOPT_MAXREDIRS      => 10,
@@ -57,19 +60,25 @@ class GetGoogleReviews implements ShouldQueue
             $response = curl_exec($curl);
             $err      = curl_error($curl);
 
+
             curl_close($curl);
 
             if ($err) {
                 echo "cURL Error #:" . $err;
             } else {
                 $response = json_decode($response);
-                if ($response->candidates) {
 
-                    $partner = Petspace::find($shop['id'] );
-                    $partner->google_rating = $response->candidates[0]->rating;
-                    $partner->save();
-                    echo "Shop Name: " . $shop['name'] . "    --- Rating: " . $response->candidates[0]->rating;
+                $rating = 0;
+                if ($response->status == "OK") {
+                    $rating = $response->candidates[0]->rating;
+//                    echo "Shop Name: " . $shop['name'] . "    --- Rating: " . $response->candidates[0]->rating . "\n";
+                } else {
+//                    echo "Shop Name: " . $shop['name'] . "    --- Rating: " . "Not found\n";
                 }
+
+                $partner                = Petspace::find($shop['id']);
+                $partner->google_rating = $rating;
+                $partner->save();
 
             }
         }

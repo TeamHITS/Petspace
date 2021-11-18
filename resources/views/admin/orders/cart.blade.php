@@ -85,13 +85,20 @@
 													</h6>
 												</div>
 												<div class="col-xs-4 text-right">
-													<h6><strong>AED {{$petcatservice['price']}}</strong></h6>
+													
+													@php
+
+													$discountedPrice = $petcatservice['price'] - $petcatservice['price']*($petcatservice['discount']/100);
+
+													@endphp
+
+													<h6><strong>AED {{$discountedPrice}}</strong></h6>
 												</div>
 												<div class="col-xs-2">
 													<button 
 														data-name="{{$petcatservice['name']}}"
 														data-description="{{$petcatservice['description'] }}"
-														data-price="{{$petcatservice['price']}}"
+														data-price="{{$discountedPrice}}"
 														data-id="{{$petcatservice['id']}}" 
 														type="button" 
 														class="btn btn-link btn-xs" onclick="addToCart(this)" />
@@ -132,7 +139,7 @@
 								<div class="row" id="{{$services->id.$key}}">
 									<div class="col-xs-4">
 										<h4 class="product-name">
-											<strong>{{@$services->getServiceNameAttribute()}}</strong></h4>
+											<strong>{{$services->name}}</strong></h4>
 									</div>
 									<div class="col-xs-6">
 										<div class="col-xs-6 text-right">
@@ -166,14 +173,14 @@
 											<div style="margin-left:10px" class="row" id="{{$serAddons->id.$index}}">
 												
 												<div class="col-xs-4">
-													<h4 class="product-name"><strong>{{$serAddons->getSubmenuNameAttribute()}}</strong></h4><h4><small>{{$services->getServiceNameAttribute()}}</small></h4>
+													<h4 class="product-name"><strong>{{$serAddons->name}}</strong></h4><h4><small>{{$services->name}}</small></h4>
 												</div>
 												<div class="col-xs-6">
 													<div class="col-xs-6 text-right">
 														<h6><strong>AED {{$serAddons->price}}</strong></h6>
 													</div>
 													<div class="col-xs-2">
-														<?php if($serAddons->getSubmenuNameAttribute() != 'Large' && $serAddons->getSubmenuNameAttribute() != 'Medium' && $serAddons->getSubmenuNameAttribute() != 'Small') {?>
+														<?php if($serAddons->name != 'Large' && $serAddons->name != 'Medium' && $serAddons->name != 'Small') {?>
 														<button type="button" onclick="removeme({{$serAddons->id.$index}},{{$serAddons->price}},{{$serAddons->id}},2,1)" class="btn btn-link btn-xs">
 															<span class="glyphicon glyphicon-trash"> </span>
 														</button>

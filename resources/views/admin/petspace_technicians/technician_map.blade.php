@@ -363,6 +363,9 @@
             }
         });
 
+        var Polygon = new google.maps.Polygon();
+
+
         $('#technician_id').on('change', function() {
 
             $.each(polygons, function( index, value ) {
@@ -382,14 +385,34 @@
                             $.each(cordinates, function( index, value ) {
                                 destination.push(new google.maps.LatLng(value[0],value[1]))
                             });
-                            var polygonOption = {path: destination};
+                            var id = areas[i].id;
+                            var polygonOption = {path: destination,content: id};
                             var Polygon = new google.maps.Polygon(polygonOption);
 
                             polygons.push(Polygon);
                             Polygon.setMap(map);
+                            var obj = {
+                                    'id': id
+                                };
+                            Polygon.objInfo = obj;
 
-                            google.maps.event.addListener(Polygon, 'click', function() {
-                                this.setMap(null);
+                            google.maps.event.addListener(Polygon, 'click', function(event,id) {
+
+                                var delid = this.objInfo.id;
+
+                		 var delurl = "{{url('admin/del-areas').'/'}}"+delid;
+                		   var r = confirm("Are you sure you want to delete this area?");
+					  if (r == true) {
+					    ajaxGet(delurl, null, (status, data) => {
+				                     if (status) {
+				                        alert("Area deleted successfully");
+				                        this.setMap(null);
+				                     }
+				                });
+					  } else {
+					    console.log('');
+					  }
+                                
                             });
                         }
                     } else {

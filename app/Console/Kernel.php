@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\GetGoogleReviews;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -13,19 +14,23 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\OrderReminders::class,
+        Commands\UnassignedOrder::class,
+        Commands\DelayOrder::class,
     ];
 
     /**
      * Define the application's command schedule.
      *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->job(new GetGoogleReviews)->twiceMonthly(1, 16, '13:00');
+        $schedule->command('technician:order-reminder')->everyFiveMinutes();
+        $schedule->command('vendor:order-unassigned')->everyTenMinutes();
+        $schedule->command('delay:order')->everyFiveMinutes();
     }
 
     /**
@@ -35,7 +40,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

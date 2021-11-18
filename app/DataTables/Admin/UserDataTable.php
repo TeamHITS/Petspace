@@ -60,9 +60,9 @@ class UserDataTable extends DataTable
     public function html()
     {
         $buttons = [];
-        if (\Entrust::can('users.create') || \Entrust::hasRole('super-admin')) {
-            $buttons = ['create'];
-        }
+//        if (\Entrust::can('users.create') || \Entrust::hasRole('super-admin')) {
+//            $buttons = ['create'];
+//        }
         $buttons = array_merge($buttons, [
             'export',
 //            'excel',
@@ -94,7 +94,8 @@ class UserDataTable extends DataTable
             'email',
             'roles',
             'status_text' => [
-                'searchable' => true,
+                'searchable' => false,
+                'sortable' => false,
                 'title'      => 'Status'
             ],
 //            'Roles.roles' => [
